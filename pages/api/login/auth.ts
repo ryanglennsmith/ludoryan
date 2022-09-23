@@ -2,33 +2,24 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { ironOptions } from "../../../lib/ironConfig";
 
-export default withIronSessionApiRoute(
-  async function loginRoute(req, res) {
+import { isSamePass } from "../../../services/encryption/isSamePass";
+
+import getUser from "../../../services/dbTxn/getUser";
+
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const user = await getUser(req.body.username);
+  const isMatch: boolean = await isSamePass(req.body.password, user.password);
+  if (user !== null && isMatch) {
     req.session.user = {
-      username: "ryan",
+      username: req.body.username,
       isLoggedIn: true,
+      isAdmin: false,
     };
     await req.session.save();
-    res.json({ ok: true });
-  },
-  {
-    cookieName: "CookieMonster",
-    password: "1234",
-    cookieOptions: {
-      secure: process.env.NODE_ENV === "production",
-    },
+    res.status(200).json(req.session.user);
+  } else {
+    res.status(418).send("No coffee");
   }
-);
+}
 
-// export async function loginRoute(
-//   req: NextApiRequest,
-//   res: NextApiResponse<User>
-// ) {
-//   const { username, password } = await req.body;
-//   const sessionUser = { username: username, isLoggedIn: true } as User;
-//   req.session.user = sessionUser;
-
-//   await req.session.save();
-
-//   return res.json(sessionUser);
-// }
+export default withIronSessionApiRoute(handler, ironOptions);

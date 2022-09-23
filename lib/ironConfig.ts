@@ -1,4 +1,3 @@
-import * as IronSession from "iron-session";
 export const ironOptions = {
   cookieName: "CookieMonster",
   password: String(process.env.PUBLIC_COOKIE_KEY),
@@ -14,4 +13,5 @@ declare module "iron-session" {
 type User = {
   username: string;
   isLoggedIn: boolean;
+  isAdmin: boolean;
 };
