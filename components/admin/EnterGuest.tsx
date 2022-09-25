@@ -9,7 +9,10 @@ import {
   CheckboxGroup,
   Text,
   Stack,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
+
 type Props = {
   isInvitedToItaly: boolean;
   setIsInvitedToItaly: Function;
@@ -21,7 +24,11 @@ type Props = {
   setGuestEmail: Function;
   plusOne: string;
   setPlusOne: Function;
+  password: string;
+  setPassword: Function;
+  saveUser: Function;
 };
+
 const EnterGuest = ({
   isInvitedToItaly,
   setIsInvitedToItaly,
@@ -33,12 +40,14 @@ const EnterGuest = ({
   setGuestEmail,
   plusOne,
   setPlusOne,
+  password,
+  setPassword,
+  saveUser,
 }: Props) => {
   const [isPlusOneOpen, setIsPlusOneOpen] = useState(false);
 
   return (
     <>
-      <Heading m={3}>enter guest info</Heading>
       <Flex
         w="2xl"
         direction="column"
@@ -46,6 +55,9 @@ const EnterGuest = ({
         justifyContent="center"
         m={2}
       >
+        <FormLabel>
+          <Heading m={3}>enter guest info</Heading>
+        </FormLabel>
         <Input
           placeholder="name"
           defaultValue={guestName}
@@ -54,6 +66,8 @@ const EnterGuest = ({
           m={2}
           mb={3}
         ></Input>
+        {guestName.length < 1 && <Text color="crimson">required</Text>}
+
         <Input
           placeholder="email"
           defaultValue={guestEmail}
@@ -62,6 +76,15 @@ const EnterGuest = ({
           m={2}
           mb={3}
           type="email"
+        ></Input>
+        {guestEmail.length < 1 && <Text color="crimson">required</Text>}
+        <Input
+          placeholder="password"
+          defaultValue={password}
+          onChange={(e) => setPassword(e.target.value)}
+          variant="filled"
+          m={2}
+          mb={3}
         ></Input>
         {isPlusOneOpen && (
           <Input
@@ -102,7 +125,7 @@ const EnterGuest = ({
             </Checkbox>
           </Stack>
         </CheckboxGroup>
-        <Button m={2} mb={3} onClick={() => alert("do some validation first")}>
+        <Button m={2} mb={3} onClick={() => saveUser(true)}>
           save
         </Button>
       </Flex>
