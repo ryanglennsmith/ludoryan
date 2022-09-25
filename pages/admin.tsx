@@ -1,62 +1,80 @@
-import type { NextPage } from "next";
-import Login from "../components/login/Login";
-import Logout from "../components/login/Logout";
-import { useState } from "react";
 import {
-  Box,
-  Flex,
-  Heading,
-  Input,
   Button,
-  useColorMode,
-  useColorModeValue,
-  Link,
+  Flex,
+  Input,
+  Box,
+  Heading,
+  Checkbox,
+  CheckboxGroup,
+  Text,
+  Stack,
 } from "@chakra-ui/react";
-import CheckLogin from "../components/login/CheckLogin";
+import { NextPage } from "next";
+import Footer from "../components/nav/Footer";
+import { useState } from "react";
+import EnterGuest from "../components/admin/EnterGuest";
 
-const Home: NextPage = () => {
-  const { toggleColorMode } = useColorMode();
-  const formBackground = useColorModeValue("gray.100", "gray.700");
-  const [message, setMessage] = useState("funky butt lovin");
-  const [user, setUser] = useState("");
-  const [pw, setPw] = useState("");
+const Admin: NextPage = () => {
+  const [isInvitedToItaly, setIsInvitedToItaly] = useState(false);
+  const [isInvitedToUSA, setIsInvitedToUSA] = useState(false);
+  const [isEnterGuestInfo, setIsEnterGuestInfo] = useState(false);
+  const [isCheckGuestList, setIsCheckGuestList] = useState(false);
+  const [guestName, setGuestName] = useState("");
+  const [guestEmail, setGuestEmail] = useState("");
+  const [plusOne, setPlusOne] = useState("");
 
   return (
-    <Flex height="100vh" alignItems="center" justifyContent="center">
-      <Flex direction="column" background={formBackground} p={12} rounded={6}>
-        <Heading mb={6}>Log in</Heading>
-        <Input
-          placeholder="bob@bob.bob"
-          variant="filled"
-          mb={3}
-          type="email"
-          onChange={(e) => {
-            setUser(e.target.value);
-            console.log(user);
-          }}
-        ></Input>
-        <Input
-          placeholder="************"
-          variant="filled"
-          mb={6}
-          type="password"
-          onChange={(e) => {
-            setPw(e.target.value);
-            console.log(pw);
-          }}
-        ></Input>
-        <Login
-          message={message}
-          setMessage={setMessage}
-          user={user}
-          pw={pw}
-        ></Login>
-        <Logout></Logout>
-        <CheckLogin></CheckLogin>
-        <Button onClick={toggleColorMode}>Toggle color mode</Button>
+    <Box position="relative" minH="100vh">
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        direction="column"
+        pb="4.5rem"
+      >
+        {!isEnterGuestInfo && !isCheckGuestList && (
+          <Heading as="h1" size="2xl" m={3}>
+            actions
+          </Heading>
+        )}
+        {isEnterGuestInfo && (
+          <EnterGuest
+            isInvitedToItaly={isInvitedToItaly}
+            setIsInvitedToItaly={setIsInvitedToItaly}
+            isInvitedToUSA={isInvitedToUSA}
+            setIsInvitedToUSA={setIsInvitedToUSA}
+            guestName={guestName}
+            setGuestName={setGuestName}
+            guestEmail={guestEmail}
+            setGuestEmail={setGuestEmail}
+            plusOne={plusOne}
+            setPlusOne={setPlusOne}
+          ></EnterGuest>
+        )}
+        <Flex direction="row" justify="space-evenly" width="50%">
+          <Button
+            m={2}
+            mb={3}
+            onClick={() => setIsEnterGuestInfo(!isEnterGuestInfo)}
+          >
+            enter guest
+          </Button>
+          <Button
+            m={2}
+            mb={3}
+            onClick={() => setIsEnterGuestInfo(!isEnterGuestInfo)}
+          >
+            edit guest
+          </Button>
+          <Button m={2} mb={3}>
+            invitees
+          </Button>
+          <Button m={2} mb={3}>
+            confirmed
+          </Button>
+        </Flex>
       </Flex>
-    </Flex>
+      <Footer />
+    </Box>
   );
 };
-
-export default Home;
+export default Admin;

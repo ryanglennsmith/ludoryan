@@ -18,8 +18,14 @@ const Home: NextPage = () => {
   const { toggleColorMode } = useColorMode();
   const formBackground = useColorModeValue("gray.100", "gray.700");
   return (
-    <>
-      <Flex alignItems="center" justifyContent="center" direction="column">
+    <Box position="relative" minH="100vh">
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        direction="column"
+        pb="4.5rem"
+        sx={{ border: "2px solid red" }}
+      >
         <Flex
           direction="column"
           background={formBackground}
@@ -57,7 +63,7 @@ const Home: NextPage = () => {
         </Flex>{" "}
       </Flex>
       <Footer />
-    </>
+    </Box>
   );
 };
 
