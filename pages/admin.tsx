@@ -1,7 +1,7 @@
-import type { NextPage, GetServerSideProps } from "next";
-import { setCookie } from "cookies-next";
-import NextLink from "next/link";
-
+import type { NextPage } from "next";
+import Login from "../components/login/Login";
+import Logout from "../components/login/Logout";
+import { useState } from "react";
 import {
   Box,
   Flex,
@@ -12,20 +12,17 @@ import {
   useColorModeValue,
   Link,
 } from "@chakra-ui/react";
+import CheckLogin from "../components/login/CheckLogin";
 
 const Home: NextPage = () => {
   const { toggleColorMode } = useColorMode();
   const formBackground = useColorModeValue("gray.100", "gray.700");
-  const addAuth = setCookie("rgs", "123456789");
+  const [message, setMessage] = useState("funky butt lovin");
+  const [user, setUser] = useState("");
+  const [pw, setPw] = useState("");
 
   return (
     <Flex height="100vh" alignItems="center" justifyContent="center">
-      {/* <div>
-        <textarea rows={2} cols={25}></textarea>
-      <br />
-    <button>Btn</button>
-        welcome to the main page
-      </div> */}
       <Flex direction="column" background={formBackground} p={12} rounded={6}>
         <Heading mb={6}>Log in</Heading>
         <Input
@@ -33,21 +30,29 @@ const Home: NextPage = () => {
           variant="filled"
           mb={3}
           type="email"
+          onChange={(e) => {
+            setUser(e.target.value);
+            console.log(user);
+          }}
         ></Input>
         <Input
           placeholder="************"
           variant="filled"
           mb={6}
           type="password"
+          onChange={(e) => {
+            setPw(e.target.value);
+            console.log(pw);
+          }}
         ></Input>
-        <NextLink href="/adminverified" passHref>
-          <Link>
-            <Button onClick={() => addAuth} colorScheme="teal" mb={6}>
-              Log in
-            </Button>
-          </Link>
-        </NextLink>
-
+        <Login
+          message={message}
+          setMessage={setMessage}
+          user={user}
+          pw={pw}
+        ></Login>
+        <Logout></Logout>
+        <CheckLogin></CheckLogin>
         <Button onClick={toggleColorMode}>Toggle color mode</Button>
       </Flex>
     </Flex>
