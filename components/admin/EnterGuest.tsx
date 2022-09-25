@@ -11,6 +11,8 @@ import {
   Stack,
   FormControl,
   FormLabel,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 
 type Props = {
@@ -27,6 +29,7 @@ type Props = {
   password: string;
   setPassword: Function;
   saveUser: Function;
+  generatePW: Function;
 };
 
 const EnterGuest = ({
@@ -43,6 +46,7 @@ const EnterGuest = ({
   password,
   setPassword,
   saveUser,
+  generatePW,
 }: Props) => {
   const [isPlusOneOpen, setIsPlusOneOpen] = useState(false);
 
@@ -58,34 +62,53 @@ const EnterGuest = ({
         <FormLabel>
           <Heading m={3}>enter guest info</Heading>
         </FormLabel>
-        <Input
-          placeholder="name"
-          defaultValue={guestName}
-          onChange={(e) => setGuestName(e.target.value)}
-          variant="filled"
-          m={2}
-          mb={3}
-        ></Input>
+        <InputGroup size="md">
+          <Input
+            placeholder="name"
+            value={guestName}
+            onChange={(e) => setGuestName(e.target.value)}
+            variant="filled"
+            m={2}
+            mb={3}
+          ></Input>
+        </InputGroup>
         {guestName.length < 1 && <Text color="crimson">required</Text>}
-
-        <Input
-          placeholder="email"
-          defaultValue={guestEmail}
-          onChange={(e) => setGuestEmail(e.target.value)}
-          variant="filled"
-          m={2}
-          mb={3}
-          type="email"
-        ></Input>
+        <InputGroup size="md">
+          <Input
+            placeholder="email"
+            value={guestEmail}
+            onChange={(e) => setGuestEmail(e.target.value)}
+            variant="filled"
+            m={2}
+            mb={3}
+            type="email"
+          ></Input>
+        </InputGroup>
         {guestEmail.length < 1 && <Text color="crimson">required</Text>}
-        <Input
-          placeholder="password"
-          defaultValue={password}
-          onChange={(e) => setPassword(e.target.value)}
-          variant="filled"
-          m={2}
-          mb={3}
-        ></Input>
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            variant="filled"
+            m={2}
+            mb={3}
+          ></Input>
+          <InputRightElement width="4.5rem">
+            <Button
+              h="1.75rem"
+              size="sm"
+              mt="1rem"
+              mr="1rem"
+              onClick={() => {
+                setPassword(generatePW(6));
+              }}
+            >
+              gen
+            </Button>
+          </InputRightElement>
+        </InputGroup>
         {isPlusOneOpen && (
           <Input
             placeholder="plus one"

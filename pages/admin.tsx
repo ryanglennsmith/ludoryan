@@ -1,24 +1,12 @@
-import {
-  Button,
-  Flex,
-  Box,
-  Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Flex, Box, Heading, Icon } from "@chakra-ui/react";
+import { FaBomb } from "react-icons/fa";
 import { NextPage } from "next";
 import Footer from "../components/nav/Footer";
 import { useState, useEffect } from "react";
 import EnterGuest from "../components/admin/EnterGuest";
+import EditGuest from "../components/admin/EditGuest";
 import generatePW from "../services/encryption/pwGenerator";
+import ServerResponseTable from "../components/admin/ServerResponseTable";
 
 type user = {
   email: string;
@@ -27,6 +15,7 @@ type user = {
   isInvitedToItaly?: boolean;
   isInvitedToUSA?: boolean;
 };
+
 const Admin: NextPage = () => {
   const [isInvitedToItaly, setIsInvitedToItaly] = useState(false);
   const [isInvitedToUSA, setIsInvitedToUSA] = useState(false);
@@ -38,6 +27,27 @@ const Admin: NextPage = () => {
   const [password, setPassword] = useState(generatePW(6));
   const [serverResponse, setServerResponse] = useState<user>();
   const [isClickedSave, setIsClickedSave] = useState(false);
+  const [isEditGuest, setIsEditGuest] = useState(false);
+  const [editGuestField, setEditGuestField] = useState("");
+  const [isClickedEdit, setIsClickedEdit] = useState(false);
+  const [isEditingMode, setIsEditingMode] = useState(false);
+
+  const resetState = () => {
+    setIsEnterGuestInfo(false);
+    setIsCheckGuestList(false);
+    setServerResponse(undefined);
+    setGuestName("");
+    setGuestEmail("");
+    setPassword("");
+    setPlusOne("");
+    setIsInvitedToItaly(false);
+    setIsInvitedToUSA(false);
+    setIsClickedSave(false);
+    setIsEditGuest(false);
+    setEditGuestField("");
+    setIsClickedEdit(false);
+    setIsEditingMode(false);
+  };
 
   useEffect(() => {
     const saveUser = async () => {
@@ -55,6 +65,7 @@ const Admin: NextPage = () => {
               plusOneName: plusOne.length > 0 ? plusOne : null,
               isInvitedToItaly: isInvitedToItaly,
               isInvitedToUSA: isInvitedToUSA,
+              editingMode: isEditingMode,
             },
           }),
         }).then((response) => response.json());
@@ -67,13 +78,38 @@ const Admin: NextPage = () => {
         });
       }
     };
+    const getUser = async () => {
+      if (editGuestField.length < 1) {
+        alert("incomplete data");
+      } else {
+        const response = await fetch("/api/admin/user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: editGuestField,
+          }),
+        }).then((response) => response.json());
+        console.log(response);
+        resetState();
+        setIsEditingMode(true);
+        setIsEnterGuestInfo(true);
+        setGuestName(response.createdUser.name);
+        setGuestEmail(response.createdUser.email);
+        setPlusOne(response.createdUser.plusOneName || null);
+        setIsInvitedToItaly(response.createdUser.isInvitedToItaly);
+        setIsInvitedToUSA(response.createdUser.isInvitedToUSA);
+      }
+    };
     if (isClickedSave) {
       saveUser();
       setIsClickedSave(false);
     }
-  }, [isClickedSave]);
-
-  console.log(`serverResponse: ${serverResponse}`);
+    if (isClickedEdit) {
+      getUser();
+      setIsClickedEdit(false);
+    }
+  }, [isClickedSave, isClickedEdit]);
+  console.log(`isEditingMode: ${isEditingMode}`);
   return (
     <Box position="relative" minH="100vh">
       <Flex
@@ -82,7 +118,7 @@ const Admin: NextPage = () => {
         direction="column"
         pb="4.5rem"
       >
-        {!isEnterGuestInfo && !isCheckGuestList && (
+        {!isEnterGuestInfo && !isCheckGuestList && !isEditGuest && (
           <Heading as="h1" size="2xl" m={3}>
             actions
           </Heading>
@@ -102,23 +138,40 @@ const Admin: NextPage = () => {
             password={password}
             setPassword={setPassword}
             saveUser={setIsClickedSave}
-          ></EnterGuest>
+            generatePW={generatePW}
+          />
+        )}
+        {isEditGuest && (
+          <EditGuest
+            setEditGuestField={setEditGuestField}
+            setIsClickedEdit={setIsClickedEdit}
+          />
         )}
         <Flex direction="row" justify="space-evenly" width="50%">
-          <Button
-            m={2}
-            mb={3}
-            onClick={() => setIsEnterGuestInfo(!isEnterGuestInfo)}
-          >
-            enter guest
-          </Button>
-          <Button
-            m={2}
-            mb={3}
-            onClick={() => setIsEnterGuestInfo(!isEnterGuestInfo)}
-          >
-            edit guest
-          </Button>
+          {!isEnterGuestInfo && (
+            <Button
+              m={2}
+              mb={3}
+              onClick={() => {
+                resetState();
+                setIsEnterGuestInfo(!isEnterGuestInfo);
+              }}
+            >
+              enter guest
+            </Button>
+          )}
+          {!isEditGuest && (
+            <Button
+              m={2}
+              mb={3}
+              onClick={() => {
+                resetState();
+                setIsEditGuest(!isEditGuest);
+              }}
+            >
+              edit guest
+            </Button>
+          )}
           <Button m={2} mb={3}>
             invitees
           </Button>
@@ -126,61 +179,18 @@ const Admin: NextPage = () => {
             confirmed
           </Button>
         </Flex>
+        {isEnterGuestInfo && (
+          <Button variant="ghost" onClick={() => resetState()}>
+            <Icon color="crimson" as={FaBomb} />
+          </Button>
+        )}
+        {isEditGuest && (
+          <Button variant="ghost" onClick={() => resetState()}>
+            <Icon color="crimson" as={FaBomb} />
+          </Button>
+        )}
         {serverResponse && (
-          <>
-            <Heading as="h3" size="lg" m={2} mb={3}>
-              guest
-            </Heading>
-            <TableContainer>
-              <Table variant="simple">
-                <TableCaption>
-                  {serverResponse.email !== "exists" ? (
-                    "guest created"
-                  ) : (
-                    <Text color="crimson">guest not created</Text>
-                  )}
-                </TableCaption>
-                <Tbody>
-                  <Tr>
-                    <Td>name</Td>
-                    <Td>
-                      {serverResponse.email !== "exists" ? (
-                        serverResponse.name
-                      ) : (
-                        <Text color="crimson">{serverResponse.name}</Text>
-                      )}
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>email</Td>
-                    <Td>
-                      {serverResponse.email !== "exists" ? (
-                        serverResponse.name
-                      ) : (
-                        <Text color="crimson">{serverResponse.email}</Text>
-                      )}
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>plus</Td>
-                    <Td>
-                      {serverResponse.plusOne ? serverResponse.plusOne : "null"}
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>italy</Td>
-                    <Td>
-                      {serverResponse.isInvitedToItaly ? "true" : "false"}
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>usa</Td>
-                    <Td>{serverResponse.isInvitedToUSA ? "true" : "false"}</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </>
+          <ServerResponseTable serverResponse={serverResponse} />
         )}
       </Flex>
       <Footer />
