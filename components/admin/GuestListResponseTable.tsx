@@ -9,6 +9,7 @@ import {
   Td,
   Text,
   Thead,
+  Button,
 } from "@chakra-ui/react";
 type user = {
   email: string;
@@ -19,24 +20,48 @@ type user = {
 };
 type Props = {
   guestList: user[];
+  nameSortAsc: boolean;
+  setNameSortAsc: Function;
+  emailSortAsc: boolean;
+  setEmailSortAsc: Function;
 };
 
-const GuestListResponseTable = ({ guestList }: Props) => {
+const GuestListResponseTable = ({
+  guestList,
+  nameSortAsc,
+  setNameSortAsc,
+  emailSortAsc,
+  setEmailSortAsc,
+}: Props) => {
   return (
     <>
       <Heading as="h3" size="lg" m={2} mb={3}>
         tentative guest list
       </Heading>
       <TableContainer>
-        <Table variant="simple">
+        <Table variant="striped" colorScheme="teal">
           <TableCaption>
             {/* TODO make conditional based on filtering */}
             guest list
           </TableCaption>
           <Thead>
             <Tr>
-              <Td>name</Td>
-              <Td>email</Td>
+              <Td>
+                <Button
+                  variant="ghost"
+                  onClick={() => setNameSortAsc(!nameSortAsc)}
+                >
+                  name
+                </Button>
+              </Td>
+              <Td>
+                <Button
+                  variant="ghost"
+                  onClick={() => setEmailSortAsc(!emailSortAsc)}
+                >
+                  email
+                </Button>
+              </Td>
               <Td>plus</Td>
               <Td>italy</Td>
               <Td>usa</Td>

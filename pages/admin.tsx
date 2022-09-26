@@ -9,7 +9,7 @@ import generatePW from "../services/encryption/pwGenerator";
 import GuestResponseTable from "../components/admin/GuestResponseTable";
 import GuestListResponseTable from "../components/admin/GuestListResponseTable";
 import { getAllUsers, closeTxn } from "../services/dbTxn/getAllUsers";
-
+import { sortList } from "../services/sortList";
 type user = {
   email: string;
   name: string;
@@ -21,8 +21,9 @@ type Props = {
   guestList: user[];
 };
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const guestList = await getAllUsers();
+  const unsortedGuestList = await getAllUsers();
   await closeTxn();
+  const guestList = unsortedGuestList;
   return { props: { guestList } };
 };
 
@@ -42,6 +43,9 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
   const [isClickedEdit, setIsClickedEdit] = useState(false);
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [clientGuestList, setClientGuestList] = useState(guestList);
+
+  const [nameSortAsc, setNameSortAsc] = useState(true);
+  const [emailSortAsc, setEmailSortAsc] = useState(true);
 
   const resetState = () => {
     setIsEnterGuestInfo(false);
@@ -119,6 +123,15 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
       setIsClickedEdit(false);
     }
   }, [isClickedSave, isClickedEdit]);
+  useEffect(() => {
+    const sorted = sortList("name", guestList, nameSortAsc);
+    setClientGuestList(sorted);
+  }, [nameSortAsc]);
+  useEffect(() => {
+    const sorted = sortList("email", guestList, emailSortAsc);
+    setClientGuestList(sorted);
+  }, [emailSortAsc]);
+
   return (
     <Box position="relative" minH="100vh">
       <Flex
@@ -157,7 +170,13 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
           />
         )}
         {isCheckGuestList && (
-          <GuestListResponseTable guestList={clientGuestList} />
+          <GuestListResponseTable
+            guestList={clientGuestList}
+            nameSortAsc={nameSortAsc}
+            setNameSortAsc={setNameSortAsc}
+            emailSortAsc={emailSortAsc}
+            setEmailSortAsc={setEmailSortAsc}
+          />
         )}
 
         <Flex direction="row" justify="space-evenly" width="50%">
