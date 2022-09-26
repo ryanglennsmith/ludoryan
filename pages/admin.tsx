@@ -1,12 +1,14 @@
 import { Button, Flex, Box, Heading, Icon } from "@chakra-ui/react";
 import { FaBomb } from "react-icons/fa";
-import { NextPage } from "next";
+import { NextPage, GetServerSideProps, GetServerSidePropsContext } from "next";
 import Footer from "../components/nav/Footer";
 import { useState, useEffect } from "react";
 import EnterGuest from "../components/admin/EnterGuest";
 import EditGuest from "../components/admin/EditGuest";
 import generatePW from "../services/encryption/pwGenerator";
-import ServerResponseTable from "../components/admin/ServerResponseTable";
+import GuestResponseTable from "../components/admin/GuestResponseTable";
+import GuestListResponseTable from "../components/admin/GuestListResponseTable";
+import { getAllUsers, closeTxn } from "../services/dbTxn/getAllUsers";
 
 type user = {
   email: string;
@@ -15,8 +17,16 @@ type user = {
   isInvitedToItaly?: boolean;
   isInvitedToUSA?: boolean;
 };
+type Props = {
+  guestList: user[];
+};
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const guestList = await getAllUsers();
+  await closeTxn();
+  return { props: { guestList } };
+};
 
-const Admin: NextPage = () => {
+const Admin: NextPage<Props> = ({ guestList }: Props) => {
   const [isInvitedToItaly, setIsInvitedToItaly] = useState(false);
   const [isInvitedToUSA, setIsInvitedToUSA] = useState(false);
   const [isEnterGuestInfo, setIsEnterGuestInfo] = useState(false);
@@ -31,6 +41,7 @@ const Admin: NextPage = () => {
   const [editGuestField, setEditGuestField] = useState("");
   const [isClickedEdit, setIsClickedEdit] = useState(false);
   const [isEditingMode, setIsEditingMode] = useState(false);
+  const [clientGuestList, setClientGuestList] = useState(guestList);
 
   const resetState = () => {
     setIsEnterGuestInfo(false);
@@ -89,7 +100,6 @@ const Admin: NextPage = () => {
             email: editGuestField,
           }),
         }).then((response) => response.json());
-        console.log(response);
         resetState();
         setIsEditingMode(true);
         setIsEnterGuestInfo(true);
@@ -109,7 +119,6 @@ const Admin: NextPage = () => {
       setIsClickedEdit(false);
     }
   }, [isClickedSave, isClickedEdit]);
-  console.log(`isEditingMode: ${isEditingMode}`);
   return (
     <Box position="relative" minH="100vh">
       <Flex
@@ -147,6 +156,10 @@ const Admin: NextPage = () => {
             setIsClickedEdit={setIsClickedEdit}
           />
         )}
+        {isCheckGuestList && (
+          <GuestListResponseTable guestList={clientGuestList} />
+        )}
+
         <Flex direction="row" justify="space-evenly" width="50%">
           {!isEnterGuestInfo && (
             <Button
@@ -172,9 +185,19 @@ const Admin: NextPage = () => {
               edit guest
             </Button>
           )}
-          <Button m={2} mb={3}>
-            invitees
-          </Button>
+          {!isCheckGuestList && (
+            <Button
+              m={2}
+              mb={3}
+              onClick={() => {
+                resetState();
+                setIsCheckGuestList(!isCheckGuestList);
+              }}
+            >
+              invitees
+            </Button>
+          )}
+
           <Button m={2} mb={3}>
             confirmed
           </Button>
@@ -189,8 +212,13 @@ const Admin: NextPage = () => {
             <Icon color="crimson" as={FaBomb} />
           </Button>
         )}
+        {isCheckGuestList && (
+          <Button variant="ghost" onClick={() => resetState()}>
+            <Icon color="crimson" as={FaBomb} />
+          </Button>
+        )}
         {serverResponse && (
-          <ServerResponseTable serverResponse={serverResponse} />
+          <GuestResponseTable serverResponse={serverResponse} />
         )}
       </Flex>
       <Footer />

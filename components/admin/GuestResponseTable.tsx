@@ -20,7 +20,7 @@ type Props = {
   serverResponse: user;
 };
 
-const ServerResponseTable = ({ serverResponse }: Props) => {
+const GuestResponseTable = ({ serverResponse }: Props) => {
   return (
     <>
       <Heading as="h3" size="lg" m={2} mb={3}>
@@ -77,4 +77,4 @@ const ServerResponseTable = ({ serverResponse }: Props) => {
   );
 };
 
-export default ServerResponseTable;
+export default GuestResponseTable;
