@@ -44,8 +44,20 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [clientGuestList, setClientGuestList] = useState(guestList);
 
-  const [nameSortAsc, setNameSortAsc] = useState(true);
-  const [emailSortAsc, setEmailSortAsc] = useState(true);
+  const [nameSortAsc, setNameSortAsc] = useState<boolean | undefined>(
+    undefined
+  );
+  const [emailSortAsc, setEmailSortAsc] = useState<boolean | undefined>(
+    undefined
+  );
+  const [isItalyFiltered, setIsItalyFiltered] = useState<boolean | undefined>(
+    undefined
+  );
+  const [isUSAFiltered, setIsUSAFiltered] = useState<boolean | undefined>(
+    undefined
+  );
+
+  const [currentFilterState, setCurrentFilterState] = useState({});
 
   const resetState = () => {
     setIsEnterGuestInfo(false);
@@ -62,6 +74,20 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
     setEditGuestField("");
     setIsClickedEdit(false);
     setIsEditingMode(false);
+  };
+
+  const resetFiltersNot = (index: number) => {
+    const filters = [
+      () => setIsItalyFiltered(undefined),
+      () => setIsUSAFiltered(undefined),
+      () => setEmailSortAsc(undefined),
+      () => setNameSortAsc(undefined),
+    ];
+    filters.forEach((_f, i) => {
+      if (i !== index) {
+        filters[i]();
+      }
+    });
   };
 
   useEffect(() => {
@@ -123,14 +149,37 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
       setIsClickedEdit(false);
     }
   }, [isClickedSave, isClickedEdit]);
+  enum Filter {
+    italy,
+    notItaly,
+    usa,
+    notUsa,
+    emailAsc,
+    emailDesc,
+    nameAsc,
+    nameDesc,
+  }
   useEffect(() => {
-    const sorted = sortList("name", guestList, nameSortAsc);
-    setClientGuestList(sorted);
-  }, [nameSortAsc]);
-  useEffect(() => {
-    const sorted = sortList("email", guestList, emailSortAsc);
-    setClientGuestList(sorted);
-  }, [emailSortAsc]);
+    const getUsers = async () => {
+      const response = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          filter: {
+            currentFilterState,
+          },
+        }),
+      }).then((response) => response.json());
+      setClientGuestList(response.createdUser);
+    };
+    getUsers();
+  }, [
+    isItalyFiltered,
+    isUSAFiltered,
+    nameSortAsc,
+    emailSortAsc,
+    currentFilterState,
+  ]);
 
   return (
     <Box position="relative" minH="100vh">
@@ -176,6 +225,12 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
             setNameSortAsc={setNameSortAsc}
             emailSortAsc={emailSortAsc}
             setEmailSortAsc={setEmailSortAsc}
+            isItalyFiltered={isItalyFiltered}
+            setIsItalyFiltered={setIsItalyFiltered}
+            isUSAFiltered={isUSAFiltered}
+            setIsUSAFiltered={setIsUSAFiltered}
+            resetFiltersNot={resetFiltersNot}
+            setCurrentFilterState={setCurrentFilterState}
           />
         )}
 

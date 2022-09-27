@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Heading,
   TableContainer,
@@ -10,7 +10,9 @@ import {
   Text,
   Thead,
   Button,
+  Icon,
 } from "@chakra-ui/react";
+import { BsArrowDownShort, BsArrowUpShort } from "react-icons/bs";
 type user = {
   email: string;
   name: string;
@@ -20,10 +22,16 @@ type user = {
 };
 type Props = {
   guestList: user[];
-  nameSortAsc: boolean;
+  nameSortAsc?: boolean;
   setNameSortAsc: Function;
-  emailSortAsc: boolean;
+  emailSortAsc?: boolean;
   setEmailSortAsc: Function;
+  isItalyFiltered?: boolean;
+  setIsItalyFiltered: Function;
+  isUSAFiltered?: boolean;
+  setIsUSAFiltered: Function;
+  resetFiltersNot: Function;
+  setCurrentFilterState: Function;
 };
 
 const GuestListResponseTable = ({
@@ -32,13 +40,19 @@ const GuestListResponseTable = ({
   setNameSortAsc,
   emailSortAsc,
   setEmailSortAsc,
+  isItalyFiltered,
+  setIsItalyFiltered,
+  isUSAFiltered,
+  setIsUSAFiltered,
+  resetFiltersNot,
+  setCurrentFilterState,
 }: Props) => {
   return (
     <>
       <Heading as="h3" size="lg" m={2} mb={3}>
         tentative guest list
       </Heading>
-      <TableContainer>
+      <TableContainer minW="4xl">
         <Table variant="striped" colorScheme="teal">
           <TableCaption>
             {/* TODO make conditional based on filtering */}
@@ -49,26 +63,74 @@ const GuestListResponseTable = ({
               <Td>
                 <Button
                   variant="ghost"
-                  onClick={() => setNameSortAsc(!nameSortAsc)}
+                  onClick={() => {
+                    setNameSortAsc(
+                      nameSortAsc === undefined ? true : !nameSortAsc
+                    );
+                    setCurrentFilterState({
+                      isNameAscending: nameSortAsc,
+                    });
+                  }}
                 >
-                  name
+                  name{" "}
+                  {!nameSortAsc ? (
+                    <Icon as={BsArrowUpShort} />
+                  ) : (
+                    <Icon as={BsArrowDownShort} />
+                  )}
                 </Button>
               </Td>
               <Td>
                 <Button
                   variant="ghost"
-                  onClick={() => setEmailSortAsc(!emailSortAsc)}
+                  onClick={() => {
+                    setEmailSortAsc(
+                      emailSortAsc === undefined ? true : !emailSortAsc
+                    );
+                    setCurrentFilterState({ isEmailAscending: emailSortAsc });
+                  }}
                 >
                   email
+                  {!emailSortAsc ? (
+                    <Icon as={BsArrowUpShort} />
+                  ) : (
+                    <Icon as={BsArrowDownShort} />
+                  )}
                 </Button>
               </Td>
               <Td>plus</Td>
-              <Td>italy</Td>
-              <Td>usa</Td>
+              <Td>
+                <Button
+                  variant={isItalyFiltered ? "ghost" : "solid"}
+                  colorScheme={isItalyFiltered ? "teal" : "teal"}
+                  onClick={() => {
+                    setIsItalyFiltered(
+                      isItalyFiltered === undefined ? true : !isItalyFiltered
+                    );
+                    setCurrentFilterState({ isItalyFiltered: isItalyFiltered });
+                  }}
+                >
+                  italy
+                </Button>
+              </Td>
+              <Td>
+                <Button
+                  variant={isUSAFiltered ? "ghost" : "solid"}
+                  colorScheme={isUSAFiltered ? "teal" : "teal"}
+                  onClick={() => {
+                    setIsUSAFiltered(
+                      isUSAFiltered === undefined ? true : !isUSAFiltered
+                    );
+                    setCurrentFilterState({ isUSAFiltered: isUSAFiltered });
+                  }}
+                >
+                  usa
+                </Button>
+              </Td>
             </Tr>
           </Thead>
           <Tbody>
-            {guestList.map((guest) => {
+            {guestList?.map((guest) => {
               return (
                 // TODO Sort out why ? don't populate
                 <Tr key={guest.email}>
