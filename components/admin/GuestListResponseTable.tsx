@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Heading,
   TableContainer,
@@ -7,7 +7,6 @@ import {
   Tbody,
   Tr,
   Td,
-  Text,
   Thead,
   Button,
   Icon,
@@ -30,22 +29,17 @@ type Props = {
   setIsItalyFiltered: Function;
   isUSAFiltered?: boolean;
   setIsUSAFiltered: Function;
-  resetFiltersNot: Function;
-  setCurrentFilterState: Function;
+  filterState: object;
+  setFilterState: Function;
 };
 
 const GuestListResponseTable = ({
   guestList,
   nameSortAsc,
-  setNameSortAsc,
   emailSortAsc,
-  setEmailSortAsc,
   isItalyFiltered,
-  setIsItalyFiltered,
   isUSAFiltered,
-  setIsUSAFiltered,
-  resetFiltersNot,
-  setCurrentFilterState,
+  setFilterState,
 }: Props) => {
   return (
     <>
@@ -54,21 +48,20 @@ const GuestListResponseTable = ({
       </Heading>
       <TableContainer minW="4xl">
         <Table variant="striped" colorScheme="teal">
-          <TableCaption>
-            {/* TODO make conditional based on filtering */}
-            guest list
-          </TableCaption>
+          <TableCaption>guest list</TableCaption>
           <Thead>
             <Tr>
               <Td>
                 <Button
                   variant="ghost"
                   onClick={() => {
-                    setNameSortAsc(
-                      nameSortAsc === undefined ? true : !nameSortAsc
-                    );
-                    setCurrentFilterState({
-                      isNameAscending: nameSortAsc,
+                    setFilterState({
+                      nameSortAsc:
+                        nameSortAsc === undefined ? true : !nameSortAsc,
+                      location: {
+                        isItalyFiltered: isItalyFiltered,
+                        isUSAFiltered: isUSAFiltered,
+                      },
                     });
                   }}
                 >
@@ -84,10 +77,13 @@ const GuestListResponseTable = ({
                 <Button
                   variant="ghost"
                   onClick={() => {
-                    setEmailSortAsc(
-                      emailSortAsc === undefined ? true : !emailSortAsc
-                    );
-                    setCurrentFilterState({ isEmailAscending: emailSortAsc });
+                    setFilterState({
+                      emailSortAsc: !emailSortAsc,
+                      location: {
+                        isItalyFiltered: isItalyFiltered,
+                        isUSAFiltered: isUSAFiltered,
+                      },
+                    });
                   }}
                 >
                   email
@@ -104,10 +100,14 @@ const GuestListResponseTable = ({
                   variant={isItalyFiltered ? "ghost" : "solid"}
                   colorScheme={isItalyFiltered ? "teal" : "teal"}
                   onClick={() => {
-                    setIsItalyFiltered(
-                      isItalyFiltered === undefined ? true : !isItalyFiltered
-                    );
-                    setCurrentFilterState({ isItalyFiltered: isItalyFiltered });
+                    setFilterState({
+                      nameSortAsc: nameSortAsc,
+                      emailSortAsc: emailSortAsc,
+                      location: {
+                        isItalyFiltered: !isItalyFiltered,
+                        isUSAFiltered: isUSAFiltered,
+                      },
+                    });
                   }}
                 >
                   italy
@@ -118,10 +118,14 @@ const GuestListResponseTable = ({
                   variant={isUSAFiltered ? "ghost" : "solid"}
                   colorScheme={isUSAFiltered ? "teal" : "teal"}
                   onClick={() => {
-                    setIsUSAFiltered(
-                      isUSAFiltered === undefined ? true : !isUSAFiltered
-                    );
-                    setCurrentFilterState({ isUSAFiltered: isUSAFiltered });
+                    setFilterState({
+                      nameSortAsc: nameSortAsc,
+                      emailSortAsc: emailSortAsc,
+                      location: {
+                        isItalyFiltered: isItalyFiltered,
+                        isUSAFiltered: !isUSAFiltered,
+                      },
+                    });
                   }}
                 >
                   usa

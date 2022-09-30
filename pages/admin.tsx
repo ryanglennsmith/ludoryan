@@ -1,4 +1,4 @@
-import { Button, Flex, Box, Heading, Icon } from "@chakra-ui/react";
+import { Button, Flex, Box, Heading, Icon, filter } from "@chakra-ui/react";
 import { FaBomb } from "react-icons/fa";
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from "next";
 import Footer from "../components/nav/Footer";
@@ -10,7 +10,7 @@ import GuestResponseTable from "../components/admin/GuestResponseTable";
 import GuestListResponseTable from "../components/admin/GuestListResponseTable";
 import { getAllUsers, closeTxn } from "../services/dbTxn/getAllUsers";
 import { sortList } from "../services/sortList";
-type user = {
+type User = {
   email: string;
   name: string;
   plusOne?: string;
@@ -18,8 +18,27 @@ type user = {
   isInvitedToUSA?: boolean;
 };
 type Props = {
-  guestList: user[];
+  guestList: User[];
 };
+
+type FilterState = {
+  nameSortAsc?: boolean;
+  emailSortAsc?: boolean;
+  location: {
+    isItalyFiltered: boolean;
+    isUSAFiltered: boolean;
+  };
+};
+
+const _fs: FilterState = {
+  nameSortAsc: undefined,
+  emailSortAsc: undefined,
+  location: {
+    isItalyFiltered: false,
+    isUSAFiltered: false,
+  },
+};
+
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const unsortedGuestList = await getAllUsers();
   await closeTxn();
@@ -36,7 +55,7 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
   const [guestEmail, setGuestEmail] = useState("");
   const [plusOne, setPlusOne] = useState("");
   const [password, setPassword] = useState(generatePW(6));
-  const [serverResponse, setServerResponse] = useState<user>();
+  const [serverResponse, setServerResponse] = useState<User>();
   const [isClickedSave, setIsClickedSave] = useState(false);
   const [isEditGuest, setIsEditGuest] = useState(false);
   const [editGuestField, setEditGuestField] = useState("");
@@ -44,20 +63,12 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [clientGuestList, setClientGuestList] = useState(guestList);
 
-  const [nameSortAsc, setNameSortAsc] = useState<boolean | undefined>(
-    undefined
-  );
-  const [emailSortAsc, setEmailSortAsc] = useState<boolean | undefined>(
-    undefined
-  );
-  const [isItalyFiltered, setIsItalyFiltered] = useState<boolean | undefined>(
-    undefined
-  );
-  const [isUSAFiltered, setIsUSAFiltered] = useState<boolean | undefined>(
-    undefined
-  );
+  const [nameSortAsc, setNameSortAsc] = useState<boolean | undefined>(true);
+  const [emailSortAsc, setEmailSortAsc] = useState<boolean | undefined>(true);
+  const [isItalyFiltered, setIsItalyFiltered] = useState<boolean>(false);
+  const [isUSAFiltered, setIsUSAFiltered] = useState<boolean>(false);
 
-  const [currentFilterState, setCurrentFilterState] = useState({});
+  const [filterState, setFilterState] = useState<FilterState>(_fs);
 
   const resetState = () => {
     setIsEnterGuestInfo(false);
@@ -74,20 +85,6 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
     setEditGuestField("");
     setIsClickedEdit(false);
     setIsEditingMode(false);
-  };
-
-  const resetFiltersNot = (index: number) => {
-    const filters = [
-      () => setIsItalyFiltered(undefined),
-      () => setIsUSAFiltered(undefined),
-      () => setEmailSortAsc(undefined),
-      () => setNameSortAsc(undefined),
-    ];
-    filters.forEach((_f, i) => {
-      if (i !== index) {
-        filters[i]();
-      }
-    });
   };
 
   useEffect(() => {
@@ -149,37 +146,58 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
       setIsClickedEdit(false);
     }
   }, [isClickedSave, isClickedEdit]);
-  enum Filter {
-    italy,
-    notItaly,
-    usa,
-    notUsa,
-    emailAsc,
-    emailDesc,
-    nameAsc,
-    nameDesc,
-  }
+
   useEffect(() => {
-    const getUsers = async () => {
-      const response = await fetch("/api/admin/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          filter: {
-            currentFilterState,
-          },
-        }),
-      }).then((response) => response.json());
-      setClientGuestList(response.createdUser);
-    };
-    getUsers();
-  }, [
-    isItalyFiltered,
-    isUSAFiltered,
-    nameSortAsc,
-    emailSortAsc,
-    currentFilterState,
-  ]);
+    setIsItalyFiltered(filterState.location.isItalyFiltered);
+    setIsUSAFiltered(filterState.location.isUSAFiltered);
+    setEmailSortAsc(filterState.emailSortAsc);
+    setNameSortAsc(filterState.nameSortAsc);
+    let sorted: User[];
+    if (filterState.emailSortAsc !== undefined) {
+      sorted = sortList("email", guestList, filterState.emailSortAsc);
+    } else if (filterState.nameSortAsc !== undefined) {
+      sorted = sortList("name", guestList, filterState.nameSortAsc);
+    } else {
+      sorted = guestList;
+    }
+
+    const { location } = filterState;
+    let filtered;
+
+    if (location.isItalyFiltered && location.isUSAFiltered) {
+      setIsItalyFiltered(true);
+      setIsUSAFiltered(true);
+      filtered = sorted.filter((guest) => {
+        return !guest.isInvitedToItaly && !guest.isInvitedToUSA;
+      });
+    } else if (!location.isItalyFiltered && location.isUSAFiltered) {
+      setIsItalyFiltered(false);
+      setIsUSAFiltered(true);
+      filtered = sorted.filter((guest) => {
+        if (guest.isInvitedToItaly) {
+          return guest;
+        } else {
+          return !guest.isInvitedToUSA;
+        }
+      });
+    } else if (location.isItalyFiltered && !location.isUSAFiltered) {
+      setIsItalyFiltered(true);
+      setIsUSAFiltered(false);
+      filtered = sorted.filter((guest) => {
+        if (guest.isInvitedToUSA) {
+          return guest;
+        } else {
+          return !guest.isInvitedToItaly;
+        }
+      });
+    } else {
+      setIsItalyFiltered(false);
+      setIsUSAFiltered(false);
+      filtered = sorted;
+    }
+
+    setClientGuestList(filtered);
+  }, [filterState]);
 
   return (
     <Box position="relative" minH="100vh">
@@ -229,8 +247,8 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
             setIsItalyFiltered={setIsItalyFiltered}
             isUSAFiltered={isUSAFiltered}
             setIsUSAFiltered={setIsUSAFiltered}
-            resetFiltersNot={resetFiltersNot}
-            setCurrentFilterState={setCurrentFilterState}
+            filterState={filterState}
+            setFilterState={setFilterState}
           />
         )}
 
