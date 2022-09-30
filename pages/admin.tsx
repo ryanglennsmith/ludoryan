@@ -294,17 +294,7 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
             confirmed
           </Button>
         </Flex>
-        {isEnterGuestInfo && (
-          <Button variant="ghost" onClick={() => resetState()}>
-            <Icon color="crimson" as={FaBomb} />
-          </Button>
-        )}
-        {isEditGuest && (
-          <Button variant="ghost" onClick={() => resetState()}>
-            <Icon color="crimson" as={FaBomb} />
-          </Button>
-        )}
-        {isCheckGuestList && (
+        {(isEnterGuestInfo || isEditGuest || isCheckGuestList) && (
           <Button variant="ghost" onClick={() => resetState()}>
             <Icon color="crimson" as={FaBomb} />
           </Button>
