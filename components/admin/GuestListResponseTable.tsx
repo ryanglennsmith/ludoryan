@@ -12,6 +12,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { BsArrowDownShort, BsArrowUpShort } from "react-icons/bs";
+import { FaEdit } from "react-icons/fa";
 type user = {
   email: string;
   name: string;
@@ -31,6 +32,9 @@ type Props = {
   setIsUSAFiltered: Function;
   filterState: object;
   setFilterState: Function;
+  setIsEnterGuestInfo: Function;
+  setIsCheckGuestList: Function;
+  setInvitedGuest: Function;
 };
 
 const GuestListResponseTable = ({
@@ -40,6 +44,9 @@ const GuestListResponseTable = ({
   isItalyFiltered,
   isUSAFiltered,
   setFilterState,
+  setIsEnterGuestInfo,
+  setIsCheckGuestList,
+  setInvitedGuest,
 }: Props) => {
   return (
     <>
@@ -131,18 +138,36 @@ const GuestListResponseTable = ({
                   usa
                 </Button>
               </Td>
+              <Td>edit</Td>
             </Tr>
           </Thead>
           <Tbody>
             {guestList?.map((guest) => {
               return (
-                // TODO Sort out why ? don't populate
                 <Tr key={guest.email}>
                   <Td>{guest.name}</Td>
                   <Td>{guest.email}</Td>
                   <Td>{guest.plusOneName}</Td>
                   <Td>{guest.isInvitedToItaly?.toString()}</Td>
                   <Td>{guest.isInvitedToUSA?.toString()}</Td>
+                  <Td>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        setIsEnterGuestInfo(true);
+                        setIsCheckGuestList(false);
+                        setInvitedGuest({
+                          name: guest.name,
+                          email: guest.email,
+                          plusOne: guest.plusOneName,
+                          italy: guest.isInvitedToItaly,
+                          usa: guest.isInvitedToUSA,
+                        });
+                      }}
+                    >
+                      <Icon as={FaEdit} />
+                    </Button>
+                  </Td>
                 </Tr>
               );
             })}

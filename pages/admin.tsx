@@ -251,6 +251,9 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
             setIsUSAFiltered={setIsUSAFiltered}
             filterState={filterState}
             setFilterState={setFilterState}
+            setIsEnterGuestInfo={setIsEnterGuestInfo}
+            setIsCheckGuestList={setIsCheckGuestList}
+            setInvitedGuest={setInvitedGuest}
           />
         )}
 
