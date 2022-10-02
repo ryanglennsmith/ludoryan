@@ -13,8 +13,9 @@ type user = {
   email: string;
   name: string;
   plusOne?: string;
-  isInvitedToItaly?: boolean;
-  isInvitedToUSA?: boolean;
+  italy: boolean;
+  usa: boolean;
+  id?: string;
 };
 type Props = {
   serverResponse: user;
@@ -64,11 +65,15 @@ const GuestResponseTable = ({ serverResponse }: Props) => {
             </Tr>
             <Tr>
               <Td>italy</Td>
-              <Td>{serverResponse.isInvitedToItaly ? "true" : "false"}</Td>
+              <Td>{serverResponse.italy.toString()}</Td>
             </Tr>
             <Tr>
               <Td>usa</Td>
-              <Td>{serverResponse.isInvitedToUSA ? "true" : "false"}</Td>
+              <Td>{serverResponse.usa.toString()}</Td>
+            </Tr>
+            <Tr>
+              <Td>id</Td>
+              <Td>{serverResponse.id}</Td>
             </Tr>
           </Tbody>
         </Table>

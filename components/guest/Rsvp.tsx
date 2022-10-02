@@ -1,4 +1,4 @@
-import { Icon, Button, Text } from "@chakra-ui/react";
+import { Icon, Button, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import KidsInfo from "./KidsInfo";
 import type Rsvp from "../../types/Rsvp";
@@ -23,6 +23,7 @@ const RsvpComponent = ({
   location,
   kids,
 }: Props) => {
+  const highlight = useColorModeValue("orange", "lime");
   return (
     <>
       {location === "italy" && <Icon as={FaPizzaSlice} alignSelf="center" />}
@@ -56,13 +57,18 @@ const RsvpComponent = ({
       {location === "italy" && (
         <>
           <Text>
-            i will{" "}
+            i{" "}
+            {rsvp.italy && (
+              <Text as="span" color={highlight}>
+                will
+              </Text>
+            )}
             {!rsvp.italy && (
               <Text as="span" color="crimson">
-                not
+                will not
               </Text>
             )}{" "}
-            attend
+            attend in {location}
           </Text>
           {rsvp.italy && (
             <KidsInfo
@@ -78,13 +84,18 @@ const RsvpComponent = ({
       {location === "usa" && (
         <>
           <Text>
-            i will{" "}
+            i{" "}
+            {rsvp.usa && (
+              <Text as="span" color={highlight}>
+                will
+              </Text>
+            )}
             {!rsvp.usa && (
               <Text as="span" color="crimson">
-                not
+                will not
               </Text>
             )}{" "}
-            attend
+            attend in {location}
           </Text>
           {rsvp.usa && (
             <KidsInfo

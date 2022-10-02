@@ -28,6 +28,7 @@ const KidsInfo = ({
           <>
             <Text>how many dumb kids:</Text>
             <Input
+              placeholder="0"
               type="number"
               onChange={(e) => {
                 if (location === "italy") {

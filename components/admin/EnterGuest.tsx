@@ -3,50 +3,30 @@ import {
   Button,
   Flex,
   Input,
-  Box,
   Heading,
   Checkbox,
   CheckboxGroup,
   Text,
   Stack,
-  FormControl,
   FormLabel,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
+import InvitedGuest from "../../types/InvitedGuest";
 
 type Props = {
-  isInvitedToItaly: boolean;
-  setIsInvitedToItaly: Function;
-  isInvitedToUSA: boolean;
-  setIsInvitedToUSA: Function;
-  guestName: string;
-  setGuestName: Function;
-  guestEmail: string;
-  setGuestEmail: Function;
-  plusOne: string;
-  setPlusOne: Function;
-  password: string;
-  setPassword: Function;
   saveUser: Function;
   generatePW: Function;
+
+  invitedGuest: InvitedGuest;
+  setInvitedGuest: Function;
 };
 
 const EnterGuest = ({
-  isInvitedToItaly,
-  setIsInvitedToItaly,
-  isInvitedToUSA,
-  setIsInvitedToUSA,
-  guestName,
-  setGuestName,
-  guestEmail,
-  setGuestEmail,
-  plusOne,
-  setPlusOne,
-  password,
-  setPassword,
   saveUser,
   generatePW,
+  invitedGuest,
+  setInvitedGuest,
 }: Props) => {
   const [isPlusOneOpen, setIsPlusOneOpen] = useState(false);
 
@@ -65,32 +45,38 @@ const EnterGuest = ({
         <InputGroup size="md">
           <Input
             placeholder="name"
-            value={guestName}
-            onChange={(e) => setGuestName(e.target.value)}
+            value={invitedGuest.name}
+            onChange={(e) =>
+              setInvitedGuest({ ...invitedGuest, name: e.target.value })
+            }
             variant="filled"
             m={2}
             mb={3}
           ></Input>
         </InputGroup>
-        {guestName.length < 1 && <Text color="crimson">required</Text>}
+        {invitedGuest.name.length < 1 && <Text color="crimson">required</Text>}
         <InputGroup size="md">
           <Input
             placeholder="email"
-            value={guestEmail}
-            onChange={(e) => setGuestEmail(e.target.value)}
+            value={invitedGuest.email}
+            onChange={(e) =>
+              setInvitedGuest({ ...invitedGuest, email: e.target.value })
+            }
             variant="filled"
             m={2}
             mb={3}
             type="email"
           ></Input>
         </InputGroup>
-        {guestEmail.length < 1 && <Text color="crimson">required</Text>}
+        {invitedGuest.email.length < 1 && <Text color="crimson">required</Text>}
         <InputGroup size="md">
           <Input
             pr="4.5rem"
             placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={invitedGuest.password || generatePW(6)}
+            onChange={(e) =>
+              setInvitedGuest({ ...invitedGuest, password: e.target.value })
+            }
             variant="filled"
             m={2}
             mb={3}
@@ -102,7 +88,7 @@ const EnterGuest = ({
               mt="1rem"
               mr="1rem"
               onClick={() => {
-                setPassword(generatePW(6));
+                setInvitedGuest({ ...invitedGuest, password: generatePW(6) });
               }}
             >
               gen
@@ -112,8 +98,10 @@ const EnterGuest = ({
         {isPlusOneOpen && (
           <Input
             placeholder="plus one"
-            defaultValue={plusOne}
-            onChange={(e) => setPlusOne(e.target.value)}
+            defaultValue={invitedGuest.plusOne}
+            onChange={(e) =>
+              setInvitedGuest({ ...invitedGuest, plusOne: e.target.value })
+            }
             variant="filled"
             m={2}
             mb={3}
@@ -124,7 +112,7 @@ const EnterGuest = ({
           mb={3}
           onClick={() => {
             setIsPlusOneOpen(!isPlusOneOpen);
-            setPlusOne("");
+            setInvitedGuest({ ...invitedGuest, plusOne: undefined });
           }}
         >
           {!isPlusOneOpen ? "add a plus one" : "don't add a plus one"}
@@ -133,18 +121,22 @@ const EnterGuest = ({
         <CheckboxGroup colorScheme="teal">
           <Stack spacing={[1, 5]} direction={"row"} m={2} mb={3}>
             <Checkbox
+              checked={invitedGuest.italy}
               value="inviteToItaly"
-              onChange={() => setIsInvitedToItaly(!isInvitedToItaly)}
-              checked={isInvitedToItaly}
+              onChange={(e) =>
+                setInvitedGuest({ ...invitedGuest, italy: e.target.checked })
+              }
             >
-              Italy
+              italy
             </Checkbox>
             <Checkbox
+              checked={invitedGuest.usa}
               value="inviteToUSA"
-              onChange={() => setIsInvitedToUSA(!isInvitedToUSA)}
-              checked={isInvitedToUSA}
+              onChange={(e) =>
+                setInvitedGuest({ ...invitedGuest, usa: e.target.checked })
+              }
             >
-              USA
+              usa
             </Checkbox>
           </Stack>
         </CheckboxGroup>

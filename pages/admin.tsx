@@ -10,15 +10,18 @@ import GuestResponseTable from "../components/admin/GuestResponseTable";
 import GuestListResponseTable from "../components/admin/GuestListResponseTable";
 import { getAllUsers, closeTxn } from "../services/dbTxn/getAllUsers";
 import { sortList } from "../services/sortList";
-type User = {
-  email: string;
-  name: string;
-  plusOne?: string;
-  isInvitedToItaly?: boolean;
-  isInvitedToUSA?: boolean;
-};
+
+import type InvitedGuest from "../types/InvitedGuest";
+
+// type User = {
+//   email: string;
+//   name: string;
+//   plusOne?: string;
+//   isInvitedToItaly?: boolean;
+//   isInvitedToUSA?: boolean;
+// };
 type Props = {
-  guestList: User[];
+  guestList: InvitedGuest[];
 };
 
 type FilterState = {
@@ -47,15 +50,16 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 };
 
 const Admin: NextPage<Props> = ({ guestList }: Props) => {
-  const [isInvitedToItaly, setIsInvitedToItaly] = useState(false);
-  const [isInvitedToUSA, setIsInvitedToUSA] = useState(false);
+  const [invitedGuest, setInvitedGuest] = useState<InvitedGuest>({
+    email: "",
+    name: "",
+    italy: false,
+    usa: false,
+  });
+
   const [isEnterGuestInfo, setIsEnterGuestInfo] = useState(false);
   const [isCheckGuestList, setIsCheckGuestList] = useState(false);
-  const [guestName, setGuestName] = useState("");
-  const [guestEmail, setGuestEmail] = useState("");
-  const [plusOne, setPlusOne] = useState("");
-  const [password, setPassword] = useState(generatePW(6));
-  const [serverResponse, setServerResponse] = useState<User>();
+  const [serverResponse, setServerResponse] = useState<InvitedGuest>();
   const [isClickedSave, setIsClickedSave] = useState(false);
   const [isEditGuest, setIsEditGuest] = useState(false);
   const [editGuestField, setEditGuestField] = useState("");
@@ -74,12 +78,7 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
     setIsEnterGuestInfo(false);
     setIsCheckGuestList(false);
     setServerResponse(undefined);
-    setGuestName("");
-    setGuestEmail("");
-    setPassword("");
-    setPlusOne("");
-    setIsInvitedToItaly(false);
-    setIsInvitedToUSA(false);
+    setInvitedGuest({ email: "", name: "", italy: false, usa: false });
     setIsClickedSave(false);
     setIsEditGuest(false);
     setEditGuestField("");
@@ -89,7 +88,11 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
 
   useEffect(() => {
     const saveUser = async () => {
-      if (guestName.length < 1 || guestEmail.length < 1) {
+      if (
+        invitedGuest.name.length < 1 ||
+        invitedGuest.email.length < 1 ||
+        invitedGuest.password === undefined
+      ) {
         alert("incomplete data");
       } else {
         const response = await fetch("/api/admin/create", {
@@ -97,12 +100,15 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             user: {
-              email: guestEmail,
-              password: password,
-              name: guestName,
-              plusOneName: plusOne.length > 0 ? plusOne : null,
-              isInvitedToItaly: isInvitedToItaly,
-              isInvitedToUSA: isInvitedToUSA,
+              email: invitedGuest.email,
+              password: invitedGuest.password,
+              name: invitedGuest.name,
+              plusOneName:
+                invitedGuest.plusOne !== undefined
+                  ? invitedGuest.plusOne
+                  : null,
+              isInvitedToItaly: invitedGuest.italy,
+              isInvitedToUSA: invitedGuest.usa,
               editingMode: isEditingMode,
             },
           }),
@@ -111,8 +117,9 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
           name: response.createdUser.name,
           email: response.createdUser.email,
           plusOne: response.createdUser.plusOneName || null,
-          isInvitedToItaly: response.createdUser.isInvitedToItaly,
-          isInvitedToUSA: response.createdUser.isInvitedToUSA,
+          italy: response.createdUser.isInvitedToItaly,
+          usa: response.createdUser.isInvitedToUSA,
+          id: response.createdUser.id,
         });
       }
     };
@@ -130,11 +137,14 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
         resetState();
         setIsEditingMode(true);
         setIsEnterGuestInfo(true);
-        setGuestName(response.createdUser.name);
-        setGuestEmail(response.createdUser.email);
-        setPlusOne(response.createdUser.plusOneName || null);
-        setIsInvitedToItaly(response.createdUser.isInvitedToItaly);
-        setIsInvitedToUSA(response.createdUser.isInvitedToUSA);
+        setInvitedGuest({
+          ...invitedGuest,
+          name: response.createdUser.name,
+          email: response.createdUser.email,
+          plusOne: response.createdUser.plusOneName || null,
+          italy: response.createdUser.isInvitedToItaly,
+          usa: response.createdUser.isInvitedToUSA,
+        });
       }
     };
     if (isClickedSave) {
@@ -152,7 +162,7 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
     setIsUSAFiltered(filterState.location.isUSAFiltered);
     setEmailSortAsc(filterState.emailSortAsc);
     setNameSortAsc(filterState.nameSortAsc);
-    let sorted: User[];
+    let sorted: InvitedGuest[];
     if (filterState.emailSortAsc !== undefined) {
       sorted = sortList("email", guestList, filterState.emailSortAsc);
     } else if (filterState.nameSortAsc !== undefined) {
@@ -168,26 +178,26 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
       setIsItalyFiltered(true);
       setIsUSAFiltered(true);
       filtered = sorted.filter((guest) => {
-        return !guest.isInvitedToItaly && !guest.isInvitedToUSA;
+        return !guest.italy && !guest.usa;
       });
     } else if (!location.isItalyFiltered && location.isUSAFiltered) {
       setIsItalyFiltered(false);
       setIsUSAFiltered(true);
       filtered = sorted.filter((guest) => {
-        if (guest.isInvitedToItaly) {
+        if (guest.italy) {
           return guest;
         } else {
-          return !guest.isInvitedToUSA;
+          return !guest.usa;
         }
       });
     } else if (location.isItalyFiltered && !location.isUSAFiltered) {
       setIsItalyFiltered(true);
       setIsUSAFiltered(false);
       filtered = sorted.filter((guest) => {
-        if (guest.isInvitedToUSA) {
+        if (guest.usa) {
           return guest;
         } else {
-          return !guest.isInvitedToItaly;
+          return !guest.italy;
         }
       });
     } else {
@@ -198,6 +208,8 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
 
     setClientGuestList(filtered);
   }, [filterState]);
+
+  console.log(invitedGuest);
 
   return (
     <Box position="relative" minH="100vh">
@@ -214,18 +226,8 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
         )}
         {isEnterGuestInfo && (
           <EnterGuest
-            isInvitedToItaly={isInvitedToItaly}
-            setIsInvitedToItaly={setIsInvitedToItaly}
-            isInvitedToUSA={isInvitedToUSA}
-            setIsInvitedToUSA={setIsInvitedToUSA}
-            guestName={guestName}
-            setGuestName={setGuestName}
-            guestEmail={guestEmail}
-            setGuestEmail={setGuestEmail}
-            plusOne={plusOne}
-            setPlusOne={setPlusOne}
-            password={password}
-            setPassword={setPassword}
+            invitedGuest={invitedGuest}
+            setInvitedGuest={setInvitedGuest}
             saveUser={setIsClickedSave}
             generatePW={generatePW}
           />
