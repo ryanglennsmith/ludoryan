@@ -146,16 +146,18 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
               )}
             </>
           </Stack>
-          <DietComponent
-            user={user}
-            openDiet={openDiet}
-            setOpenDiet={setOpenDiet}
-            openPlusDiet={openPlusDiet}
-            setOpenPlusDiet={setOpenPlusDiet}
-            confirmedGuest={confirmedGuest}
-            setConfirmedGuest={setConfirmedGuest}
-          ></DietComponent>
         </>
+      )}
+      {(confirmedGuest.confirmedItaly || confirmedGuest.confirmedUsa) && (
+        <DietComponent
+          user={user}
+          openDiet={openDiet}
+          setOpenDiet={setOpenDiet}
+          openPlusDiet={openPlusDiet}
+          setOpenPlusDiet={setOpenPlusDiet}
+          confirmedGuest={confirmedGuest}
+          setConfirmedGuest={setConfirmedGuest}
+        ></DietComponent>
       )}
     </Flex>
   );
