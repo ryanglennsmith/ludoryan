@@ -1,7 +1,6 @@
 import { Stack, Button, Icon, Input, Text } from "@chakra-ui/react";
 import { FaChild, FaHandMiddleFinger } from "react-icons/fa";
 import React from "react";
-import type Kids from "../../types/Kids";
 import ConfirmedGuest from "../../types/ConfirmedGuest";
 
 type Props = {
@@ -21,7 +20,7 @@ const KidsInfo = ({
   type ObjectKey = keyof typeof confirmedGuest;
   const confirmedLocation = location as ObjectKey;
   return (
-    <div>
+    <>
       <Stack spacing={5} direction="column">
         <Text>...with my dumb kids?</Text>
         <Button onClick={() => setOpenKids(true)}>
@@ -44,6 +43,7 @@ const KidsInfo = ({
             />
           </>
         )}
+        <Text>...without my dumb kids</Text>
         <Button
           onClick={() => {
             setOpenKids(false);
@@ -58,7 +58,7 @@ const KidsInfo = ({
           <Icon as={FaHandMiddleFinger} />
         </Button>
       </Stack>
-    </div>
+    </>
   );
 };
 

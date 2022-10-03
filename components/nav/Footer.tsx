@@ -9,6 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FaHome } from "react-icons/fa";
+import { FcCopyright } from "react-icons/fc";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { CgLogIn, CgLogOut } from "react-icons/cg";
 import NextLink from "next/link";
@@ -36,7 +37,9 @@ export default function Footer() {
       >
         <NextLink href="/admin" passHref>
           <Link>
-            <Text>© 2022 Ludo & Ryan</Text>
+            <Text>
+              <Icon as={FcCopyright} /> 2022 Ludo & Ryan
+            </Text>
           </Link>
         </NextLink>
         <Stack direction={"row"} spacing={6}>

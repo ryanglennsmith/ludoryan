@@ -1,4 +1,4 @@
-type PlusOne = {
+export type PlusOne = {
   confirmed: boolean;
   dietaryRestrictions?: string;
 };
@@ -19,6 +19,8 @@ type ConfirmedGuest = {
   plusOneDietaryRestrictions?: string;
   firstName: string;
   lastName?: string;
+  plusOneFirstName?: string;
+  plusOneLastName?: string;
   id: string;
   invitedToItaly: boolean;
   invitedToUSA: boolean;

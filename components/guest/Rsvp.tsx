@@ -1,10 +1,9 @@
 import { Icon, Button, Text, useColorModeValue } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import KidsInfo from "./KidsInfo";
-import type Rsvp from "../../types/Rsvp";
-import type Kids from "../../types/Kids";
 import { FaPizzaSlice, FaGuitar } from "react-icons/fa";
 import ConfirmedGuest from "../../types/ConfirmedGuest";
+import PlusOneInfo from "./PlusOneInfo";
 type Props = {
   openKids: boolean;
   setOpenKids: Function;
@@ -20,7 +19,7 @@ const RsvpComponent = ({
   setConfirmedGuest,
 }: Props) => {
   const highlight = useColorModeValue("orange", "lime");
-
+  const [plusOneGo, setPlusOneGo] = useState(true);
   type ObjectKey = keyof typeof confirmedGuest;
 
   const confirmedLocation = ("confirmed" +
@@ -70,13 +69,39 @@ const RsvpComponent = ({
           attend in {location}
         </Text>
         {confirmedGuest[confirmedLocation] && (
-          <KidsInfo
-            openKids={openKids}
-            setOpenKids={setOpenKids}
-            location={location}
-            confirmedGuest={confirmedGuest}
-            setConfirmedGuest={setConfirmedGuest}
-          ></KidsInfo>
+          <>
+            {confirmedGuest.plusOneFirstName && (
+              <>
+                <Text>
+                  ...
+                  {plusOneGo && (
+                    <Text as="span" color={highlight}>
+                      with
+                    </Text>
+                  )}
+                  {!plusOneGo && (
+                    <Text as="span" color="crimson">
+                      without
+                    </Text>
+                  )}{" "}
+                  my partner
+                </Text>
+                <PlusOneInfo
+                  location="italy"
+                  confirmedGuest={confirmedGuest}
+                  setConfirmedGuest={setConfirmedGuest}
+                  setPlusOneGo={setPlusOneGo}
+                />
+              </>
+            )}
+            <KidsInfo
+              openKids={openKids}
+              setOpenKids={setOpenKids}
+              location={location}
+              confirmedGuest={confirmedGuest}
+              setConfirmedGuest={setConfirmedGuest}
+            ></KidsInfo>
+          </>
         )}
       </>
     </>

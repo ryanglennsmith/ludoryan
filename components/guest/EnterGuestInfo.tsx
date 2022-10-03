@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -10,14 +10,17 @@ import {
   Text,
   Icon,
 } from "@chakra-ui/react";
-import { FaBus, FaCar } from "react-icons/fa";
+import { FcCheckmark, FcCancel } from "react-icons/fc";
 import { GuestTemplate } from "@prisma/client";
 
 import RsvpComponent from "./Rsvp";
-import type Rsvp from "../../types/Rsvp";
-import type Kids from "../../types/Kids";
+
 import ConfirmedGuest from "../../types/ConfirmedGuest";
 import DietComponent from "./DietComponent";
+import SubmissionModal from "./SubmissionModal";
+import BusComponent from "./BusComponent";
+import GuestInfoInputComponent from "./GuestInfoInputComponent";
+import PlusOneInfo from "./PlusOneInfo";
 
 type Props = {
   user: GuestTemplate;
@@ -28,7 +31,11 @@ type Props = {
 const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
   const [openKids, setOpenKids] = useState(false);
   const [openDiet, setOpenDiet] = useState(false);
+  const [openPlus, setOpenPlus] = useState(user.plusOneName !== null);
+  const [cancelPlus, setCancelPlus] = useState(false);
   const [openPlusDiet, setOpenPlusDiet] = useState(false);
+  const [confirmSubmit, setConfirmSubmit] = useState(false);
+
   return (
     <Flex
       w="2xl"
@@ -53,51 +60,65 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
         italy: {user.isInvitedToItaly.toString()}
         <br />
         usa: {user.isInvitedToUSA.toString()}
+        <br />
       </Text>
 
       <FormLabel>
         <Heading m={3}>enter or update your info</Heading>
       </FormLabel>
-      <InputGroup size="md">
-        <Input
-          placeholder={user.name}
-          variant="filled"
-          m={2}
-          mb={3}
-          onChange={(e) =>
-            setConfirmedGuest({ ...confirmedGuest, firstName: e.target.value })
-          }
-        />
-      </InputGroup>
-      <InputGroup size="md">
-        <Input
-          placeholder="last name"
-          variant="filled"
-          m={2}
-          mb={3}
-          onChange={(e) =>
-            setConfirmedGuest({ ...confirmedGuest, lastName: e.target.value })
-          }
-        ></Input>
-      </InputGroup>
+
+      <GuestInfoInputComponent
+        placeHolder={confirmedGuest.firstName || "first name"}
+        valueToSet={"firstName"}
+        setConfirmedGuest={setConfirmedGuest}
+        confirmedGuest={confirmedGuest}
+      />
+      <GuestInfoInputComponent
+        placeHolder={"last name"}
+        valueToSet={"lastName"}
+        setConfirmedGuest={setConfirmedGuest}
+        confirmedGuest={confirmedGuest}
+      />
+      {openPlus && (
+        <>
+          <Heading m={3} size="md">
+            and my partner
+          </Heading>
+          <GuestInfoInputComponent
+            placeHolder={confirmedGuest.plusOneFirstName! || "first name"}
+            valueToSet={"plusOneFirstName"}
+            setConfirmedGuest={setConfirmedGuest}
+            confirmedGuest={confirmedGuest}
+          />
+          <GuestInfoInputComponent
+            placeHolder={"last name"}
+            valueToSet={"plusOneLastName"}
+            setConfirmedGuest={setConfirmedGuest}
+            confirmedGuest={confirmedGuest}
+          />
+        </>
+      )}
+
       <Heading size="md" mb={3}>
         rsvp
       </Heading>
       <InputGroup alignItems="center" justifyContent="center">
         <Stack spacing={5} direction="row" mb={3}>
           <Stack spacing={5} direction="column">
-            {user.isInvitedToItaly && (
-              <RsvpComponent
-                openKids={openKids}
-                setOpenKids={setOpenKids}
-                location="italy"
-                confirmedGuest={confirmedGuest}
-                setConfirmedGuest={setConfirmedGuest}
-              />
+            {confirmedGuest.invitedToItaly && (
+              <>
+                <RsvpComponent
+                  openKids={openKids}
+                  setOpenKids={setOpenKids}
+                  location="italy"
+                  confirmedGuest={confirmedGuest}
+                  setConfirmedGuest={setConfirmedGuest}
+                />
+              </>
             )}
           </Stack>
           <Stack spacing={5} direction="column">
-            {user.isInvitedToUSA && (
+            {confirmedGuest.invitedToUSA && (
               <RsvpComponent
                 openKids={openKids}
                 setOpenKids={setOpenKids}
@@ -110,43 +131,10 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
         </Stack>
       </InputGroup>
       {user.isInvitedToItaly && confirmedGuest.confirmedItaly && (
-        <>
-          <Heading size="md" mb={3}>
-            i want to ride the bus in milan
-          </Heading>
-          <Stack mb={3} spacing={5} direction="column">
-            <>
-              <Button
-                size="md"
-                onClick={() => {
-                  setConfirmedGuest({
-                    ...confirmedGuest,
-                    location: { italy: { bus: true } },
-                  });
-                }}
-              >
-                <Icon as={FaBus} />
-              </Button>
-              <Button
-                size="md"
-                onClick={() => {
-                  setConfirmedGuest({
-                    ...confirmedGuest,
-                    location: { italy: { bus: false } },
-                  });
-                }}
-              >
-                <Icon as={FaCar} />
-              </Button>
-              {confirmedGuest.location?.italy?.bus && (
-                <Text>i want to ride the party bus</Text>
-              )}
-              {!confirmedGuest.location?.italy?.bus && (
-                <Text>i will arrange my own travel</Text>
-              )}
-            </>
-          </Stack>
-        </>
+        <BusComponent
+          setConfirmedGuest={setConfirmedGuest}
+          confirmedGuest={confirmedGuest}
+        />
       )}
       {(confirmedGuest.confirmedItaly || confirmedGuest.confirmedUsa) && (
         <DietComponent
@@ -159,6 +147,7 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
           setConfirmedGuest={setConfirmedGuest}
         ></DietComponent>
       )}
+      <SubmissionModal confirmedGuest={confirmedGuest} />
     </Flex>
   );
 };
