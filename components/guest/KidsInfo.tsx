@@ -2,21 +2,24 @@ import { Stack, Button, Icon, Input, Text } from "@chakra-ui/react";
 import { FaChild, FaHandMiddleFinger } from "react-icons/fa";
 import React from "react";
 import type Kids from "../../types/Kids";
+import ConfirmedGuest from "../../types/ConfirmedGuest";
 
 type Props = {
   openKids: boolean;
   setOpenKids: Function;
-  setKids: Function;
   location: string;
-  kids: Kids;
+  confirmedGuest: ConfirmedGuest;
+  setConfirmedGuest: Function;
 };
 const KidsInfo = ({
   openKids,
   setOpenKids,
-  setKids,
   location,
-  kids,
+  confirmedGuest,
+  setConfirmedGuest,
 }: Props) => {
+  type ObjectKey = keyof typeof confirmedGuest;
+  const confirmedLocation = location as ObjectKey;
   return (
     <div>
       <Stack spacing={5} direction="column">
@@ -31,18 +34,12 @@ const KidsInfo = ({
               placeholder="0"
               type="number"
               onChange={(e) => {
-                if (location === "italy") {
-                  setKids({
-                    ...kids,
-                    italy: Number(e.target.value),
-                  });
-                }
-                if (location === "usa") {
-                  setKids({
-                    ...kids,
-                    usa: Number(e.target.value),
-                  });
-                }
+                setConfirmedGuest({
+                  ...confirmedGuest,
+                  location: {
+                    [confirmedLocation]: { kids: Number(e.target.value) },
+                  },
+                });
               }}
             />
           </>
@@ -50,18 +47,12 @@ const KidsInfo = ({
         <Button
           onClick={() => {
             setOpenKids(false);
-            if (location === "italy") {
-              setKids({
-                ...kids,
-                italy: 0,
-              });
-            }
-            if (location === "usa") {
-              setKids({
-                ...kids,
-                usa: 0,
-              });
-            }
+            setConfirmedGuest({
+              ...confirmedGuest,
+              location: {
+                [confirmedLocation]: { kids: 0 },
+              },
+            });
           }}
         >
           <Icon as={FaHandMiddleFinger} />

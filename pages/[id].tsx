@@ -5,8 +5,7 @@ import { useRouter } from "next/router";
 import EnterGuestInfo from "../components/guest/EnterGuestInfo";
 import Footer from "../components/nav/Footer";
 import { useState } from "react";
-import type Kids from "../types/Kids";
-import type Rsvp from "../types/Rsvp";
+import type ConfirmedGuest from "../types/ConfirmedGuest";
 
 type Props = { user: GuestTemplate };
 export const getServerSideProps = async (ctx: NextPageContext) => {
@@ -19,14 +18,14 @@ const GuestPage: NextPage<Props> = ({ user }: Props) => {
   const router = useRouter();
   const uuid = router.query;
 
-  const [rsvp, setRsvp] = useState<Rsvp>({ italy: false, usa: false });
-  const [milanBus, setMilanBus] = useState(false);
-  const [kids, setKids] = useState<Kids>({
-    italy: 0,
-    usa: 0,
+  const [confirmedGuest, setConfirmedGuest] = useState<ConfirmedGuest>({
+    invitedToItaly: user.isInvitedToItaly,
+    invitedToUSA: user.isInvitedToUSA,
+    id: user.id,
+    firstName: user.name,
   });
-  console.log(rsvp);
-  console.log(kids);
+
+  console.log(confirmedGuest);
   return (
     <>
       {" "}
@@ -39,12 +38,8 @@ const GuestPage: NextPage<Props> = ({ user }: Props) => {
         >
           <EnterGuestInfo
             user={user}
-            rsvp={rsvp}
-            setRsvp={setRsvp}
-            milanBus={milanBus}
-            setMilanBus={setMilanBus}
-            kids={kids}
-            setKids={setKids}
+            confirmedGuest={confirmedGuest}
+            setConfirmedGuest={setConfirmedGuest}
           />
         </Flex>
         <Footer />

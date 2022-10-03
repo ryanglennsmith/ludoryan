@@ -1,54 +1,34 @@
 import React, { useState } from "react";
 import {
   Button,
-  Checkbox,
-  CheckboxGroup,
   Flex,
   FormLabel,
   Heading,
   Input,
   InputGroup,
-  Radio,
-  RadioGroup,
   Stack,
   Text,
   Icon,
 } from "@chakra-ui/react";
-import {
-  FaPizzaSlice,
-  FaGuitar,
-  FaBus,
-  FaCar,
-  FaChild,
-  FaHandMiddleFinger,
-} from "react-icons/fa";
+import { FaBus, FaCar } from "react-icons/fa";
 import { GuestTemplate } from "@prisma/client";
-import KidsInfo from "./KidsInfo";
 
 import RsvpComponent from "./Rsvp";
 import type Rsvp from "../../types/Rsvp";
 import type Kids from "../../types/Kids";
+import ConfirmedGuest from "../../types/ConfirmedGuest";
+import DietComponent from "./DietComponent";
 
 type Props = {
   user: GuestTemplate;
-  rsvp: Rsvp;
-  setRsvp: Function;
-  milanBus: boolean;
-  setMilanBus: Function;
-  kids: Kids;
-  setKids: Function;
+  confirmedGuest: ConfirmedGuest;
+  setConfirmedGuest: Function;
 };
 
-const EnterGuestInfo = ({
-  user,
-  rsvp,
-  setRsvp,
-  milanBus,
-  setMilanBus,
-  kids,
-  setKids,
-}: Props) => {
+const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
   const [openKids, setOpenKids] = useState(false);
+  const [openDiet, setOpenDiet] = useState(false);
+  const [openPlusDiet, setOpenPlusDiet] = useState(false);
   return (
     <Flex
       w="2xl"
@@ -79,10 +59,26 @@ const EnterGuestInfo = ({
         <Heading m={3}>enter or update your info</Heading>
       </FormLabel>
       <InputGroup size="md">
-        <Input placeholder="first name" variant="filled" m={2} mb={3}></Input>
+        <Input
+          placeholder={user.name}
+          variant="filled"
+          m={2}
+          mb={3}
+          onChange={(e) =>
+            setConfirmedGuest({ ...confirmedGuest, firstName: e.target.value })
+          }
+        />
       </InputGroup>
       <InputGroup size="md">
-        <Input placeholder="last name" variant="filled" m={2} mb={3}></Input>
+        <Input
+          placeholder="last name"
+          variant="filled"
+          m={2}
+          mb={3}
+          onChange={(e) =>
+            setConfirmedGuest({ ...confirmedGuest, lastName: e.target.value })
+          }
+        ></Input>
       </InputGroup>
       <Heading size="md" mb={3}>
         rsvp
@@ -92,42 +88,41 @@ const EnterGuestInfo = ({
           <Stack spacing={5} direction="column">
             {user.isInvitedToItaly && (
               <RsvpComponent
-                rsvp={rsvp}
-                setRsvp={setRsvp}
                 openKids={openKids}
                 setOpenKids={setOpenKids}
-                setKids={setKids}
                 location="italy"
-                kids={kids}
+                confirmedGuest={confirmedGuest}
+                setConfirmedGuest={setConfirmedGuest}
               />
             )}
           </Stack>
           <Stack spacing={5} direction="column">
             {user.isInvitedToUSA && (
               <RsvpComponent
-                rsvp={rsvp}
-                setRsvp={setRsvp}
                 openKids={openKids}
                 setOpenKids={setOpenKids}
-                setKids={setKids}
                 location="usa"
-                kids={kids}
+                confirmedGuest={confirmedGuest}
+                setConfirmedGuest={setConfirmedGuest}
               />
             )}
           </Stack>
         </Stack>
       </InputGroup>
-      {user.isInvitedToItaly && rsvp.italy && (
+      {user.isInvitedToItaly && confirmedGuest.confirmedItaly && (
         <>
           <Heading size="md" mb={3}>
             i want to ride the bus in milan
           </Heading>
-          <Stack spacing={5} direction="column">
+          <Stack mb={3} spacing={5} direction="column">
             <>
               <Button
                 size="md"
                 onClick={() => {
-                  setMilanBus(true);
+                  setConfirmedGuest({
+                    ...confirmedGuest,
+                    location: { italy: { bus: true } },
+                  });
                 }}
               >
                 <Icon as={FaBus} />
@@ -135,15 +130,31 @@ const EnterGuestInfo = ({
               <Button
                 size="md"
                 onClick={() => {
-                  setMilanBus(false);
+                  setConfirmedGuest({
+                    ...confirmedGuest,
+                    location: { italy: { bus: false } },
+                  });
                 }}
               >
                 <Icon as={FaCar} />
               </Button>
-              {milanBus && <Text>i want to ride the party bus</Text>}
-              {!milanBus && <Text>i will arrange my own travel</Text>}
+              {confirmedGuest.location?.italy?.bus && (
+                <Text>i want to ride the party bus</Text>
+              )}
+              {!confirmedGuest.location?.italy?.bus && (
+                <Text>i will arrange my own travel</Text>
+              )}
             </>
           </Stack>
+          <DietComponent
+            user={user}
+            openDiet={openDiet}
+            setOpenDiet={setOpenDiet}
+            openPlusDiet={openPlusDiet}
+            setOpenPlusDiet={setOpenPlusDiet}
+            confirmedGuest={confirmedGuest}
+            setConfirmedGuest={setConfirmedGuest}
+          ></DietComponent>
         </>
       )}
     </Flex>

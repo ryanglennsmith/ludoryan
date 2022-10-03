@@ -4,110 +4,81 @@ import KidsInfo from "./KidsInfo";
 import type Rsvp from "../../types/Rsvp";
 import type Kids from "../../types/Kids";
 import { FaPizzaSlice, FaGuitar } from "react-icons/fa";
+import ConfirmedGuest from "../../types/ConfirmedGuest";
 type Props = {
-  rsvp: Rsvp;
-  setRsvp: Function;
   openKids: boolean;
   setOpenKids: Function;
-  setKids: Function;
   location: string;
-  kids: Kids;
+  confirmedGuest: ConfirmedGuest;
+  setConfirmedGuest: Function;
 };
-
 const RsvpComponent = ({
-  rsvp,
-  setRsvp,
   openKids,
   setOpenKids,
-  setKids,
   location,
-  kids,
+  confirmedGuest,
+  setConfirmedGuest,
 }: Props) => {
   const highlight = useColorModeValue("orange", "lime");
+
+  type ObjectKey = keyof typeof confirmedGuest;
+
+  const confirmedLocation = ("confirmed" +
+    location.charAt(0).toUpperCase() +
+    location.slice(1)) as ObjectKey;
   return (
     <>
       {location === "italy" && <Icon as={FaPizzaSlice} alignSelf="center" />}
       {location === "usa" && <Icon as={FaGuitar} alignSelf="center" />}
-      {location === "italy" && (
-        <>
-          <Button onClick={() => setRsvp({ ...rsvp, italy: true })}>yes</Button>
-          <Button
-            onClick={() => {
-              setRsvp({ ...rsvp, italy: false });
-              setKids({ ...kids, italy: 0 });
-            }}
-          >
-            no
-          </Button>
-        </>
-      )}
-      {location === "usa" && (
-        <>
-          <Button onClick={() => setRsvp({ ...rsvp, usa: true })}>yes</Button>
-          <Button
-            onClick={() => {
-              setRsvp({ ...rsvp, usa: false });
-              setKids({ ...kids, usa: 0 });
-            }}
-          >
-            no
-          </Button>
-        </>
-      )}
-      {location === "italy" && (
-        <>
-          <Text>
-            i{" "}
-            {rsvp.italy && (
-              <Text as="span" color={highlight}>
-                will
-              </Text>
-            )}
-            {!rsvp.italy && (
-              <Text as="span" color="crimson">
-                will not
-              </Text>
-            )}{" "}
-            attend in {location}
-          </Text>
-          {rsvp.italy && (
-            <KidsInfo
-              openKids={openKids}
-              setOpenKids={setOpenKids}
-              setKids={setKids}
-              location={location}
-              kids={kids}
-            ></KidsInfo>
+
+      <>
+        <Button
+          onClick={() =>
+            setConfirmedGuest({
+              ...confirmedGuest,
+              [confirmedLocation]: true,
+            })
+          }
+        >
+          yes
+        </Button>
+        <Button
+          onClick={() => {
+            setConfirmedGuest({
+              ...confirmedGuest,
+              [confirmedLocation]: false,
+            });
+          }}
+        >
+          no
+        </Button>
+      </>
+
+      <>
+        <Text>
+          i{" "}
+          {confirmedGuest[confirmedLocation] && (
+            <Text as="span" color={highlight}>
+              will
+            </Text>
           )}
-        </>
-      )}
-      {location === "usa" && (
-        <>
-          <Text>
-            i{" "}
-            {rsvp.usa && (
-              <Text as="span" color={highlight}>
-                will
-              </Text>
-            )}
-            {!rsvp.usa && (
-              <Text as="span" color="crimson">
-                will not
-              </Text>
-            )}{" "}
-            attend in {location}
-          </Text>
-          {rsvp.usa && (
-            <KidsInfo
-              openKids={openKids}
-              setOpenKids={setOpenKids}
-              setKids={setKids}
-              location={location}
-              kids={kids}
-            ></KidsInfo>
-          )}
-        </>
-      )}
+          {!confirmedGuest[confirmedLocation] && (
+            <Text as="span" color="crimson">
+              will not
+            </Text>
+          )}{" "}
+          attend in {location}
+        </Text>
+        {confirmedGuest[confirmedLocation] && (
+          <KidsInfo
+            openKids={openKids}
+            setOpenKids={setOpenKids}
+            location={location}
+            confirmedGuest={confirmedGuest}
+            setConfirmedGuest={setConfirmedGuest}
+          ></KidsInfo>
+        )}
+      </>
     </>
   );
 };

@@ -10,15 +10,18 @@ import {
   Thead,
   Button,
   Icon,
+  Link,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { BsArrowDownShort, BsArrowUpShort } from "react-icons/bs";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaRobot } from "react-icons/fa";
 type user = {
   email: string;
   name: string;
   plusOneName?: string;
   isInvitedToItaly?: boolean;
   isInvitedToUSA?: boolean;
+  id?: string;
 };
 type Props = {
   guestList: user[];
@@ -53,7 +56,7 @@ const GuestListResponseTable = ({
       <Heading as="h3" size="lg" m={2} mb={3}>
         tentative guest list
       </Heading>
-      <TableContainer minW="4xl">
+      <TableContainer minW="2xl">
         <Table variant="striped" colorScheme="teal">
           <TableCaption>guest list</TableCaption>
           <Thead>
@@ -139,6 +142,7 @@ const GuestListResponseTable = ({
                 </Button>
               </Td>
               <Td>edit</Td>
+              <Td>spoof</Td>
             </Tr>
           </Thead>
           <Tbody>
@@ -167,6 +171,15 @@ const GuestListResponseTable = ({
                     >
                       <Icon as={FaEdit} />
                     </Button>
+                  </Td>
+                  <Td>
+                    <NextLink href={`/${guest.id}`} passHref>
+                      <Link>
+                        <Button variant="ghost">
+                          <Icon as={FaRobot} />
+                        </Button>
+                      </Link>
+                    </NextLink>
                   </Td>
                 </Tr>
               );

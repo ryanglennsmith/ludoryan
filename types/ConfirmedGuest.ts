@@ -4,23 +4,27 @@ type PlusOne = {
 };
 
 type Italy = {
-  confirmed: boolean;
-  dietaryRestrictions?: string;
   kids: number;
   bus: boolean;
   plusOne?: PlusOne;
 };
 
 type Usa = {
-  confirmed: boolean;
-  dietaryRestrictions?: string;
   kids: number;
   plusOne?: PlusOne;
 };
+
 type ConfirmedGuest = {
+  dietaryRestrictions?: string;
+  plusOneDietaryRestrictions?: string;
+  firstName: string;
+  lastName?: string;
+  id: string;
   invitedToItaly: boolean;
   invitedToUSA: boolean;
-  confirmed?: {
+  confirmedItaly?: boolean;
+  confirmedUsa?: boolean;
+  location?: {
     italy?: Italy;
     usa?: Usa;
   };
