@@ -1,11 +1,11 @@
-import { Stack, Text, Icon, Button } from "@chakra-ui/react";
+import { Stack, Icon, Button } from "@chakra-ui/react";
 import { FaHeart, FaHeartBroken } from "react-icons/fa";
-import React, { useState } from "react";
-import ConfirmedGuest from "../../types/ConfirmedGuest";
+import React from "react";
+import IConfirmedGuest from "../../types/IConfirmedGuest";
 
 type Props = {
   location: string;
-  confirmedGuest: ConfirmedGuest;
+  confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
   setPlusOneGo: Function;
 };
@@ -16,7 +16,7 @@ const PlusOneInfo = ({
   setPlusOneGo,
 }: Props) => {
   type ObjectKey = keyof typeof confirmedGuest;
-  const confirmedLocation = location as ObjectKey;
+  const confirmedLocation = (location + "PlusOne") as ObjectKey;
   return (
     <>
       <Stack spacing={5} direction="column">
@@ -25,7 +25,7 @@ const PlusOneInfo = ({
             setPlusOneGo(true);
             setConfirmedGuest({
               ...confirmedGuest,
-              location: { [confirmedLocation]: { plusOne: true } },
+              [confirmedLocation]: true,
             });
           }}
         >
@@ -37,7 +37,7 @@ const PlusOneInfo = ({
             setPlusOneGo(false);
             setConfirmedGuest({
               ...confirmedGuest,
-              location: { [confirmedLocation]: { plusOne: false } },
+              [confirmedLocation]: false,
             });
           }}
         >

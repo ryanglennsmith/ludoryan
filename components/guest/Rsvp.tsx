@@ -2,13 +2,13 @@ import { Icon, Button, Text, useColorModeValue } from "@chakra-ui/react";
 import React, { useState } from "react";
 import KidsInfo from "./KidsInfo";
 import { FaPizzaSlice, FaGuitar } from "react-icons/fa";
-import ConfirmedGuest from "../../types/ConfirmedGuest";
+import IConfirmedGuest from "../../types/IConfirmedGuest";
 import PlusOneInfo from "./PlusOneInfo";
 type Props = {
   openKids: boolean;
   setOpenKids: Function;
   location: string;
-  confirmedGuest: ConfirmedGuest;
+  confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
 };
 const RsvpComponent = ({
@@ -21,7 +21,7 @@ const RsvpComponent = ({
   const highlight = useColorModeValue("orange", "lime");
   const [plusOneGo, setPlusOneGo] = useState(true);
   type ObjectKey = keyof typeof confirmedGuest;
-
+  const plusOneLocation = (location + "PlusOne") as ObjectKey;
   const confirmedLocation = ("confirmed" +
     location.charAt(0).toUpperCase() +
     location.slice(1)) as ObjectKey;
@@ -36,6 +36,9 @@ const RsvpComponent = ({
             setConfirmedGuest({
               ...confirmedGuest,
               [confirmedLocation]: true,
+              [plusOneLocation]: confirmedGuest.plusOneFirstName
+                ? true
+                : undefined,
             })
           }
         >
@@ -46,6 +49,7 @@ const RsvpComponent = ({
             setConfirmedGuest({
               ...confirmedGuest,
               [confirmedLocation]: false,
+              [plusOneLocation]: undefined,
             });
           }}
         >
@@ -87,7 +91,7 @@ const RsvpComponent = ({
                   my partner
                 </Text>
                 <PlusOneInfo
-                  location="italy"
+                  location={location}
                   confirmedGuest={confirmedGuest}
                   setConfirmedGuest={setConfirmedGuest}
                   setPlusOneGo={setPlusOneGo}

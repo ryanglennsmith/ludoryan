@@ -1,10 +1,10 @@
 import { InputGroup, Input } from "@chakra-ui/react";
 import React from "react";
-import ConfirmedGuest from "../../types/ConfirmedGuest";
+import IConfirmedGuest from "../../types/IConfirmedGuest";
 
 type Props = {
   valueToSet: string;
-  confirmedGuest: ConfirmedGuest;
+  confirmedGuest: IConfirmedGuest;
   placeHolder: string;
   setConfirmedGuest: Function;
 };

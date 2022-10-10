@@ -1,4 +1,4 @@
-export type PlusOne = {
+type PlusOne = {
   confirmed: boolean;
   dietaryRestrictions?: string;
 };

@@ -22,10 +22,13 @@ import {
   FaPizzaSlice,
   FaBus,
   FaCar,
+  FaHeartBroken,
+  FaHeart,
+  FaBaby,
 } from "react-icons/fa";
-import ConfirmedGuest from "../../types/ConfirmedGuest";
+import IConfirmedGuest from "../../types/IConfirmedGuest";
 type Props = {
-  confirmedGuest: ConfirmedGuest;
+  confirmedGuest: IConfirmedGuest;
 };
 
 const SubmissionModal = ({ confirmedGuest }: Props) => {
@@ -53,28 +56,51 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                   no, sorry, no italy for me
                 </ListItem>
               )}
-              {confirmedGuest.invitedToItaly &&
-                confirmedGuest.confirmedItaly &&
-                confirmedGuest.location?.italy?.bus && (
+              {confirmedGuest.confirmedItaly && confirmedGuest.italyPlusOne && (
+                <List spacing={3} ml={10}>
                   <ListItem>
-                    <ListIcon as={FaBus} />
-                    and riding the party bus
+                    <ListIcon as={FaHeart} />
+                    with my partner {confirmedGuest.plusOneFirstName}
                   </ListItem>
-                )}
-              {confirmedGuest.invitedToItaly &&
-                confirmedGuest.confirmedItaly &&
-                !confirmedGuest.location?.italy?.bus && (
-                  <ListItem>
-                    <ListIcon as={FaCar} />
-                    and driving myself
-                  </ListItem>
-                )}
-              {confirmedGuest.invitedToItaly && !confirmedGuest.confirmedItaly && (
-                <ListItem>
-                  <ListIcon as={FaGrimace} />
-                  no, sorry, no italy for me
-                </ListItem>
+                </List>
               )}
+              {confirmedGuest.confirmedItaly && !confirmedGuest.italyPlusOne && (
+                <List spacing={3} ml={10}>
+                  <ListItem>
+                    <ListIcon as={FaHeartBroken} />
+                    without my partner {confirmedGuest.plusOneFirstName}
+                  </ListItem>
+                </List>
+              )}
+              {confirmedGuest.confirmedItaly && (
+                <List spacing={3} ml={10}>
+                  <ListItem>
+                    <ListIcon as={FaBaby} />
+                    with {confirmedGuest.italyKids?.toString() || "0"} bastard
+                    kids
+                  </ListItem>
+                </List>
+              )}
+              {confirmedGuest.invitedToItaly &&
+                confirmedGuest.confirmedItaly &&
+                confirmedGuest.italyBus && (
+                  <List spacing={3} ml={10}>
+                    <ListItem>
+                      <ListIcon as={FaBus} />
+                      and riding the party bus
+                    </ListItem>
+                  </List>
+                )}
+              {confirmedGuest.invitedToItaly &&
+                confirmedGuest.confirmedItaly &&
+                !confirmedGuest.italyBus && (
+                  <List spacing={3} ml={10}>
+                    <ListItem>
+                      <ListIcon as={FaCar} />
+                      and driving myself
+                    </ListItem>
+                  </List>
+                )}
               {confirmedGuest.invitedToUSA && confirmedGuest.confirmedUsa && (
                 <ListItem>
                   <ListIcon as={FaGrinTongueWink} />
@@ -86,6 +112,31 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                   <ListIcon as={FaGrimace} />
                   no, sorry, no usa for me
                 </ListItem>
+              )}
+              {confirmedGuest.confirmedUsa && confirmedGuest.usaPlusOne && (
+                <List spacing={3} ml={10}>
+                  <ListItem>
+                    <ListIcon as={FaHeart} />
+                    with my partner {confirmedGuest.plusOneFirstName}
+                  </ListItem>
+                </List>
+              )}
+              {confirmedGuest.confirmedUsa && !confirmedGuest.usaPlusOne && (
+                <List spacing={3} ml={10}>
+                  <ListItem>
+                    <ListIcon as={FaHeartBroken} />
+                    without my partner {confirmedGuest.plusOneFirstName}
+                  </ListItem>
+                </List>
+              )}
+              {confirmedGuest.confirmedUsa && (
+                <List spacing={3} ml={10}>
+                  <ListItem>
+                    <ListIcon as={FaBaby} />
+                    with {confirmedGuest.usaKids?.toString() || "0"} bastard
+                    kids
+                  </ListItem>
+                </List>
               )}
             </List>
           </ModalBody>

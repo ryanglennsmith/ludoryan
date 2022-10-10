@@ -1,14 +1,14 @@
 import { Button, Heading, Input, InputGroup, Stack } from "@chakra-ui/react";
 import { GuestTemplate } from "@prisma/client";
 import React from "react";
-import ConfirmedGuest from "../../types/ConfirmedGuest";
+import IConfirmedGuest from "../../types/IConfirmedGuest";
 type Props = {
   user: GuestTemplate;
   openDiet: boolean;
   setOpenDiet: Function;
   openPlusDiet: boolean;
   setOpenPlusDiet: Function;
-  confirmedGuest: ConfirmedGuest;
+  confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
 };
 const DietComponent = ({
@@ -23,7 +23,7 @@ const DietComponent = ({
   return (
     <>
       <Heading size="md" mb={3}>
-        {user.name} has dietary requirements
+        {confirmedGuest.firstName} has dietary requirements
       </Heading>
       <Stack spacing={5} direction="row" mb={3}>
         <Button onClick={() => setOpenDiet(true)}>yes</Button>
@@ -32,7 +32,7 @@ const DietComponent = ({
       <InputGroup size="md">
         <Input
           disabled={openDiet ? false : true}
-          placeholder={`${user.name} doesn't fucking eat...`}
+          placeholder={`${confirmedGuest.firstName} doesn't fucking eat...`}
           variant="filled"
           m={2}
           mb={3}
@@ -44,10 +44,10 @@ const DietComponent = ({
           }
         ></Input>
       </InputGroup>
-      {user.plusOneName && (
+      {confirmedGuest.plusOneFirstName && (
         <>
           <Heading size="md" mb={3}>
-            {user.plusOneName} has dietary requirements
+            {confirmedGuest.plusOneFirstName} has dietary requirements
           </Heading>
           <Stack spacing={5} direction="row" mb={3}>
             <Button onClick={() => setOpenPlusDiet(true)}>yes</Button>
@@ -55,7 +55,7 @@ const DietComponent = ({
           </Stack>
           <InputGroup size="md">
             <Input
-              placeholder={`${user.plusOneName} doesn't fucking eat...`}
+              placeholder={`${confirmedGuest.plusOneFirstName} doesn't fucking eat...`}
               variant="filled"
               disabled={openPlusDiet ? false : true}
               m={2}

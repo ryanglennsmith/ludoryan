@@ -10,28 +10,25 @@ import {
   Text,
   Icon,
 } from "@chakra-ui/react";
-import { FcCheckmark, FcCancel } from "react-icons/fc";
 import { GuestTemplate } from "@prisma/client";
 
 import RsvpComponent from "./Rsvp";
-
-import ConfirmedGuest from "../../types/ConfirmedGuest";
+import IConfirmedGuest from "../../types/IConfirmedGuest";
 import DietComponent from "./DietComponent";
 import SubmissionModal from "./SubmissionModal";
 import BusComponent from "./BusComponent";
 import GuestInfoInputComponent from "./GuestInfoInputComponent";
-import PlusOneInfo from "./PlusOneInfo";
 
 type Props = {
   user: GuestTemplate;
-  confirmedGuest: ConfirmedGuest;
+  confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
 };
 
 const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
   const [openKids, setOpenKids] = useState(false);
   const [openDiet, setOpenDiet] = useState(false);
-  const [openPlus, setOpenPlus] = useState(user.plusOneName !== null);
+  const [openPlus, setOpenPlus] = useState(true);
   const [cancelPlus, setCancelPlus] = useState(false);
   const [openPlusDiet, setOpenPlusDiet] = useState(false);
   const [confirmSubmit, setConfirmSubmit] = useState(false);
@@ -85,7 +82,7 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
             and my partner
           </Heading>
           <GuestInfoInputComponent
-            placeHolder={confirmedGuest.plusOneFirstName! || "first name"}
+            placeHolder={confirmedGuest.plusOneFirstName || "first name"}
             valueToSet={"plusOneFirstName"}
             setConfirmedGuest={setConfirmedGuest}
             confirmedGuest={confirmedGuest}

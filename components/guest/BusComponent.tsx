@@ -1,10 +1,10 @@
 import { Heading, Stack, Button, Icon, Text } from "@chakra-ui/react";
 import React from "react";
-import ConfirmedGuest from "../../types/ConfirmedGuest";
+import IConfirmedGuest from "../../types/IConfirmedGuest";
 import { FaBus, FaCar } from "react-icons/fa";
 type Props = {
   setConfirmedGuest: Function;
-  confirmedGuest: ConfirmedGuest;
+  confirmedGuest: IConfirmedGuest;
 };
 
 const BusComponent = ({ setConfirmedGuest, confirmedGuest }: Props) => {
@@ -20,7 +20,7 @@ const BusComponent = ({ setConfirmedGuest, confirmedGuest }: Props) => {
             onClick={() => {
               setConfirmedGuest({
                 ...confirmedGuest,
-                location: { italy: { bus: true } },
+                italyBus: true,
               });
             }}
           >
@@ -31,16 +31,14 @@ const BusComponent = ({ setConfirmedGuest, confirmedGuest }: Props) => {
             onClick={() => {
               setConfirmedGuest({
                 ...confirmedGuest,
-                location: { italy: { bus: false } },
+                italyBus: false,
               });
             }}
           >
             <Icon as={FaCar} />
           </Button>
-          {confirmedGuest.location?.italy?.bus && (
-            <Text>i want to ride the party bus</Text>
-          )}
-          {!confirmedGuest.location?.italy?.bus && (
+          {confirmedGuest.italyBus && <Text>i want to ride the party bus</Text>}
+          {!confirmedGuest.italyBus && (
             <Text>i will arrange my own travel</Text>
           )}
         </>

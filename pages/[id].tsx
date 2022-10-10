@@ -5,8 +5,7 @@ import { useRouter } from "next/router";
 import EnterGuestInfo from "../components/guest/EnterGuestInfo";
 import Footer from "../components/nav/Footer";
 import { useEffect, useState } from "react";
-import type ConfirmedGuest from "../types/ConfirmedGuest";
-
+import IConfirmedGuest from "../types/IConfirmedGuest";
 type Props = { user: GuestTemplate };
 export const getServerSideProps = async (ctx: NextPageContext) => {
   console.log(ctx.query);
@@ -43,13 +42,13 @@ const GuestPage: NextPage<Props> = ({ user }: Props) => {
       };
     }
   };
-  const [confirmedGuest, setConfirmedGuest] = useState<ConfirmedGuest>({
+  const [confirmedGuest, setConfirmedGuest] = useState<IConfirmedGuest>({
     invitedToItaly: user.isInvitedToItaly,
     invitedToUSA: user.isInvitedToUSA,
     id: user.id,
     firstName: user.name,
     plusOneFirstName: user.plusOneName || undefined,
-    location: bringADate(user),
+    // location: bringADate(user),
   });
 
   console.log(user);

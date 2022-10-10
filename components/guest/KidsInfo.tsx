@@ -1,13 +1,13 @@
 import { Stack, Button, Icon, Input, Text } from "@chakra-ui/react";
 import { FaChild, FaHandMiddleFinger } from "react-icons/fa";
 import React from "react";
-import ConfirmedGuest from "../../types/ConfirmedGuest";
+import IConfirmedGuest from "../../types/IConfirmedGuest";
 
 type Props = {
   openKids: boolean;
   setOpenKids: Function;
   location: string;
-  confirmedGuest: ConfirmedGuest;
+  confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
 };
 const KidsInfo = ({
@@ -17,8 +17,9 @@ const KidsInfo = ({
   confirmedGuest,
   setConfirmedGuest,
 }: Props) => {
-  type ObjectKey = keyof typeof confirmedGuest;
-  const confirmedLocation = location as ObjectKey;
+  type LocationObjectKey = keyof typeof confirmedGuest.italyKids;
+  const confirmedLocationKids = (location + "kids") as LocationObjectKey;
+
   return (
     <>
       <Stack spacing={5} direction="column">
@@ -32,12 +33,11 @@ const KidsInfo = ({
             <Input
               placeholder="0"
               type="number"
+              value={confirmedGuest[confirmedLocationKids]}
               onChange={(e) => {
                 setConfirmedGuest({
                   ...confirmedGuest,
-                  location: {
-                    [confirmedLocation]: { kids: Number(e.target.value) },
-                  },
+                  [confirmedLocationKids]: Number(e.target.value),
                 });
               }}
             />
@@ -46,12 +46,10 @@ const KidsInfo = ({
         <Text>...without my dumb kids</Text>
         <Button
           onClick={() => {
-            setOpenKids(false);
             setConfirmedGuest({
               ...confirmedGuest,
-              location: {
-                [confirmedLocation]: { kids: 0 },
-              },
+
+              [confirmedLocationKids]: 0,
             });
           }}
         >
