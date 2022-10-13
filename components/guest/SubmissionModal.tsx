@@ -11,14 +11,11 @@ import {
   List,
   ListItem,
   ListIcon,
-  OrderedList,
-  UnorderedList,
 } from "@chakra-ui/react";
-import React from "react";
+import { useState, useEffect } from "react";
 import {
   FaGrinTongueWink,
   FaGrimace,
-  FaGuitar,
   FaPizzaSlice,
   FaBus,
   FaCar,
@@ -33,6 +30,41 @@ type Props = {
 
 const SubmissionModal = ({ confirmedGuest }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isClickedSave, setIsClickedSave] = useState(false);
+  useEffect(() => {
+    const saveConfirmedGuest = async () => {
+      const response = await fetch("/api/confirmedguest/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          confirmedGuest: {
+            dietaryRestrictions: confirmedGuest.dietaryRestrictions || null,
+            plusOneDietaryRestrictions:
+              confirmedGuest.plusOneDietaryRestrictions || null,
+            firstName: confirmedGuest.firstName,
+            lastName: confirmedGuest.lastName || null,
+            plusOneFirstName: confirmedGuest.plusOneFirstName || null,
+            plusOneLastName: confirmedGuest.plusOneLastName || null,
+            id: confirmedGuest.id,
+            invitedToItaly: confirmedGuest.invitedToItaly,
+            invitedToUsa: confirmedGuest.invitedToUSA,
+            confirmedItaly: confirmedGuest.confirmedItaly || null,
+            confirmedUsa: confirmedGuest.confirmedUsa || null,
+            italyKids: confirmedGuest.italyKids || null,
+            italyBus: confirmedGuest.italyBus || null,
+            italyPlusOne: confirmedGuest.italyPlusOne || null,
+            usaKids: confirmedGuest.usaKids || null,
+            usaPlusOne: confirmedGuest.usaPlusOne || null,
+          },
+        }),
+      }).then((response) => response.json());
+    };
+    if (isClickedSave) {
+      saveConfirmedGuest();
+      setIsClickedSave(false);
+      onClose();
+    }
+  }, [isClickedSave, confirmedGuest]);
   return (
     <>
       <Button onClick={onOpen}>submit</Button>
@@ -101,6 +133,7 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                     </ListItem>
                   </List>
                 )}
+
               {confirmedGuest.invitedToUSA && confirmedGuest.confirmedUsa && (
                 <ListItem>
                   <ListIcon as={FaGrinTongueWink} />
@@ -133,19 +166,40 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                 <List spacing={3} ml={10}>
                   <ListItem>
                     <ListIcon as={FaBaby} />
-                    with {confirmedGuest.usaKids?.toString() || "0"} bastard
-                    kids
+                    with {confirmedGuest.usaKids || "0"} bastard kids
                   </ListItem>
                 </List>
               )}
+              {(confirmedGuest.confirmedItaly || confirmedGuest.confirmedUsa) &&
+                confirmedGuest.dietaryRestrictions && (
+                  <List spacing={3}>
+                    <ListItem>
+                      <ListIcon as={FaPizzaSlice} />
+                      and i don&apos;t fucking eat{" "}
+                      {confirmedGuest.dietaryRestrictions.toString()}
+                    </ListItem>
+                  </List>
+                )}
+              {(confirmedGuest.confirmedItaly || confirmedGuest.confirmedUsa) &&
+                confirmedGuest.plusOneDietaryRestrictions && (
+                  <List spacing={3}>
+                    <ListItem>
+                      <ListIcon as={FaPizzaSlice} />
+                      and my partner don&apos;t fucking eat{" "}
+                      {confirmedGuest.plusOneDietaryRestrictions.toString()}
+                    </ListItem>
+                  </List>
+                )}
             </List>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button variant="ghost" mr={3} onClick={onClose}>
               go back
             </Button>
-            <Button variant="ghost">save</Button>
+            <Button variant="ghost" onClick={() => setIsClickedSave(true)}>
+              save
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

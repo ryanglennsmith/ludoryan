@@ -18,7 +18,7 @@ const KidsInfo = ({
   setConfirmedGuest,
 }: Props) => {
   type LocationObjectKey = keyof typeof confirmedGuest.italyKids;
-  const confirmedLocationKids = (location + "kids") as LocationObjectKey;
+  const confirmedLocationKids = (location + "Kids") as LocationObjectKey;
 
   return (
     <>

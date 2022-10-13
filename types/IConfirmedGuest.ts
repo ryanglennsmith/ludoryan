@@ -15,7 +15,6 @@ interface IConfirmedGuest {
   italyPlusOne?: boolean;
   italyPlusOneDiet?: string;
   usaKids?: number;
-  usaBus?: boolean;
   usaPlusOne?: boolean;
   usaPlusOneDiet?: string;
 }

@@ -27,12 +27,23 @@ const DietComponent = ({
       </Heading>
       <Stack spacing={5} direction="row" mb={3}>
         <Button onClick={() => setOpenDiet(true)}>yes</Button>
-        <Button onClick={() => setOpenDiet(false)}>no</Button>
+        <Button
+          onClick={() => {
+            setOpenDiet(false);
+            setConfirmedGuest({
+              ...confirmedGuest,
+              dietaryRestrictions: undefined,
+            });
+          }}
+        >
+          no
+        </Button>
       </Stack>
       <InputGroup size="md">
         <Input
           disabled={openDiet ? false : true}
           placeholder={`${confirmedGuest.firstName} doesn't fucking eat...`}
+          value={confirmedGuest.dietaryRestrictions || ""}
           variant="filled"
           m={2}
           mb={3}
@@ -51,11 +62,22 @@ const DietComponent = ({
           </Heading>
           <Stack spacing={5} direction="row" mb={3}>
             <Button onClick={() => setOpenPlusDiet(true)}>yes</Button>
-            <Button onClick={() => setOpenPlusDiet(false)}>no</Button>
+            <Button
+              onClick={() => {
+                setOpenPlusDiet(false);
+                setConfirmedGuest({
+                  ...confirmedGuest,
+                  plusOneDietaryRestrictions: undefined,
+                });
+              }}
+            >
+              no
+            </Button>
           </Stack>
           <InputGroup size="md">
             <Input
               placeholder={`${confirmedGuest.plusOneFirstName} doesn't fucking eat...`}
+              value={confirmedGuest.plusOneDietaryRestrictions}
               variant="filled"
               disabled={openPlusDiet ? false : true}
               m={2}
