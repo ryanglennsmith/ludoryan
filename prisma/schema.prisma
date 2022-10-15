@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model GuestTemplate {
+  id                String            @id @default(uuid())
+  password          String
+  name              String
+  email             String            @unique
+  plusOneName       String?
+  isInvitedToItaly  Boolean
+  isInvitedToUSA    Boolean
+  guest             ConfirmedGuest[]
+}
+
+model ConfirmedGuest {
+  id                          String            @id @default(uuid())
+  template                    GuestTemplate     @relation(fields: [templateId], references: [id])
+  templateId                  String            @unique
+  dietaryRestrictions         String?
+  plusOneDietaryRestrictions  String?
+  firstName                   String
+  lastName                    String?
+  plusOneFirstName            String?
+  plusOneLastName             String?
+  confirmedItaly              Boolean?
+  confirmedUsa                Boolean?
+  italyKids                   Int?
+  italyBus                    Boolean?
+  italyPlusOne                Boolean?
+  italyPlusOneDiet            String?
+  usaKids                     Int?
+  usaPlusOne                  Boolean?
+  usaPlusOneDiet              String?
+}
+
+// model Dietary {
+//   guest             ConfirmedGuest    @relation(fields: [guestId], references: [id])
+//   guestId           String            @unique
+//   isVegetarian      Boolean
+//   isVegan           Boolean
+//   comments          String?
+// }
+
+model Admin { 
+  id                String            @id @default(uuid())
+  name              String        
+  email             String            @unique
+  password          String
+}
