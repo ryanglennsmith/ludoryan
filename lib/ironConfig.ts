@@ -1,7 +1,8 @@
 export const ironOptions = {
-  cookieName: "CookieMonster",
+  cookieName: "session_lr",
   password: String(process.env.PUBLIC_COOKIE_KEY),
   cookieOptions: {
+    maxAge: undefined,
     secure: process.env.NODE_ENV === "production",
   },
 };
@@ -14,4 +15,5 @@ type User = {
   username: string;
   isLoggedIn: boolean;
   isAdmin: boolean;
+  id: string;
 };

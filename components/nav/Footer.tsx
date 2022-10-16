@@ -13,8 +13,11 @@ import { FcCopyright } from "react-icons/fc";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { CgLogIn, CgLogOut } from "react-icons/cg";
 import NextLink from "next/link";
-
-export default function Footer() {
+import Logout from "../login/Logout";
+type Props = {
+  isLoggedIn: boolean;
+};
+export default function Footer({ isLoggedIn }: Props) {
   const { toggleColorMode } = useColorMode();
   const Icon = useColorModeValue(MoonIcon, SunIcon);
   return (
@@ -50,13 +53,16 @@ export default function Footer() {
               </Button>
             </Link>
           </NextLink>
-          <NextLink href="/login" passHref>
-            <Link>
-              <Button>
-                <Icon as={CgLogIn} />
-              </Button>
-            </Link>
-          </NextLink>
+          {isLoggedIn && <Logout />}
+          {!isLoggedIn && (
+            <NextLink href="/login" passHref>
+              <Link>
+                <Button>
+                  <Icon as={CgLogIn} />
+                </Button>
+              </Link>
+            </NextLink>
+          )}
           <Button onClick={toggleColorMode}>
             <Icon />
           </Button>

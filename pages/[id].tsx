@@ -6,14 +6,36 @@ import EnterGuestInfo from "../components/guest/EnterGuestInfo";
 import Footer from "../components/nav/Footer";
 import { useEffect, useState } from "react";
 import IConfirmedGuest from "../types/IConfirmedGuest";
-type Props = { user: GuestTemplate };
-export const getServerSideProps = async (ctx: NextPageContext) => {
-  console.log(ctx.query);
-  const response = await fetch(`http://localhost:3000/api/${ctx.query.id}`);
-  const user = await response.json();
-  return { props: { user } };
-};
-const GuestPage: NextPage<Props> = ({ user }: Props) => {
+import { ironOptions } from "../lib/ironConfig";
+import { withIronSessionSsr } from "iron-session/next";
+import { IronSession } from "iron-session";
+type Props = { user: GuestTemplate; sessionUser: any };
+// export const getServerSideProps = async (ctx: NextPageContext) => {
+//   console.log(ctx.query);
+//   const response = await fetch(`http://localhost:3000/api/${ctx.query.id}`);
+//   const user = await response.json();
+//   return { props: { user } };
+// };
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps({ req, ...context }) {
+    console.log(context.query);
+    const sessionUser: any = req.session.user;
+    if (
+      sessionUser?.isAdmin !== true &&
+      (sessionUser?.isLoggedIn === false ||
+        sessionUser?.id !== context.query.id)
+    ) {
+      return { notFound: true };
+    }
+    const response = await fetch(
+      `http://localhost:3000/api/${context.query.id}`
+    );
+    const user = await response.json();
+    return { props: { user, sessionUser } };
+  },
+  ironOptions
+);
+const GuestPage: NextPage<Props> = ({ user, sessionUser }: Props) => {
   const router = useRouter();
   const uuid = router.query;
   const bringADate = (user: GuestTemplate) => {
@@ -69,7 +91,7 @@ const GuestPage: NextPage<Props> = ({ user }: Props) => {
             setConfirmedGuest={setConfirmedGuest}
           />
         </Flex>
-        <Footer />
+        <Footer isLoggedIn={sessionUser.isLoggedIn} />
       </Box>
     </>
   );

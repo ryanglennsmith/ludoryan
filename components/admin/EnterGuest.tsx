@@ -13,7 +13,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import InvitedGuest from "../../types/InvitedGuest";
-
+import generatePW from "../../services/encryption/pwGenerator";
 type Props = {
   saveUser: Function;
   generatePW: Function;
@@ -21,6 +21,7 @@ type Props = {
   invitedGuest: InvitedGuest;
   setInvitedGuest: Function;
 };
+const firstGeneratedPW = generatePW(6);
 
 const EnterGuest = ({
   saveUser,
@@ -29,7 +30,6 @@ const EnterGuest = ({
   setInvitedGuest,
 }: Props) => {
   const [isPlusOneOpen, setIsPlusOneOpen] = useState(false);
-
   return (
     <>
       <Flex
@@ -40,7 +40,7 @@ const EnterGuest = ({
         m={2}
       >
         <FormLabel>
-          <Heading m={3}>enter guest info</Heading>
+          <Heading m={3}>enter guest</Heading>
         </FormLabel>
         <InputGroup size="md">
           <Input
@@ -73,7 +73,9 @@ const EnterGuest = ({
           <Input
             pr="4.5rem"
             placeholder="password"
-            value={invitedGuest.password || generatePW(6)}
+            value={
+              invitedGuest.password ? invitedGuest.password : firstGeneratedPW
+            }
             onChange={(e) =>
               setInvitedGuest({ ...invitedGuest, password: e.target.value })
             }

@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Login from "../components/login/Login";
 import Logout from "../components/login/Logout";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import {
   Box,
@@ -17,11 +18,12 @@ import Footer from "../components/nav/Footer";
 
 const Home: NextPage = () => {
   const { toggleColorMode } = useColorMode();
+  const router = useRouter();
   const formBackground = useColorModeValue("gray.100", "gray.700");
   const [user, setUser] = useState("");
   const [pw, setPw] = useState("");
 
-  const [message, setMessage] = useState("funky butt lovin");
+  const [message, setMessage] = useState("not logged in");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
@@ -55,12 +57,9 @@ const Home: NextPage = () => {
             user={user}
             pw={pw}
           ></Login>
-          <Logout setMessage={setMessage}></Logout>
-          <CheckLogin setIsLoggedIn={setIsLoggedIn}></CheckLogin>
-          <Button onClick={toggleColorMode}>Toggle color mode</Button>
         </Flex>
       </Flex>
-      <Footer />
+      <Footer isLoggedIn={isLoggedIn} />
     </>
   );
 };

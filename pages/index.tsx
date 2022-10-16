@@ -13,8 +13,21 @@ import {
   Text,
   Image,
 } from "@chakra-ui/react";
-
-const Home: NextPage = () => {
+import { withIronSessionSsr } from "iron-session/next";
+import { ironOptions } from "../lib/ironConfig";
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps({ req, ...context }) {
+    const user = req.session.user;
+    if (user) {
+      return { props: { user: { isLoggedIn: user.isLoggedIn } } };
+    } else {
+      return { props: { user: { isLoggedIn: false } } };
+    }
+  },
+  ironOptions
+);
+const Home: NextPage = ({ user }: any) => {
+  console.log(`user isLoggedIn: ${user.isLoggedIn}`);
   const { toggleColorMode } = useColorMode();
   const formBackground = useColorModeValue("gray.100", "gray.700");
   return (
@@ -62,7 +75,7 @@ const Home: NextPage = () => {
           </NextLink>
         </Flex>{" "}
       </Flex>
-      <Footer />
+      <Footer isLoggedIn={user.isLoggedIn} />
     </Box>
   );
 };

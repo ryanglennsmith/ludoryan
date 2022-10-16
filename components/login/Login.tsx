@@ -1,4 +1,5 @@
 import { Button } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 type Props = {
   message: string;
@@ -9,6 +10,7 @@ type Props = {
 const isValidEntry = (text: string): boolean => text.length > 0;
 
 const Login = ({ message, setMessage, user, pw }: Props) => {
+  const router = useRouter();
   const login = async () => {
     if (isValidEntry(user) && isValidEntry(pw)) {
       const response = await fetch("/api/login/auth", {
@@ -17,9 +19,14 @@ const Login = ({ message, setMessage, user, pw }: Props) => {
         body: JSON.stringify({ username: user, password: pw }),
       }).then((response) => response.json());
       if (response.isLoggedIn) {
-        setMessage("Logged in");
+        setMessage(response.id);
+        if (response.id === "0") {
+          router.push("/admin");
+        } else {
+          router.push(`/${response.id}`);
+        }
       } else {
-        setMessage("Error logging in");
+        setMessage("error logging in");
       }
     } else {
       setMessage("enter a username and password to log in");
@@ -29,7 +36,7 @@ const Login = ({ message, setMessage, user, pw }: Props) => {
   return (
     <>
       <Button onClick={login} colorScheme="teal" mb={6}>
-        Log in
+        log in
       </Button>
       <p>{message}</p>
     </>

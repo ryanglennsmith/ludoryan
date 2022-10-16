@@ -1,6 +1,6 @@
-import { Button, Flex, Box, Heading, Icon, filter } from "@chakra-ui/react";
+import { Button, Flex, Box, Heading, Icon } from "@chakra-ui/react";
 import { FaBomb } from "react-icons/fa";
-import { NextPage, GetServerSideProps, GetServerSidePropsContext } from "next";
+import { NextPage } from "next";
 import Footer from "../components/nav/Footer";
 import { useState, useEffect } from "react";
 import EnterGuest from "../components/admin/EnterGuest";
@@ -10,18 +10,12 @@ import GuestResponseTable from "../components/admin/GuestResponseTable";
 import GuestListResponseTable from "../components/admin/GuestListResponseTable";
 import { getAllUsers, closeTxn } from "../services/dbTxn/getAllUsers";
 import { sortList } from "../services/sortList";
-
 import type InvitedGuest from "../types/InvitedGuest";
-
-// type User = {
-//   email: string;
-//   name: string;
-//   plusOne?: string;
-//   isInvitedToItaly?: boolean;
-//   isInvitedToUSA?: boolean;
-// };
+import { ironOptions } from "../lib/ironConfig";
+import { withIronSessionSsr } from "iron-session/next";
 type Props = {
   guestList: InvitedGuest[];
+  user: any;
 };
 
 type FilterState = {
@@ -42,21 +36,40 @@ const _fs: FilterState = {
   },
 };
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const unsortedGuestList = await getAllUsers();
-  await closeTxn();
-  const guestList = unsortedGuestList;
-  return { props: { guestList } };
-};
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps({ req }) {
+    const user = req.session.user;
+    if (user?.isAdmin !== true) {
+      return {
+        notFound: true,
+      };
+    }
+    const unsortedGuestList = await getAllUsers();
+    await closeTxn();
+    const guestList = unsortedGuestList;
+    {
+      props: {
+        guestList;
+      }
+    }
+    return {
+      props: {
+        user: req.session.user,
+        guestList,
+      },
+    };
+  },
+  ironOptions
+);
 
-const Admin: NextPage<Props> = ({ guestList }: Props) => {
+const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
   const [invitedGuest, setInvitedGuest] = useState<InvitedGuest>({
     email: "",
     name: "",
     italy: false,
     usa: false,
   });
-
+  console.log(user);
   const [isEnterGuestInfo, setIsEnterGuestInfo] = useState(false);
   const [isCheckGuestList, setIsCheckGuestList] = useState(false);
   const [serverResponse, setServerResponse] = useState<InvitedGuest>();
@@ -308,7 +321,7 @@ const Admin: NextPage<Props> = ({ guestList }: Props) => {
           <GuestResponseTable serverResponse={serverResponse} />
         )}
       </Flex>
-      <Footer />
+      <Footer isLoggedIn={user.isLoggedIn} />
     </Box>
   );
 };

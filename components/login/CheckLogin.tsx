@@ -15,7 +15,7 @@ const CheckLogin = ({ setIsLoggedIn }: Props) => {
   };
   return (
     <Button onClick={checkLogin} colorScheme="red" mb={6}>
-      Is your ass logged in?
+      is your ass logged in?
     </Button>
   );
 };
