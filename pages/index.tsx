@@ -1,4 +1,5 @@
 import type { NextPage, GetServerSideProps } from "next";
+import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import Footer from "../components/nav/Footer";
 import {
@@ -15,11 +16,12 @@ import {
 } from "@chakra-ui/react";
 import { withIronSessionSsr } from "iron-session/next";
 import { ironOptions } from "../lib/ironConfig";
+import mainContent from "../resource/mainContent";
 export const getServerSideProps = withIronSessionSsr(
-  async function getServerSideProps({ req, ...context }) {
+  async function getServerSideProps({ req }) {
     const user = req.session.user;
     if (user) {
-      return { props: { user: { isLoggedIn: user.isLoggedIn } } };
+      return { props: { user } };
     } else {
       return { props: { user: { isLoggedIn: false } } };
     }
@@ -27,8 +29,18 @@ export const getServerSideProps = withIronSessionSsr(
   ironOptions
 );
 const Home: NextPage = ({ user }: any) => {
-  console.log(`user isLoggedIn: ${user.isLoggedIn}`);
   const { toggleColorMode } = useColorMode();
+  const [language, setLanguage] = useState(0);
+  useEffect(() => {
+    const getSessionLanguage = (): number => {
+      if (sessionStorage.getItem("language") !== undefined) {
+        return Number(sessionStorage.getItem("language"));
+      } else {
+        return 0;
+      }
+    };
+    setLanguage(getSessionLanguage());
+  }, []);
   const formBackground = useColorModeValue("gray.100", "gray.700");
   return (
     <Box position="relative" minH="100vh">
@@ -47,35 +59,40 @@ const Home: NextPage = ({ user }: any) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Heading mb={6}>Welcome</Heading>
+          <Heading mb={6}>{mainContent.headline}</Heading>
           <Box maxW="lg" mb={6}>
             <Image
               borderRadius={9}
-              src="/IMG_20200829_165326.jpg"
-              alt="Ludo and Ryan in Wales"
+              src={mainContent.homeImage}
+              alt={mainContent.homeImageAltText}
             ></Image>
           </Box>
-          <Text p={5}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab saepe
-            assumenda, hic error reprehenderit eveniet veniam dignissimos
-            praesentium eligendi at accusantium quod sit et, minima ullam atque,
-            laborum magnam exercitationem. Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Dolorum ullam distinctio veniam
-            perferendis libero optio, vero voluptatem, reiciendis laudantium
-            iure amet explicabo temporibus quaerat repellendus magnam ex debitis
-            laborum minus?
-          </Text>
-
-          <NextLink href="/login" passHref>
-            <Link>
-              <Button colorScheme="teal" mb={6}>
-                Log in
-              </Button>
-            </Link>
-          </NextLink>
+          <Text p={5}>{mainContent.homepageMainText}</Text>
+          {!user.isLoggedIn && (
+            <NextLink href="/login" passHref>
+              <Link>
+                <Button colorScheme="teal" mb={6}>
+                  log in
+                </Button>
+              </Link>
+            </NextLink>
+          )}
+          {user.isLoggedIn && (
+            <NextLink href={`/${user.id}`} passHref>
+              <Link>
+                <Button colorScheme="teal" mb={6}>
+                  my details
+                </Button>
+              </Link>
+            </NextLink>
+          )}
         </Flex>{" "}
       </Flex>
-      <Footer isLoggedIn={user.isLoggedIn} />
+      <Footer
+        isLoggedIn={user.isLoggedIn}
+        language={language}
+        setLanguage={setLanguage}
+      />
     </Box>
   );
 };

@@ -18,14 +18,21 @@ import DietComponent from "./DietComponent";
 import SubmissionModal from "./SubmissionModal";
 import BusComponent from "./BusComponent";
 import GuestInfoInputComponent from "./GuestInfoInputComponent";
+import guestInputContent from "../../resource/guestInputContent";
 
 type Props = {
   user: GuestTemplate;
   confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
+  language: number;
 };
 
-const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
+const EnterGuestInfo = ({
+  user,
+  confirmedGuest,
+  setConfirmedGuest,
+  language,
+}: Props) => {
   const [openKids, setOpenKids] = useState(false);
   const [openDiet, setOpenDiet] = useState(false);
   const [openPlus, setOpenPlus] = useState(true);
@@ -41,7 +48,7 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
       justifyContent="center"
       m={2}
     >
-      <Text>
+      {/* <Text>
         hello {user.name}
         <br />
         {user.plusOneName && (
@@ -58,20 +65,34 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
         <br />
         usa: {user.isInvitedToUSA.toString()}
         <br />
-      </Text>
+      </Text> */}
 
       <FormLabel>
-        <Heading m={3}>enter or update your info</Heading>
+        <Heading m={3}>
+          {language === 1
+            ? guestInputContent.headlineItalian
+            : guestInputContent.headlineEnglish}
+        </Heading>
       </FormLabel>
 
       <GuestInfoInputComponent
-        placeHolder={confirmedGuest.firstName || "first name"}
+        placeHolder={
+          confirmedGuest.firstName
+            ? confirmedGuest.firstName
+            : language === 1
+            ? guestInputContent.firstNameItalian
+            : guestInputContent.firstNameEnglish
+        }
         valueToSet={"firstName"}
         setConfirmedGuest={setConfirmedGuest}
         confirmedGuest={confirmedGuest}
       />
       <GuestInfoInputComponent
-        placeHolder={"last name"}
+        placeHolder={
+          language === 1
+            ? guestInputContent.lastNameItalian
+            : guestInputContent.lastNameEnglish
+        }
         valueToSet={"lastName"}
         setConfirmedGuest={setConfirmedGuest}
         confirmedGuest={confirmedGuest}
@@ -79,16 +100,26 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
       {openPlus && (
         <>
           <Heading m={3} size="md">
-            and my partner
+            {language === 1
+              ? guestInputContent.plusOneItalian
+              : guestInputContent.plusOneEnglish}
           </Heading>
           <GuestInfoInputComponent
-            placeHolder={confirmedGuest.plusOneFirstName || "first name"}
+            placeHolder={
+              confirmedGuest.plusOneFirstName || language === 1
+                ? guestInputContent.firstNameItalian
+                : guestInputContent.firstNameEnglish
+            }
             valueToSet={"plusOneFirstName"}
             setConfirmedGuest={setConfirmedGuest}
             confirmedGuest={confirmedGuest}
           />
           <GuestInfoInputComponent
-            placeHolder={"last name"}
+            placeHolder={
+              language === 1
+                ? guestInputContent.lastNameItalian
+                : guestInputContent.lastNameEnglish
+            }
             valueToSet={"plusOneLastName"}
             setConfirmedGuest={setConfirmedGuest}
             confirmedGuest={confirmedGuest}
@@ -105,6 +136,7 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
             {confirmedGuest.invitedToItaly && (
               <>
                 <RsvpComponent
+                  language={language}
                   openKids={openKids}
                   setOpenKids={setOpenKids}
                   location="italy"
@@ -117,6 +149,7 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
           <Stack spacing={5} direction="column">
             {confirmedGuest.invitedToUSA && (
               <RsvpComponent
+                language={language}
                 openKids={openKids}
                 setOpenKids={setOpenKids}
                 location="usa"
@@ -129,12 +162,14 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
       </InputGroup>
       {user.isInvitedToItaly && confirmedGuest.confirmedItaly && (
         <BusComponent
+          language={language}
           setConfirmedGuest={setConfirmedGuest}
           confirmedGuest={confirmedGuest}
         />
       )}
       {(confirmedGuest.confirmedItaly || confirmedGuest.confirmedUsa) && (
         <DietComponent
+          language={language}
           user={user}
           openDiet={openDiet}
           setOpenDiet={setOpenDiet}
@@ -144,7 +179,7 @@ const EnterGuestInfo = ({ user, confirmedGuest, setConfirmedGuest }: Props) => {
           setConfirmedGuest={setConfirmedGuest}
         ></DietComponent>
       )}
-      <SubmissionModal confirmedGuest={confirmedGuest} />
+      <SubmissionModal confirmedGuest={confirmedGuest} language={language} />
     </Flex>
   );
 };

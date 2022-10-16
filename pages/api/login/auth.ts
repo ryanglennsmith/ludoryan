@@ -17,6 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       isLoggedIn: true,
       isAdmin: true,
       id: "0",
+      language: 0,
     };
     await req.session.save();
     return res.status(200).json(req.session.user);
@@ -34,6 +35,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           isLoggedIn: true,
           isAdmin: false,
           id: user.id,
+          language: 0,
         };
         await req.session.save();
         return res.status(200).json(req.session.user);

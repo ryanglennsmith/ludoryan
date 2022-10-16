@@ -23,12 +23,14 @@ import {
   FaHeart,
   FaBaby,
 } from "react-icons/fa";
+import guestInputContent from "../../resource/guestInputContent";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 type Props = {
   confirmedGuest: IConfirmedGuest;
+  language: number;
 };
 
-const SubmissionModal = ({ confirmedGuest }: Props) => {
+const SubmissionModal = ({ confirmedGuest, language }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isClickedSave, setIsClickedSave] = useState(false);
   useEffect(() => {
@@ -67,32 +69,47 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
   }, [isClickedSave, confirmedGuest]);
   return (
     <>
-      <Button onClick={onOpen}>submit</Button>
+      <Button onClick={onOpen}>
+        {language === 1
+          ? guestInputContent.submitItalian
+          : guestInputContent.submitEnglish}
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>review</ModalHeader>
+          <ModalHeader>
+            {language === 1
+              ? guestInputContent.reviewItalian
+              : guestInputContent.reviewEnglish}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <List spacing={3}>
               {confirmedGuest.invitedToItaly && confirmedGuest.confirmedItaly && (
                 <ListItem>
                   <ListIcon as={FaGrinTongueWink} />
-                  yes, see you in italy
+                  {language === 1
+                    ? guestInputContent.confirmYesItalyItalian
+                    : guestInputContent.confirmYesItalyEnglish}{" "}
                 </ListItem>
               )}
               {confirmedGuest.invitedToItaly && !confirmedGuest.confirmedItaly && (
                 <ListItem>
                   <ListIcon as={FaGrimace} />
-                  no, sorry, no italy for me
+                  {language === 1
+                    ? guestInputContent.confirmNoItalyItalian
+                    : guestInputContent.confirmNoItalyEnglish}{" "}
                 </ListItem>
               )}
               {confirmedGuest.confirmedItaly && confirmedGuest.italyPlusOne && (
                 <List spacing={3} ml={10}>
                   <ListItem>
                     <ListIcon as={FaHeart} />
-                    with my partner {confirmedGuest.plusOneFirstName}
+                    {language === 1
+                      ? `${guestInputContent.withItalian} ${guestInputContent.myPartnerItalian} `
+                      : `${guestInputContent.withEnglish} ${guestInputContent.myPartnerEnglish} `}
+                    {confirmedGuest.plusOneFirstName}
                   </ListItem>
                 </List>
               )}
@@ -100,7 +117,10 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                 <List spacing={3} ml={10}>
                   <ListItem>
                     <ListIcon as={FaHeartBroken} />
-                    without my partner {confirmedGuest.plusOneFirstName}
+                    {language === 1
+                      ? `${guestInputContent.withoutItalian} ${guestInputContent.myPartnerItalian} `
+                      : `${guestInputContent.withoutEnglish} ${guestInputContent.myPartnerEnglish} `}{" "}
+                    {confirmedGuest.plusOneFirstName}
                   </ListItem>
                 </List>
               )}
@@ -108,8 +128,11 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                 <List spacing={3} ml={10}>
                   <ListItem>
                     <ListIcon as={FaBaby} />
-                    with {confirmedGuest.italyKids?.toString() || "0"} bastard
-                    kids
+                    {language === 1
+                      ? guestInputContent.withKidsItalian
+                      : guestInputContent.withKidsEnglish}
+                    {": "}
+                    {confirmedGuest.italyKids?.toString() || "0"}
                   </ListItem>
                 </List>
               )}
@@ -119,7 +142,9 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                   <List spacing={3} ml={10}>
                     <ListItem>
                       <ListIcon as={FaBus} />
-                      and riding the party bus
+                      {language === 1
+                        ? guestInputContent.rideTheBusItalian
+                        : guestInputContent.rideTheBusEnglish}
                     </ListItem>
                   </List>
                 )}
@@ -129,7 +154,9 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                   <List spacing={3} ml={10}>
                     <ListItem>
                       <ListIcon as={FaCar} />
-                      and driving myself
+                      {language === 1
+                        ? guestInputContent.notRideTheBusItalian
+                        : guestInputContent.notRideTheBusEnglish}{" "}
                     </ListItem>
                   </List>
                 )}
@@ -137,20 +164,27 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
               {confirmedGuest.invitedToUSA && confirmedGuest.confirmedUsa && (
                 <ListItem>
                   <ListIcon as={FaGrinTongueWink} />
-                  yes, see you in usa
+                  {language === 1
+                    ? guestInputContent.confirmYesUsaItalian
+                    : guestInputContent.confirmYesUsaEnglish}{" "}
                 </ListItem>
               )}
               {confirmedGuest.invitedToUSA && !confirmedGuest.confirmedUsa && (
                 <ListItem>
                   <ListIcon as={FaGrimace} />
-                  no, sorry, no usa for me
+                  {language === 1
+                    ? guestInputContent.confirmNoUsaItalian
+                    : guestInputContent.confirmNoUsaEnglish}{" "}
                 </ListItem>
               )}
               {confirmedGuest.confirmedUsa && confirmedGuest.usaPlusOne && (
                 <List spacing={3} ml={10}>
                   <ListItem>
                     <ListIcon as={FaHeart} />
-                    with my partner {confirmedGuest.plusOneFirstName}
+                    {language === 1
+                      ? `${guestInputContent.withItalian} ${guestInputContent.myPartnerItalian} `
+                      : `${guestInputContent.withEnglish} ${guestInputContent.myPartnerEnglish} `}{" "}
+                    {confirmedGuest.plusOneFirstName}
                   </ListItem>
                 </List>
               )}
@@ -158,7 +192,10 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                 <List spacing={3} ml={10}>
                   <ListItem>
                     <ListIcon as={FaHeartBroken} />
-                    without my partner {confirmedGuest.plusOneFirstName}
+                    {language === 1
+                      ? `${guestInputContent.withoutItalian} ${guestInputContent.myPartnerItalian} `
+                      : `${guestInputContent.withoutEnglish} ${guestInputContent.myPartnerEnglish} `}{" "}
+                    {confirmedGuest.plusOneFirstName}
                   </ListItem>
                 </List>
               )}
@@ -166,7 +203,11 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                 <List spacing={3} ml={10}>
                   <ListItem>
                     <ListIcon as={FaBaby} />
-                    with {confirmedGuest.usaKids || "0"} bastard kids
+                    {language === 1
+                      ? guestInputContent.withKidsItalian
+                      : guestInputContent.withKidsEnglish}
+                    {": "}
+                    {confirmedGuest.usaKids || "0"}
                   </ListItem>
                 </List>
               )}
@@ -175,7 +216,11 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                   <List spacing={3}>
                     <ListItem>
                       <ListIcon as={FaPizzaSlice} />
-                      and i don&apos;t fucking eat{" "}
+                      {confirmedGuest.firstName}{" "}
+                      {language === 1
+                        ? guestInputContent.hasDietaryRequirementsItalian
+                        : guestInputContent.hasDietaryRequirementsEnglish}
+                      {": "}
                       {confirmedGuest.dietaryRestrictions.toString()}
                     </ListItem>
                   </List>
@@ -185,7 +230,11 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
                   <List spacing={3}>
                     <ListItem>
                       <ListIcon as={FaPizzaSlice} />
-                      and my partner don&apos;t fucking eat{" "}
+                      {confirmedGuest.plusOneFirstName}{" "}
+                      {language === 1
+                        ? guestInputContent.hasDietaryRequirementsItalian
+                        : guestInputContent.hasDietaryRequirementsEnglish}
+                      {": "}
                       {confirmedGuest.plusOneDietaryRestrictions.toString()}
                     </ListItem>
                   </List>
@@ -195,10 +244,14 @@ const SubmissionModal = ({ confirmedGuest }: Props) => {
 
           <ModalFooter>
             <Button variant="ghost" mr={3} onClick={onClose}>
-              go back
+              {language === 1
+                ? guestInputContent.goBackItalian
+                : guestInputContent.goBackEnglish}
             </Button>
             <Button variant="ghost" onClick={() => setIsClickedSave(true)}>
-              save
+              {language === 1
+                ? guestInputContent.submitItalian
+                : guestInputContent.submitEnglish}
             </Button>
           </ModalFooter>
         </ModalContent>

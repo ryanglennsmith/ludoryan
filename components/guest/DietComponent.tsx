@@ -1,7 +1,18 @@
-import { Button, Heading, Input, InputGroup, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  Icon,
+  Input,
+  InputGroup,
+  Stack,
+} from "@chakra-ui/react";
 import { GuestTemplate } from "@prisma/client";
 import React from "react";
+import guestInputContent from "../../resource/guestInputContent";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
+import { TbCheese } from "react-icons/tb";
+import { FaCar, FaCarrot, FaFish } from "react-icons/fa";
+
 type Props = {
   user: GuestTemplate;
   openDiet: boolean;
@@ -10,6 +21,7 @@ type Props = {
   setOpenPlusDiet: Function;
   confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
+  language: number;
 };
 const DietComponent = ({
   user,
@@ -19,14 +31,22 @@ const DietComponent = ({
   setOpenPlusDiet,
   confirmedGuest,
   setConfirmedGuest,
+  language,
 }: Props) => {
   return (
     <>
       <Heading size="md" mb={3}>
-        {confirmedGuest.firstName} has dietary requirements
+        {confirmedGuest.firstName}{" "}
+        {language === 1
+          ? guestInputContent.hasDietaryRequirementsItalian
+          : guestInputContent.hasDietaryRequirementsEnglish}
       </Heading>
       <Stack spacing={5} direction="row" mb={3}>
-        <Button onClick={() => setOpenDiet(true)}>yes</Button>
+        <Button onClick={() => setOpenDiet(true)}>
+          {language === 1
+            ? guestInputContent.yesItalian
+            : guestInputContent.yesEnglish}
+        </Button>
         <Button
           onClick={() => {
             setOpenDiet(false);
@@ -40,28 +60,52 @@ const DietComponent = ({
         </Button>
       </Stack>
       <InputGroup size="md">
-        <Input
-          disabled={openDiet ? false : true}
-          placeholder={`${confirmedGuest.firstName} doesn't fucking eat...`}
-          value={confirmedGuest.dietaryRestrictions || ""}
-          variant="filled"
-          m={2}
-          mb={3}
-          onChange={(e) =>
-            setConfirmedGuest({
-              ...confirmedGuest,
-              dietaryRestrictions: e.target.value,
-            })
-          }
-        ></Input>
+        <Stack>
+          <Button>
+            <Icon as={FaFish} />
+          </Button>
+          <Button>
+            <Icon as={FaCarrot} />
+          </Button>
+          <Button>
+            <Icon as={TbCheese} />
+          </Button>
+
+          <Input
+            width={400}
+            disabled={openDiet ? false : true}
+            placeholder={`${confirmedGuest.firstName}: ${
+              language === 1
+                ? guestInputContent.specialRequirementsItalian
+                : guestInputContent.specialRequirementsEnglish
+            }`}
+            value={confirmedGuest.dietaryRestrictions || ""}
+            variant="filled"
+            m={2}
+            mb={3}
+            onChange={(e) =>
+              setConfirmedGuest({
+                ...confirmedGuest,
+                dietaryRestrictions: e.target.value,
+              })
+            }
+          ></Input>
+        </Stack>
       </InputGroup>
       {confirmedGuest.plusOneFirstName && (
         <>
           <Heading size="md" mb={3}>
-            {confirmedGuest.plusOneFirstName} has dietary requirements
+            {confirmedGuest.plusOneFirstName}{" "}
+            {language === 1
+              ? guestInputContent.hasDietaryRequirementsItalian
+              : guestInputContent.hasDietaryRequirementsEnglish}
           </Heading>
           <Stack spacing={5} direction="row" mb={3}>
-            <Button onClick={() => setOpenPlusDiet(true)}>yes</Button>
+            <Button onClick={() => setOpenPlusDiet(true)}>
+              {language === 1
+                ? guestInputContent.yesItalian
+                : guestInputContent.yesEnglish}
+            </Button>
             <Button
               onClick={() => {
                 setOpenPlusDiet(false);
@@ -76,7 +120,11 @@ const DietComponent = ({
           </Stack>
           <InputGroup size="md">
             <Input
-              placeholder={`${confirmedGuest.plusOneFirstName} doesn't fucking eat...`}
+              placeholder={`${confirmedGuest.plusOneFirstName}: ${
+                language === 1
+                  ? guestInputContent.specialRequirementsItalian
+                  : guestInputContent.specialRequirementsEnglish
+              }`}
               value={confirmedGuest.plusOneDietaryRestrictions}
               variant="filled"
               disabled={openPlusDiet ? false : true}

@@ -14,10 +14,19 @@ import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { CgLogIn, CgLogOut } from "react-icons/cg";
 import NextLink from "next/link";
 import Logout from "../login/Logout";
+import { US, IT } from "country-flag-icons/react/3x2";
+import { useEffect } from "react";
 type Props = {
   isLoggedIn: boolean;
+  language: number;
+  setLanguage: Function;
 };
-export default function Footer({ isLoggedIn }: Props) {
+export default function Footer({ isLoggedIn, language, setLanguage }: Props) {
+  useEffect(() => {
+    
+    sessionStorage.setItem("language", language.toString());
+  }, [language]);
+
   const { toggleColorMode } = useColorMode();
   const Icon = useColorModeValue(MoonIcon, SunIcon);
   return (
@@ -46,6 +55,16 @@ export default function Footer({ isLoggedIn }: Props) {
           </Link>
         </NextLink>
         <Stack direction={"row"} spacing={6}>
+          {language === 0 && (
+            <Button variant="ghost" onClick={() => setLanguage(1)}>
+              <Icon as={US} />
+            </Button>
+          )}
+          {language === 1 && (
+            <Button variant="ghost" onClick={() => setLanguage(0)}>
+              <Icon as={IT} />
+            </Button>
+          )}
           <NextLink href="/" passHref>
             <Link>
               <Button>

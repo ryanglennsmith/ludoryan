@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Login from "../components/login/Login";
 import Logout from "../components/login/Logout";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -25,7 +25,17 @@ const Home: NextPage = () => {
 
   const [message, setMessage] = useState("not logged in");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [language, setLanguage] = useState(0);
+  useEffect(() => {
+    const getSessionLanguage = (): number => {
+      if (sessionStorage.getItem("language") !== undefined) {
+        return Number(sessionStorage.getItem("language"));
+      } else {
+        return 0;
+      }
+    };
+    setLanguage(getSessionLanguage());
+  }, []);
   return (
     <>
       <Flex height="100vh" alignItems="center" justifyContent="center">
@@ -59,7 +69,11 @@ const Home: NextPage = () => {
           ></Login>
         </Flex>
       </Flex>
-      <Footer isLoggedIn={isLoggedIn} />
+      <Footer
+        isLoggedIn={isLoggedIn}
+        language={language}
+        setLanguage={setLanguage}
+      />
     </>
   );
 };

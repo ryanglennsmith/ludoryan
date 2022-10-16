@@ -16,4 +16,5 @@ type User = {
   isLoggedIn: boolean;
   isAdmin: boolean;
   id: string;
+  language: number;
 };

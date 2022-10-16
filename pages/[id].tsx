@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { GuestTemplate } from "@prisma/client";
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import EnterGuestInfo from "../components/guest/EnterGuestInfo";
 import Footer from "../components/nav/Footer";
@@ -8,14 +8,8 @@ import { useEffect, useState } from "react";
 import IConfirmedGuest from "../types/IConfirmedGuest";
 import { ironOptions } from "../lib/ironConfig";
 import { withIronSessionSsr } from "iron-session/next";
-import { IronSession } from "iron-session";
 type Props = { user: GuestTemplate; sessionUser: any };
-// export const getServerSideProps = async (ctx: NextPageContext) => {
-//   console.log(ctx.query);
-//   const response = await fetch(`http://localhost:3000/api/${ctx.query.id}`);
-//   const user = await response.json();
-//   return { props: { user } };
-// };
+
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req, ...context }) {
     console.log(context.query);
@@ -70,9 +64,18 @@ const GuestPage: NextPage<Props> = ({ user, sessionUser }: Props) => {
     id: user.id,
     firstName: user.name,
     plusOneFirstName: user.plusOneName || undefined,
-    // location: bringADate(user),
   });
-
+  const [language, setLanguage] = useState(0);
+  useEffect(() => {
+    const getSessionLanguage = (): number => {
+      if (sessionStorage.getItem("language") !== undefined) {
+        return Number(sessionStorage.getItem("language"));
+      } else {
+        return 0;
+      }
+    };
+    setLanguage(getSessionLanguage());
+  }, []);
   console.log(user);
   console.log(confirmedGuest);
   return (
@@ -86,12 +89,17 @@ const GuestPage: NextPage<Props> = ({ user, sessionUser }: Props) => {
           pb="4.5rem"
         >
           <EnterGuestInfo
+            language={language}
             user={user}
             confirmedGuest={confirmedGuest}
             setConfirmedGuest={setConfirmedGuest}
           />
         </Flex>
-        <Footer isLoggedIn={sessionUser.isLoggedIn} />
+        <Footer
+          isLoggedIn={sessionUser.isLoggedIn}
+          language={language}
+          setLanguage={setLanguage}
+        />
       </Box>
     </>
   );

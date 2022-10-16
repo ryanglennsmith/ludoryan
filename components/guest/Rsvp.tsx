@@ -4,12 +4,14 @@ import KidsInfo from "./KidsInfo";
 import { FaPizzaSlice, FaGuitar } from "react-icons/fa";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 import PlusOneInfo from "./PlusOneInfo";
+import guestInputContent from "../../resource/guestInputContent";
 type Props = {
   openKids: boolean;
   setOpenKids: Function;
   location: string;
   confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
+  language: number;
 };
 const RsvpComponent = ({
   openKids,
@@ -17,6 +19,7 @@ const RsvpComponent = ({
   location,
   confirmedGuest,
   setConfirmedGuest,
+  language,
 }: Props) => {
   const highlight = useColorModeValue("orange", "lime");
   const [plusOneGo, setPlusOneGo] = useState(true);
@@ -42,7 +45,9 @@ const RsvpComponent = ({
             })
           }
         >
-          yes
+          {language === 1
+            ? guestInputContent.yesItalian
+            : guestInputContent.yesEnglish}
         </Button>
         <Button
           onClick={() => {
@@ -59,18 +64,22 @@ const RsvpComponent = ({
 
       <>
         <Text>
-          i{" "}
+          {language === 0 && <>{guestInputContent.firstPersonEnglish} </>}
           {confirmedGuest[confirmedLocation] && (
             <Text as="span" color={highlight}>
-              will
+              {language === 1
+                ? guestInputContent.willAttendItalian
+                : guestInputContent.willAttendEnglish}
             </Text>
           )}
           {!confirmedGuest[confirmedLocation] && (
             <Text as="span" color="crimson">
-              will not
+              {language === 1
+                ? guestInputContent.willNotAttendItalian
+                : guestInputContent.willNotAttendEnglish}
             </Text>
           )}{" "}
-          attend in {location}
+          in {location}
         </Text>
         {confirmedGuest[confirmedLocation] && (
           <>
@@ -80,15 +89,21 @@ const RsvpComponent = ({
                   ...
                   {plusOneGo && (
                     <Text as="span" color={highlight}>
-                      with
+                      {language === 1
+                        ? guestInputContent.withItalian
+                        : guestInputContent.withEnglish}
                     </Text>
                   )}
                   {!plusOneGo && (
                     <Text as="span" color="crimson">
-                      without
+                      {language === 1
+                        ? guestInputContent.withoutItalian
+                        : guestInputContent.withoutEnglish}
                     </Text>
                   )}{" "}
-                  my partner
+                  {language === 1
+                    ? guestInputContent.myPartnerItalian
+                    : guestInputContent.myPartnerEnglish}
                 </Text>
                 <PlusOneInfo
                   location={location}
@@ -99,6 +114,7 @@ const RsvpComponent = ({
               </>
             )}
             <KidsInfo
+              language={language}
               openKids={openKids}
               setOpenKids={setOpenKids}
               location={location}

@@ -86,7 +86,7 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
   const [isUSAFiltered, setIsUSAFiltered] = useState<boolean>(false);
 
   const [filterState, setFilterState] = useState<FilterState>(_fs);
-
+  const [language, setLanguage] = useState(0);
   const resetState = () => {
     setIsEnterGuestInfo(false);
     setIsCheckGuestList(false);
@@ -169,7 +169,16 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
       setIsClickedEdit(false);
     }
   }, [isClickedSave, isClickedEdit]);
-
+  useEffect(() => {
+    const getSessionLanguage = (): number => {
+      if (sessionStorage.getItem("language") !== undefined) {
+        return Number(sessionStorage.getItem("language"));
+      } else {
+        return 0;
+      }
+    };
+    setLanguage(getSessionLanguage());
+  }, []);
   useEffect(() => {
     setIsItalyFiltered(filterState.location.isItalyFiltered);
     setIsUSAFiltered(filterState.location.isUSAFiltered);
@@ -321,7 +330,11 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
           <GuestResponseTable serverResponse={serverResponse} />
         )}
       </Flex>
-      <Footer isLoggedIn={user.isLoggedIn} />
+      <Footer
+        isLoggedIn={user.isLoggedIn}
+        language={language}
+        setLanguage={setLanguage}
+      />
     </Box>
   );
 };

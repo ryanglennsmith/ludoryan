@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 type Props = {
   message: string;
@@ -10,6 +11,15 @@ type Props = {
 const isValidEntry = (text: string): boolean => text.length > 0;
 
 const Login = ({ message, setMessage, user, pw }: Props) => {
+  // const [keyEvent, setKeyEvent] = useState("");
+  // const keyHandler = (e: any) => {
+  //   setKeyEvent(e.key);
+  // };
+  // useEffect(() => {
+  //   if (keyEvent === "Enter") {
+  //     login();
+  //   }
+  // }, [keyEvent]);
   const router = useRouter();
   const login = async () => {
     if (isValidEntry(user) && isValidEntry(pw)) {
@@ -35,7 +45,18 @@ const Login = ({ message, setMessage, user, pw }: Props) => {
 
   return (
     <>
-      <Button onClick={login} colorScheme="teal" mb={6}>
+      <Button
+        onClick={login}
+        // onKeyDown={(e) => {
+        //   console.log(e.key);
+        //   if (e.key === "Enter") {
+        //     // console.log(e.key)
+        //     // login;
+        //   }
+        // }}
+        colorScheme="teal"
+        mb={6}
+      >
         log in
       </Button>
       <p>{message}</p>
