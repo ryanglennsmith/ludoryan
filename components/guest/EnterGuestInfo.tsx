@@ -37,7 +37,7 @@ const EnterGuestInfo = ({
   const [openDiet, setOpenDiet] = useState(false);
   const [openPlus, setOpenPlus] = useState(true);
   const [cancelPlus, setCancelPlus] = useState(false);
-  const [openPlusDiet, setOpenPlusDiet] = useState(false);
+  const [openPlusOneDiet, setOpenPlusOneDiet] = useState(false);
   const [confirmSubmit, setConfirmSubmit] = useState(false);
 
   return (
@@ -48,25 +48,6 @@ const EnterGuestInfo = ({
       justifyContent="center"
       m={2}
     >
-      {/* <Text>
-        hello {user.name}
-        <br />
-        {user.plusOneName && (
-          <>
-            and {user.plusOneName}
-            <br />
-          </>
-        )}
-        {user.email}
-        <br />
-        {user.id}
-        <br />
-        italy: {user.isInvitedToItaly.toString()}
-        <br />
-        usa: {user.isInvitedToUSA.toString()}
-        <br />
-      </Text> */}
-
       <FormLabel>
         <Heading m={3}>
           {language === 1
@@ -106,7 +87,9 @@ const EnterGuestInfo = ({
           </Heading>
           <GuestInfoInputComponent
             placeHolder={
-              confirmedGuest.plusOneFirstName || language === 1
+              confirmedGuest.plusOneFirstName
+                ? confirmedGuest.plusOneFirstName
+                : language === 1
                 ? guestInputContent.firstNameItalian
                 : guestInputContent.firstNameEnglish
             }
@@ -173,8 +156,8 @@ const EnterGuestInfo = ({
           user={user}
           openDiet={openDiet}
           setOpenDiet={setOpenDiet}
-          openPlusDiet={openPlusDiet}
-          setOpenPlusDiet={setOpenPlusDiet}
+          openPlusOneDiet={openPlusOneDiet}
+          setOpenPlusOneDiet={setOpenPlusOneDiet}
           confirmedGuest={confirmedGuest}
           setConfirmedGuest={setConfirmedGuest}
         ></DietComponent>
