@@ -149,7 +149,6 @@ const DietComponent = ({
             size="lg"
             onClick={() => {
               setIsPescatarianBtn(!isPescatarianBtn);
-
               setIsVeganBtn(false);
               setIsVegetarianBtn(false);
             }}

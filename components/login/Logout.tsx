@@ -12,7 +12,7 @@ const Logout = () => {
     router.push("/");
   };
   return (
-    <Button onClick={logout} mb={6}>
+    <Button size="xs" onClick={logout} mb={6}>
       <Icon as={CgLogOut} />
     </Button>
   );
