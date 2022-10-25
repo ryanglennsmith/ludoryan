@@ -23,7 +23,6 @@ type Props = {
 };
 export default function Footer({ isLoggedIn, language, setLanguage }: Props) {
   useEffect(() => {
-    
     sessionStorage.setItem("language", language.toString());
   }, [language]);
 
@@ -36,38 +35,43 @@ export default function Footer({ isLoggedIn, language, setLanguage }: Props) {
       position="absolute"
       bottom={0}
       width="100%"
-      height="4.5rem"
+      height={{ base: "6rem", md: "4.5rem" }}
+      px={3}
+      pb={0}
     >
-      <Container
-        as={Stack}
-        maxW={"6xl"}
+      <Box
+        sx={{ border: "2px solid blue" }}
         py={4}
+        as={Stack}
         direction={{ base: "column", md: "row" }}
         spacing={4}
         justify={{ base: "center", md: "space-between" }}
         align={{ base: "center", md: "center" }}
       >
-        <NextLink href="/admin" passHref>
-          <Link>
-            <Text>
-              <Icon as={FcCopyright} /> 2022 Ludo & Ryan
-            </Text>
-          </Link>
-        </NextLink>
+        {/* TODO remove link to admin */}
+        <Stack>
+          <NextLink href="/admin" passHref>
+            <Link>
+              <Text>
+                <Icon as={FcCopyright} /> 2022 Ludo & Ryan
+              </Text>
+            </Link>
+          </NextLink>
+        </Stack>
         <Stack direction={"row"} spacing={6}>
           {language === 0 && (
-            <Button variant="ghost" onClick={() => setLanguage(1)}>
+            <Button size="xs" variant="ghost" onClick={() => setLanguage(1)}>
               <Icon as={US} />
             </Button>
           )}
           {language === 1 && (
-            <Button variant="ghost" onClick={() => setLanguage(0)}>
+            <Button size="xs" variant="ghost" onClick={() => setLanguage(0)}>
               <Icon as={IT} />
             </Button>
           )}
           <NextLink href="/" passHref>
             <Link>
-              <Button>
+              <Button size="xs">
                 <Icon as={FaHome} />
               </Button>
             </Link>
@@ -76,17 +80,17 @@ export default function Footer({ isLoggedIn, language, setLanguage }: Props) {
           {!isLoggedIn && (
             <NextLink href="/login" passHref>
               <Link>
-                <Button>
+                <Button size="xs">
                   <Icon as={CgLogIn} />
                 </Button>
               </Link>
             </NextLink>
           )}
-          <Button onClick={toggleColorMode}>
+          <Button size="xs" onClick={toggleColorMode}>
             <Icon />
           </Button>
         </Stack>
-      </Container>
+      </Box>
     </Box>
   );
 }

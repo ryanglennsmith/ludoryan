@@ -48,8 +48,8 @@ const Home: NextPage = ({ user }: any) => {
         alignItems="center"
         justifyContent="center"
         direction="column"
-        pb="4.5rem"
-        sx={{ border: "2px solid red" }}
+        pb={{ base: "6rem", md: "4.5rem" }}
+        // sx={{ border: "2px solid red" }}
       >
         <Flex
           direction="column"
