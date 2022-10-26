@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import IConfirmedGuest from "../types/IConfirmedGuest";
 import { ironOptions } from "../lib/ironConfig";
 import { withIronSessionSsr } from "iron-session/next";
+import { server } from "../lib/serverConfig";
 type Props = { user: GuestTemplate; sessionUser: any };
 
 export const getServerSideProps = withIronSessionSsr(
@@ -21,9 +22,7 @@ export const getServerSideProps = withIronSessionSsr(
     ) {
       return { notFound: true };
     }
-    const response = await fetch(
-      `http://localhost:3000/api/${context.query.id}`
-    );
+    const response = await fetch(`${server}/api/${context.query.id}`);
     const user = await response.json();
     return { props: { user, sessionUser } };
   },
