@@ -75,32 +75,30 @@ const GuestPage: NextPage<Props> = ({ user, sessionUser }: Props) => {
     };
     setLanguage(getSessionLanguage());
   }, []);
-  console.log(user);
-  console.log(confirmedGuest);
+
   return (
-    <>
-      {" "}
-      <Box position="relative" minH="100vh">
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          direction="column"
-          pb="4.5rem"
-        >
-          <EnterGuestInfo
-            language={language}
-            user={user}
-            confirmedGuest={confirmedGuest}
-            setConfirmedGuest={setConfirmedGuest}
-          />
-        </Flex>
-        <Footer
-          isLoggedIn={sessionUser.isLoggedIn}
+    <Box position="relative" minH="100vh" sx={{ border: "2px solid red" }}>
+      <Flex
+        sx={{ border: "2px solid pink" }}
+        alignItems="center"
+        justifyContent="center"
+        direction="column"
+        px={3}
+        pb="4.5rem"
+      >
+        <EnterGuestInfo
           language={language}
-          setLanguage={setLanguage}
+          user={user}
+          confirmedGuest={confirmedGuest}
+          setConfirmedGuest={setConfirmedGuest}
         />
-      </Box>
-    </>
+      </Flex>
+      <Footer
+        isLoggedIn={sessionUser.isLoggedIn}
+        language={language}
+        setLanguage={setLanguage}
+      />
+    </Box>
   );
 };
 export default GuestPage;

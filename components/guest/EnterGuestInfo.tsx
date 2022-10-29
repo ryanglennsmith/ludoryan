@@ -41,15 +41,9 @@ const EnterGuestInfo = ({
   const [confirmSubmit, setConfirmSubmit] = useState(false);
 
   return (
-    <Flex
-      w="2xl"
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      m={2}
-    >
+    <Flex direction="column" alignItems="center" justifyContent="center" m={2}>
       <FormLabel>
-        <Heading m={3}>
+        <Heading m={3} textAlign="center">
           {language === 1
             ? guestInputContent.headlineItalian
             : guestInputContent.headlineEnglish}
@@ -80,7 +74,7 @@ const EnterGuestInfo = ({
       />
       {openPlus && (
         <>
-          <Heading m={3} size="md">
+          <Heading m={3} size="md" textAlign="center">
             {language === 1
               ? guestInputContent.plusOneItalian
               : guestInputContent.plusOneEnglish}
@@ -110,7 +104,7 @@ const EnterGuestInfo = ({
         </>
       )}
 
-      <Heading size="md" mb={3}>
+      <Heading size="md" mb={3} textAlign="center">
         rsvp
       </Heading>
       <InputGroup alignItems="center" justifyContent="center">
