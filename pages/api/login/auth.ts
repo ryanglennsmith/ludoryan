@@ -1,9 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { ironOptions } from "../../../lib/ironConfig";
-
-import { isSamePass } from "../../../services/encryption/isSamePass";
-
 import { getUser, closeTxn } from "../../../services/dbTxn/getUser";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -24,10 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const user = await getUser(req.body.username);
     await closeTxn();
     if (user) {
-      const isMatch: boolean = await isSamePass(
-        req.body.password,
-        user.password
-      );
+      const isMatch: boolean = req.body.password === user.password;
       if (user && isMatch) {
         req.session.user = {
           username: req.body.username,
