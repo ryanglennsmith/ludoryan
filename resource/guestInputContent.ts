@@ -87,12 +87,15 @@ const guestInputContent: IGuestInputContent = {
   howManyItalian: "quanti bambini?",
   withoutKidsEnglish: "without children who need kid's menu",
   withoutKidsItalian: "senza bambini che hanno bisogno di menu bambino",
-  rideTheBusEnglish: "i will ride the bus to and from the venue",
-  rideTheBusItalian: "prendo la navetta per venire e tornare dalla festa",
-  notRideTheBusEnglish: "i will arrange my own travel to and from the venue",
-  notRideTheBusItalian: "mi arrangio da sol* per venire e tornare dalla festa",
-  transportTitleEnglish: "transport to venue",
-  transportTitleItalian: "spostamenti per/da festa",
+  rideTheBusEnglish: "i will ride the bus to and from the venue in milan",
+  rideTheBusItalian:
+    "prendo la navetta per venire e tornare dalla festa a milano",
+  notRideTheBusEnglish:
+    "i will arrange my own travel to and from the venue in milan",
+  notRideTheBusItalian:
+    "mi arrangio da sol* per venire e tornare dalla festa a milano",
+  transportTitleEnglish: "transport to venue in milan",
+  transportTitleItalian: "spostamenti per/da festa a milano",
   hasDietaryRequirementsEnglish: "has dietary requirements",
   hasDietaryRequirementsItalian: "ha esigenze alimentari",
   pescatarianEnglish: "pescatarian",
