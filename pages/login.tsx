@@ -48,7 +48,6 @@ const Home: NextPage = () => {
             type="email"
             onChange={(e) => {
               setUser(e.target.value);
-              console.log(user);
             }}
           ></Input>
           <Input
@@ -58,7 +57,6 @@ const Home: NextPage = () => {
             type="password"
             onChange={(e) => {
               setPw(e.target.value);
-              console.log(pw);
             }}
           ></Input>
           <Login

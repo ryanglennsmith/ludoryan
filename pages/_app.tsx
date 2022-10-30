@@ -11,13 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   useEffect(() => {
-    const handleRouteChange = (url: any, { shallow }: any) => {
-      console.log(
-        `App is changing to ${url} ${
-          shallow ? "with" : "without"
-        } shallow routing`
-      );
-    };
+    const handleRouteChange = (url: any, { shallow }: any) => {};
     router.events.on("routeChangeStart", handleRouteChange);
 
     // If the component is unmounted, unsubscribe
@@ -29,17 +23,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     router.events.on("routeChangeStart", (url) => {
       setIsLoading(true);
-      console.log(`isLoading: ${isLoading}`);
     });
 
     router.events.on("routeChangeComplete", (url) => {
       setIsLoading(false);
-      console.log(`isLoading: ${isLoading}`);
     });
 
     router.events.on("routeChangeError", (url) => {
       setIsLoading(false);
-      console.log(`isLoading: ${isLoading}`);
     });
   }, [router]);
   return (

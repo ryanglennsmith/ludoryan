@@ -13,7 +13,6 @@ type Props = { user: GuestTemplate; sessionUser: any };
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req, ...context }) {
-    console.log(context.query);
     const sessionUser: any = req.session.user;
     if (
       sessionUser?.isAdmin !== true &&

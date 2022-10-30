@@ -38,13 +38,7 @@ const Login = ({ message, setMessage, user, pw }: Props) => {
     <>
       <Button
         onClick={login}
-        // onKeyDown={(e) => {
-        //   console.log(e.key);
-        //   if (e.key === "Enter") {
-        //     // console.log(e.key)
-        //     // login;
-        //   }
-        // }}
+       
         colorScheme="teal"
         mb={6}
       >

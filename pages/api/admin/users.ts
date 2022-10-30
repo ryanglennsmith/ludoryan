@@ -9,7 +9,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const filter = await req.body.filter.currentFilterState;
-  console.log(req.body.filter);
   const foundUsers = await getUsersByFilter(filter);
   await closeTxn();
   return res.status(200).json({ createdUser: foundUsers });
