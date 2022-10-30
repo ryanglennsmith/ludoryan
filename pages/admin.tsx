@@ -343,13 +343,16 @@ const Admin: NextPage<Props> = ({
               confirmed
             </Button>
           )}
-          <CSVLink data={clientGuestList}>
+          <CSVLink data={confirmedGuestList}>
             <Button m={2} mb={3}>
               export csv
             </Button>
           </CSVLink>
         </Flex>
-        {(isEnterGuestInfo || isEditGuest || isCheckGuestList) && (
+        {(isEnterGuestInfo ||
+          isEditGuest ||
+          isCheckGuestList ||
+          isCheckConfirmedList) && (
           <Button variant="ghost" onClick={() => resetState()}>
             <Icon color="crimson" as={FaBomb} />
           </Button>
