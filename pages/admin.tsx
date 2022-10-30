@@ -293,7 +293,7 @@ const Admin: NextPage<Props> = ({
             confirmedGuestList={confirmedGuestList}
           ></ConfirmedGuestResponseTable>
         )}
-        <Flex direction="row" justify="space-evenly" width="50%">
+        <Flex direction="column" justify="space-evenly" width="50%">
           {!isEnterGuestInfo && (
             <Button
               m={2}
