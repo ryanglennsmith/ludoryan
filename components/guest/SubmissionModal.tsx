@@ -52,8 +52,6 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
             plusOneFirstName: confirmedGuest.plusOneFirstName || null,
             plusOneLastName: confirmedGuest.plusOneLastName || null,
             id: confirmedGuest.id,
-            invitedToItaly: confirmedGuest.invitedToItaly,
-            invitedToUsa: confirmedGuest.invitedToUSA,
             confirmedItaly: confirmedGuest.confirmedItaly || null,
             confirmedUsa: confirmedGuest.confirmedUsa || null,
             italyKids: confirmedGuest.italyKids || null,
@@ -61,6 +59,8 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
             italyPlusOne: confirmedGuest.italyPlusOne || null,
             usaKids: confirmedGuest.usaKids || null,
             usaPlusOne: confirmedGuest.usaPlusOne || null,
+            invitedToItaly: confirmedGuest.invitedToItaly,
+            invitedToUsa: confirmedGuest.invitedToUSA,
           },
         }),
       }).then((response) => {

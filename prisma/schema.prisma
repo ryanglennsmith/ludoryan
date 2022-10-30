@@ -22,24 +22,22 @@ model GuestTemplate {
 }
 
 model ConfirmedGuest {
-  id                          String            @id @default(uuid())
-  template                    GuestTemplate     @relation(fields: [templateId], references: [id])
-  templateId                  String            @unique
   dietaryRestrictions         String?
   plusOneDietaryRestrictions  String?
   firstName                   String
   lastName                    String?
   plusOneFirstName            String?
   plusOneLastName             String?
+  id                          String            @id @default(uuid())
   confirmedItaly              Boolean?
   confirmedUsa                Boolean?
   italyKids                   Int?
   italyBus                    Boolean?
   italyPlusOne                Boolean?
-  italyPlusOneDiet            String?
   usaKids                     Int?
   usaPlusOne                  Boolean?
-  usaPlusOneDiet              String?
+  template                    GuestTemplate     @relation(fields: [templateId], references: [id])
+  templateId                  String            @unique
 }
 
 // model Dietary {
