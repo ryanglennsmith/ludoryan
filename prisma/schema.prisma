@@ -40,14 +40,6 @@ model ConfirmedGuest {
   templateId                  String            @unique
 }
 
-// model Dietary {
-//   guest             ConfirmedGuest    @relation(fields: [guestId], references: [id])
-//   guestId           String            @unique
-//   isVegetarian      Boolean
-//   isVegan           Boolean
-//   comments          String?
-// }
-
 model Admin { 
   id                String            @id @default(uuid())
   name              String        

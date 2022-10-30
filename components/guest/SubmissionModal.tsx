@@ -102,6 +102,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
                     variant="ghost"
                     onClick={() => {
                       setIsSaveSuccessful(false);
+                      router.reload();
                       onClose();
                     }}
                   >
@@ -125,6 +126,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
                     variant="ghost"
                     onClick={() => {
                       setIsSaveError(false);
+                      router.reload();
                       onClose();
                     }}
                   >
