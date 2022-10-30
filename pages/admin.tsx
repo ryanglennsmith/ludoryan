@@ -11,11 +11,16 @@ import GuestListResponseTable from "../components/admin/GuestListResponseTable";
 import { getAllUsers, closeTxn } from "../services/dbTxn/getAllUsers";
 import { sortList } from "../services/sortList";
 import type InvitedGuest from "../types/InvitedGuest";
+import type IConfirmedGuest from "../types/IConfirmedGuest";
 import { ironOptions } from "../lib/ironConfig";
 import { withIronSessionSsr } from "iron-session/next";
+import { CSVLink } from "react-csv";
+import { getAllConfirmedGuests } from "../services/dbTxn/getAllConfirmedGuests";
+import ConfirmedGuestResponseTable from "../components/admin/ConfirmedGuestResponseTable";
 type Props = {
   guestList: InvitedGuest[];
   user: any;
+  confirmedGuestList: IConfirmedGuest[];
 };
 
 type FilterState = {
@@ -47,22 +52,25 @@ export const getServerSideProps = withIronSessionSsr(
     const unsortedGuestList = await getAllUsers();
     await closeTxn();
     const guestList = unsortedGuestList;
-    {
-      props: {
-        guestList;
-      }
-    }
+    const unsortedConfirmedList = await getAllConfirmedGuests();
+    await closeTxn();
+    const confirmedGuestList = unsortedConfirmedList;
     return {
       props: {
         user: req.session.user,
         guestList,
+        confirmedGuestList,
       },
     };
   },
   ironOptions
 );
 
-const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
+const Admin: NextPage<Props> = ({
+  guestList,
+  user,
+  confirmedGuestList,
+}: Props) => {
   const [invitedGuest, setInvitedGuest] = useState<InvitedGuest>({
     email: "",
     name: "",
@@ -78,17 +86,20 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
   const [isClickedEdit, setIsClickedEdit] = useState(false);
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [clientGuestList, setClientGuestList] = useState(guestList);
-
   const [nameSortAsc, setNameSortAsc] = useState<boolean | undefined>(true);
   const [emailSortAsc, setEmailSortAsc] = useState<boolean | undefined>(true);
   const [isItalyFiltered, setIsItalyFiltered] = useState<boolean>(false);
   const [isUSAFiltered, setIsUSAFiltered] = useState<boolean>(false);
-
   const [filterState, setFilterState] = useState<FilterState>(_fs);
   const [language, setLanguage] = useState(0);
+  const [isCheckConfirmedList, setIsCheckConfirmedList] = useState(false);
+  const [clientConfirmedList, setClientConfirmedList] =
+    useState(confirmedGuestList);
+  console.table(clientConfirmedList);
   const resetState = () => {
     setIsEnterGuestInfo(false);
     setIsCheckGuestList(false);
+    setIsCheckConfirmedList(false);
     setServerResponse(undefined);
     setInvitedGuest({ email: "", name: "", italy: false, usa: false });
     setIsClickedSave(false);
@@ -230,7 +241,6 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
     setClientGuestList(filtered);
   }, [filterState]);
 
-
   return (
     <Box position="relative" minH="100vh">
       <Flex
@@ -239,11 +249,14 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
         direction="column"
         pb="4.5rem"
       >
-        {!isEnterGuestInfo && !isCheckGuestList && !isEditGuest && (
-          <Heading as="h1" size="2xl" m={3}>
-            actions
-          </Heading>
-        )}
+        {!isEnterGuestInfo &&
+          !isCheckGuestList &&
+          !isEditGuest &&
+          !isCheckConfirmedList && (
+            <Heading as="h1" size="2xl" m={3}>
+              actions
+            </Heading>
+          )}
         {isEnterGuestInfo && (
           <EnterGuest
             invitedGuest={invitedGuest}
@@ -276,7 +289,11 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
             setInvitedGuest={setInvitedGuest}
           />
         )}
-
+        {isCheckConfirmedList && (
+          <ConfirmedGuestResponseTable
+            confirmedGuestList={confirmedGuestList}
+          ></ConfirmedGuestResponseTable>
+        )}
         <Flex direction="row" justify="space-evenly" width="50%">
           {!isEnterGuestInfo && (
             <Button
@@ -314,12 +331,28 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
               invitees
             </Button>
           )}
-
-          <Button m={2} mb={3}>
-            confirmed
-          </Button>
+          {!isCheckConfirmedList && (
+            <Button
+              m={2}
+              mb={3}
+              onClick={() => {
+                resetState();
+                setIsCheckConfirmedList(!isCheckConfirmedList);
+              }}
+            >
+              confirmed
+            </Button>
+          )}
+          <CSVLink data={confirmedGuestList}>
+            <Button m={2} mb={3}>
+              export csv
+            </Button>
+          </CSVLink>
         </Flex>
-        {(isEnterGuestInfo || isEditGuest || isCheckGuestList) && (
+        {(isEnterGuestInfo ||
+          isEditGuest ||
+          isCheckGuestList ||
+          isCheckConfirmedList) && (
           <Button variant="ghost" onClick={() => resetState()}>
             <Icon color="crimson" as={FaBomb} />
           </Button>

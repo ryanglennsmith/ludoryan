@@ -1,16 +1,17 @@
-import { Button } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 type Props = {
   message: string;
   setMessage: Function;
   user: string;
   pw: string;
+  setUser: Function;
+  setPw: Function;
 };
 const isValidEntry = (text: string): boolean => text.length > 0;
 
-const Login = ({ message, setMessage, user, pw }: Props) => {
+const Login = ({ message, setMessage, user, pw, setUser, setPw }: Props) => {
   const router = useRouter();
   const login = async () => {
     if (isValidEntry(user) && isValidEntry(pw)) {
@@ -34,18 +35,38 @@ const Login = ({ message, setMessage, user, pw }: Props) => {
     }
   };
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    login();
+  };
+
   return (
-    <>
-      <Button
-        onClick={login}
-       
-        colorScheme="teal"
-        mb={6}
-      >
-        log in
-      </Button>
+    <form onSubmit={handleSubmit}>
+      <FormControl>
+        <Input
+          placeholder="bob@bob.bob"
+          variant="filled"
+          mb={3}
+          type="text"
+          onChange={(e) => {
+            setUser(e.target.value);
+          }}
+        ></Input>
+        <Input
+          placeholder="************"
+          variant="filled"
+          mb={6}
+          type="password"
+          onChange={(e) => {
+            setPw(e.target.value);
+          }}
+        ></Input>
+        <Button type="submit" colorScheme="teal" mb={6}>
+          log in
+        </Button>
+      </FormControl>
       <p>{message}</p>
-    </>
+    </form>
   );
 };
 

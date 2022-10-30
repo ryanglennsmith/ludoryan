@@ -56,7 +56,7 @@ const GuestListResponseTable = ({
       <Heading as="h3" size="lg" m={2} mb={3}>
         tentative guest list
       </Heading>
-      <TableContainer minW="2xl">
+      <TableContainer>
         <Table variant="striped" colorScheme="teal">
           <TableCaption>guest list</TableCaption>
           <Thead>
