@@ -13,6 +13,7 @@ import { sortList } from "../services/sortList";
 import type InvitedGuest from "../types/InvitedGuest";
 import { ironOptions } from "../lib/ironConfig";
 import { withIronSessionSsr } from "iron-session/next";
+import { CSVLink } from "react-csv";
 type Props = {
   guestList: InvitedGuest[];
   user: any;
@@ -78,7 +79,7 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
   const [isClickedEdit, setIsClickedEdit] = useState(false);
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [clientGuestList, setClientGuestList] = useState(guestList);
-
+  console.table(clientGuestList);
   const [nameSortAsc, setNameSortAsc] = useState<boolean | undefined>(true);
   const [emailSortAsc, setEmailSortAsc] = useState<boolean | undefined>(true);
   const [isItalyFiltered, setIsItalyFiltered] = useState<boolean>(false);
@@ -230,7 +231,6 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
     setClientGuestList(filtered);
   }, [filterState]);
 
-
   return (
     <Box position="relative" minH="100vh">
       <Flex
@@ -315,9 +315,14 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
             </Button>
           )}
 
-          <Button m={2} mb={3}>
+          <Button m={2} mb={3} disabled={true}>
             confirmed
           </Button>
+          <CSVLink data={clientGuestList}>
+            <Button m={2} mb={3}>
+              export csv
+            </Button>
+          </CSVLink>
         </Flex>
         {(isEnterGuestInfo || isEditGuest || isCheckGuestList) && (
           <Button variant="ghost" onClick={() => resetState()}>
