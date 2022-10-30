@@ -30,33 +30,7 @@ export const getServerSideProps = withIronSessionSsr(
 );
 const GuestPage: NextPage<Props> = ({ user, sessionUser }: Props) => {
   const router = useRouter();
-  const uuid = router.query;
-  const bringADate = (user: GuestTemplate) => {
-    const date = {
-      kids: 0,
-      bus: false,
-      plusOne: {
-        confirmed: true,
-      },
-    };
-    if (user.plusOneName === undefined) {
-      return undefined;
-    }
-    if (user.isInvitedToItaly && user.isInvitedToUSA) {
-      return {
-        italy: date,
-        usa: date,
-      };
-    } else if (user.isInvitedToItaly) {
-      return {
-        italy: date,
-      };
-    } else if (user.isInvitedToUSA) {
-      return {
-        usa: date,
-      };
-    }
-  };
+
   const [confirmedGuest, setConfirmedGuest] = useState<IConfirmedGuest>({
     invitedToItaly: user.isInvitedToItaly,
     invitedToUSA: user.isInvitedToUSA,
@@ -84,7 +58,7 @@ const GuestPage: NextPage<Props> = ({ user, sessionUser }: Props) => {
         justifyContent="center"
         direction="column"
         px={3}
-        pb="4.5rem"
+        pb={{ base: "6rem", md: "4.5rem" }}
       >
         <EnterGuestInfo
           language={language}
