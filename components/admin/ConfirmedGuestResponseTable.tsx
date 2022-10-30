@@ -49,8 +49,8 @@ const ConfirmedGuestResponseTable = ({ confirmedGuestList }: Props) => {
                   <Td>{guest.lastName}</Td>
                   <Td>{guest.plusOneFirstName}</Td>
                   <Td>{guest.plusOneLastName}</Td>
-                  <Td>{guest.confirmedItaly}</Td>
-                  <Td>{guest.confirmedUsa}</Td>
+                  <Td>{guest?.confirmedItaly?.toString()}</Td>
+                  <Td>{guest?.confirmedUsa?.toString()}</Td>
                   <Td>{guest.italyKids}</Td>
                   <Td>{guest.usaKids}</Td>
                   <Td>{guest.italyBus}</Td>
