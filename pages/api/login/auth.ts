@@ -24,10 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const user = await getUser(req.body.username);
     await closeTxn();
     if (user) {
-      const isMatch: boolean = await isSamePass(
-        req.body.password,
-        user.password
-      );
+      const isMatch: boolean = req.body.password === user.password;
       if (user && isMatch) {
         req.session.user = {
           username: req.body.username,
