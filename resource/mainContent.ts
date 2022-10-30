@@ -25,7 +25,7 @@ const mainContent: IMainContent = {
   homepageMainTextp2:
     "We've split our invitations based on what we believe would be easiest for you, but do please let us know if we messed up.",
   italyPartyTextp1:
-    "We will have our first celebration in Italy on April 15, 2023 at 6pm",
+    "We will have our first celebration in Italy on April 15, 2023 at 6pm at",
   italyPartyTextp2:
     "Because the venue is located outside of Milan, we will arrange for transportation to and from the site from the city.",
   italyPartyUrl: "https://www.caremma.com/",
@@ -41,7 +41,7 @@ const mainContent: IMainContent = {
   homepageMainTextp2Italian:
     "Abbiamo diviso gli inviti in base a quello che credevamo più comodo per ognun* di voi, ma fateci sapere se abbiamo sbagliato.",
   italyPartyTextp1Italian:
-    "Faremo la prima festa in Italia, il 15 Aprile 2023 alle 18 ",
+    "Faremo la prima festa in Italia, il 15 Aprile 2023 alle 18 alla",
   italyPartyTextp2Italian:
     "Siccome la cascina si trova fuori Milano, organizzeremo un servizio navetta andata e ritorno dal centro di Milano.",
   usaPartyTextItalian:

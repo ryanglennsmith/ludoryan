@@ -76,7 +76,7 @@ const Home: NextPage = ({ user }: any) => {
                 {mainContent.homepageMainTextp2Italian}
               </Text>
               <Text p={5} textAlign="left">
-                {mainContent.italyPartyTextp1Italian} at{" "}
+                {mainContent.italyPartyTextp1Italian}{" "}
                 <Link href={mainContent.italyPartyUrl} target="_blank">
                   Cascina Caremma
                   <Icon as={CgExternal} />
@@ -107,7 +107,7 @@ const Home: NextPage = ({ user }: any) => {
                 {mainContent.homepageMainTextp2}
               </Text>
               <Text p={5} textAlign="left">
-                {mainContent.italyPartyTextp1} at{" "}
+                {mainContent.italyPartyTextp1}{" "}
                 <Link href={mainContent.italyPartyUrl} target="_blank">
                   Cascina Caremma
                   <Icon as={CgExternal} />
