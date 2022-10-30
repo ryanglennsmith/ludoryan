@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { GuestTemplate } from "@prisma/client";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -80,9 +80,9 @@ const GuestPage: NextPage<Props> = ({
           confirmedGuest={confirmedGuest}
           setConfirmedGuest={setConfirmedGuest}
         />
-        {!hasConfirmed && <p>hasConfirmed: {hasConfirmed.toString()}</p>}
+        {!hasConfirmed && <Text mb={5}>no saved data</Text>}
         {hasConfirmed && (
-          <Flex alignItems="left" direction="column" mb={3}>
+          <Flex alignItems="left" direction="column" mb={5}>
             <Heading size="sm" my={3}>
               saved details
             </Heading>

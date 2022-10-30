@@ -18,6 +18,8 @@ export async function upsertConfirmedGuest(guest: IConfirmedGuest) {
         italyPlusOne: guest.italyPlusOne || null,
         usaKids: guest.usaKids || null,
         usaPlusOne: guest.usaPlusOne || null,
+        plusOneDietaryRestrictions: guest.plusOneDietaryRestrictions || null,
+        dietaryRestrictions: guest.dietaryRestrictions || null,
       },
       create: {
         templateId: guest.id,

@@ -36,9 +36,7 @@ const EnterGuestInfo = ({
   const [openKids, setOpenKids] = useState(false);
   const [openDiet, setOpenDiet] = useState(false);
   const [openPlus, setOpenPlus] = useState(true);
-  const [cancelPlus, setCancelPlus] = useState(false);
   const [openPlusOneDiet, setOpenPlusOneDiet] = useState(false);
-  const [confirmSubmit, setConfirmSubmit] = useState(false);
 
   return (
     <Flex direction="column" alignItems="center" justifyContent="center" m={2}>
