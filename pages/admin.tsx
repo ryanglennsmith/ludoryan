@@ -95,7 +95,6 @@ const Admin: NextPage<Props> = ({
   const [isCheckConfirmedList, setIsCheckConfirmedList] = useState(false);
   const [clientConfirmedList, setClientConfirmedList] =
     useState(confirmedGuestList);
-  console.table(clientConfirmedList);
   const resetState = () => {
     setIsEnterGuestInfo(false);
     setIsCheckGuestList(false);
