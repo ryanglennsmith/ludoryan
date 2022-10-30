@@ -138,7 +138,7 @@ const DietComponent = ({
         </Button>
       </Stack>
 
-      <Stack spacing={5} mb={3} direction="row">
+      <Stack spacing={5} mb={3} direction={{ base: "column", md: "row" }}>
         {!openDiet && (
           <Button disabled={true} size="lg">
             <Icon as={FaFish} />
@@ -303,7 +303,7 @@ const DietComponent = ({
               no
             </Button>
           </Stack>
-          <Stack spacing={5} mb={3} direction="row">
+          <Stack spacing={5} mb={3} direction={{ base: "column", md: "row" }}>
             {!openPlusOneDiet && (
               <Button disabled={true} size="lg">
                 <Icon as={FaFish} />
