@@ -6,7 +6,7 @@ import {
   Box,
   Flex,
   Heading,
-  Input,
+  Icon,
   Button,
   useColorMode,
   useColorModeValue,
@@ -14,6 +14,7 @@ import {
   Text,
   Image,
 } from "@chakra-ui/react";
+import { CgExternal } from "react-icons/cg";
 import { withIronSessionSsr } from "iron-session/next";
 import { ironOptions } from "../lib/ironConfig";
 import mainContent from "../resource/mainContent";
@@ -58,15 +59,70 @@ const Home: NextPage = ({ user }: any) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Heading mb={6}>{mainContent.headline}</Heading>
-          <Box maxW="lg" mb={6}>
-            <Image
-              borderRadius={9}
-              src={mainContent.homeImage}
-              alt={mainContent.homeImageAltText}
-            ></Image>
-          </Box>
-          <Text p={5}>{mainContent.homepageMainText}</Text>
+          {language === 1 ? (
+            <>
+              <Heading mb={6}>{mainContent.headlineItalian}</Heading>
+              <Box maxW="lg" mb={6}>
+                <Image
+                  borderRadius={9}
+                  src={mainContent.homeImage}
+                  alt={mainContent.homeImageAltText}
+                ></Image>
+              </Box>
+              <Text p={5} textAlign="left">
+                {mainContent.homepageMainTextp1Italian}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.homepageMainTextp2Italian}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.italyPartyTextp1Italian} at{" "}
+                <Link href={mainContent.italyPartyUrl} target="_blank">
+                  Cascina Caremma
+                  <Icon as={CgExternal} />
+                </Link>
+                . {mainContent.italyPartyTextp2Italian}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.usaPartyTextItalian}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.checkBackItalian}
+              </Text>
+            </>
+          ) : (
+            <>
+              <Heading mb={6}>{mainContent.headline}</Heading>
+              <Box maxW="lg" mb={6}>
+                <Image
+                  borderRadius={9}
+                  src={mainContent.homeImage}
+                  alt={mainContent.homeImageAltText}
+                ></Image>
+              </Box>
+              <Text p={5} textAlign="left">
+                {mainContent.homepageMainTextp1}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.homepageMainTextp2}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.italyPartyTextp1} at{" "}
+                <Link href={mainContent.italyPartyUrl} target="_blank">
+                  Cascina Caremma
+                  <Icon as={CgExternal} />
+                </Link>
+                . {mainContent.italyPartyTextp2}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.usaPartyText}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.checkBack}
+              </Text>
+            </>
+          )}
+
           {!user.isLoggedIn && (
             <NextLink href="/login" passHref>
               <Link>
@@ -76,11 +132,14 @@ const Home: NextPage = ({ user }: any) => {
               </Link>
             </NextLink>
           )}
+
           {user.isLoggedIn && (
             <NextLink href={`/${user.id}`} passHref>
               <Link>
                 <Button colorScheme="teal" mb={6}>
-                  my details
+                  {language === 1
+                    ? mainContent.myDetailsItalian
+                    : mainContent.myDetails}
                 </Button>
               </Link>
             </NextLink>
