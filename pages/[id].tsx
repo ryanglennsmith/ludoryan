@@ -44,8 +44,7 @@ const GuestPage: NextPage<Props> = ({
   savedConfirmation,
 }: Props) => {
   const router = useRouter();
-  console.table(savedConfirmation);
-  const [hasConfirmed, setHasConfirmed] = useState(false);
+  const [hasConfirmed, setHasConfirmed] = useState(savedConfirmation !== null);
   const [confirmedGuest, setConfirmedGuest] = useState<IConfirmedGuest>({
     invitedToItaly: user.isInvitedToItaly,
     invitedToUSA: user.isInvitedToUSA,
