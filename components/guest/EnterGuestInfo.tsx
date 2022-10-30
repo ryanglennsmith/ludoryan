@@ -39,7 +39,7 @@ const EnterGuestInfo = ({
   const [cancelPlus, setCancelPlus] = useState(false);
   const [openPlusOneDiet, setOpenPlusOneDiet] = useState(false);
   const [confirmSubmit, setConfirmSubmit] = useState(false);
-
+  console.table(confirmedGuest);
   return (
     <Flex direction="column" alignItems="center" justifyContent="center" m={2}>
       <FormLabel>

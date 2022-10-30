@@ -254,7 +254,17 @@ const DietComponent = ({
           </Button>
         )}
       </Stack>
-      <InputGroup size="md" mb={3}>
+      <InputGroup
+        size="md"
+        mb={3}
+        flexDirection={{ base: "column", md: "row" }}
+      >
+        <Heading size="sm" m={3}>
+          {language === 1
+            ? guestInputContent.specialRequirementsItalian
+            : guestInputContent.specialRequirementsEnglish}
+          :
+        </Heading>
         <Input
           disabled={openDiet ? false : true}
           placeholder={`${confirmedGuest.firstName}: ${
@@ -423,7 +433,17 @@ const DietComponent = ({
               </Button>
             )}
           </Stack>
-          <InputGroup size="md">
+          <InputGroup
+            size="md"
+            mb={3}
+            flexDirection={{ base: "column", md: "row" }}
+          >
+            <Heading size="sm" m={3}>
+              {language === 1
+                ? guestInputContent.specialRequirementsItalian
+                : guestInputContent.specialRequirementsEnglish}
+              :
+            </Heading>
             <Input
               placeholder={`${confirmedGuest.plusOneFirstName}: ${
                 language === 1
