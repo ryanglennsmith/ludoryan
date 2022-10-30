@@ -13,10 +13,8 @@ interface IConfirmedGuest {
   italyKids?: number;
   italyBus?: boolean;
   italyPlusOne?: boolean;
-  italyPlusOneDiet?: string;
   usaKids?: number;
   usaPlusOne?: boolean;
-  usaPlusOneDiet?: string;
 }
 
 export default IConfirmedGuest;
