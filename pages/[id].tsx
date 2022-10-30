@@ -82,7 +82,7 @@ const GuestPage: NextPage<Props> = ({
         />
         {!hasConfirmed && <p>hasConfirmed: {hasConfirmed.toString()}</p>}
         {hasConfirmed && (
-          <Flex alignItems="left" direction="column">
+          <Flex alignItems="left" direction="column" mb={3}>
             <Heading size="sm" my={3}>
               saved details
             </Heading>
