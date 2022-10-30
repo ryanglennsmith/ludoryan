@@ -50,9 +50,8 @@ const GuestPage: NextPage<Props> = ({ user, sessionUser }: Props) => {
   }, []);
 
   return (
-    <Box position="relative" minH="100vh" sx={{ border: "2px solid red" }}>
+    <Box position="relative" minH="100vh">
       <Flex
-        sx={{ border: "2px solid pink" }}
         alignItems="center"
         justifyContent="center"
         direction="column"
