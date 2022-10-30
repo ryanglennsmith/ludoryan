@@ -59,7 +59,7 @@ interface IGuestInputContent {
   goBackItalian: string;
 }
 const guestInputContent: IGuestInputContent = {
-  headlineEnglish: "enter or update your info",
+  headlineEnglish: "enter or update your details",
   headlineItalian: "inserisci o aggiorna i tuoi dati",
   plusOneEnglish: "and my partner",
   plusOneItalian: "e il mio/la mia compagno/compagna",

@@ -10,7 +10,6 @@ type filter = {
 };
 
 export const getUsersByFilter = async (filter: filter) => {
-  console.log(`prisma filter: ${Object.entries(filter)}`);
   if (filter.isEmailAscending === true) {
     const prismaTxn = await prisma.guestTemplate.findMany({
       orderBy: {

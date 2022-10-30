@@ -7,7 +7,6 @@ import { isSamePass } from "../../../services/encryption/isSamePass";
 import { getUser, closeTxn } from "../../../services/dbTxn/getUser";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log();
   if (
     req.body.username === process.env.ADMIN_USERNAME &&
     req.body.password === process.env.ADMIN_PW

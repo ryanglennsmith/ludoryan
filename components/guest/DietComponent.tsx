@@ -110,7 +110,7 @@ const DietComponent = ({
 
   return (
     <>
-      <Heading size="md" mb={3}>
+      <Heading size="md" mb={3} textAlign="center">
         {confirmedGuest.firstName}{" "}
         {language === 1
           ? `${guestInputContent.hasDietaryRequirementsItalian}?`
@@ -276,7 +276,7 @@ const DietComponent = ({
       </InputGroup>
       {confirmedGuest.plusOneFirstName && (
         <>
-          <Heading size="md" mb={3}>
+          <Heading size="md" mb={3} textAlign="center">
             {confirmedGuest.plusOneFirstName}{" "}
             {language === 1
               ? `${guestInputContent.hasDietaryRequirementsItalian}?`

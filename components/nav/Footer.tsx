@@ -40,7 +40,6 @@ export default function Footer({ isLoggedIn, language, setLanguage }: Props) {
       pb={0}
     >
       <Box
-        sx={{ border: "2px solid blue" }}
         py={4}
         as={Stack}
         direction={{ base: "column", md: "row" }}

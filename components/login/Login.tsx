@@ -11,15 +11,6 @@ type Props = {
 const isValidEntry = (text: string): boolean => text.length > 0;
 
 const Login = ({ message, setMessage, user, pw }: Props) => {
-  // const [keyEvent, setKeyEvent] = useState("");
-  // const keyHandler = (e: any) => {
-  //   setKeyEvent(e.key);
-  // };
-  // useEffect(() => {
-  //   if (keyEvent === "Enter") {
-  //     login();
-  //   }
-  // }, [keyEvent]);
   const router = useRouter();
   const login = async () => {
     if (isValidEntry(user) && isValidEntry(pw)) {
@@ -47,13 +38,7 @@ const Login = ({ message, setMessage, user, pw }: Props) => {
     <>
       <Button
         onClick={login}
-        // onKeyDown={(e) => {
-        //   console.log(e.key);
-        //   if (e.key === "Enter") {
-        //     // console.log(e.key)
-        //     // login;
-        //   }
-        // }}
+       
         colorScheme="teal"
         mb={6}
       >

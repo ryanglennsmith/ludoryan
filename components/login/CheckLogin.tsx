@@ -10,7 +10,6 @@ const CheckLogin = ({ setIsLoggedIn }: Props) => {
         "Content-Type": "application/json",
       },
     }).then((response) => response.json());
-    console.log(response);
     setIsLoggedIn(String(response.isLoggedIn));
   };
   return (

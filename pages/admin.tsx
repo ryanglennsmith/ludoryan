@@ -69,7 +69,6 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
     italy: false,
     usa: false,
   });
-  console.log(user);
   const [isEnterGuestInfo, setIsEnterGuestInfo] = useState(false);
   const [isCheckGuestList, setIsCheckGuestList] = useState(false);
   const [serverResponse, setServerResponse] = useState<InvitedGuest>();
@@ -231,7 +230,6 @@ const Admin: NextPage<Props> = ({ guestList, user }: Props) => {
     setClientGuestList(filtered);
   }, [filterState]);
 
-  console.log(invitedGuest);
 
   return (
     <Box position="relative" minH="100vh">
