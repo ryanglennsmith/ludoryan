@@ -53,11 +53,35 @@ export const getServerSideProps = withIronSessionSsr(
     }
     const unsortedGuestList = await getAllUsers();
     await closeTxn();
-    const guestList = unsortedGuestList;
+    const guestList = unsortedGuestList.map((guest) => {
+      return {
+        email: guest.email,
+        name: guest.name,
+        plusOneName: guest.plusOneName,
+        isInvitedToItaly: guest.isInvitedToItaly,
+        isInvitedToUSA: guest.isInvitedToUSA,
+      };
+    });
     const unsortedConfirmedList = await getAllConfirmedGuests();
     await closeTxn();
-    const confirmedGuestList = unsortedConfirmedList;
-    console.table(confirmedGuestList);
+    const confirmedGuestList = unsortedConfirmedList.map((guest) => {
+      return {
+        firstName: guest.firstName,
+        lastName: guest.lastName,
+        plusOneFirstName: guest.plusOneFirstName,
+        plusOneLastName: guest.plusOneLastName,
+        id: guest.id,
+        confirmedItaly: guest.confirmedItaly,
+        confirmedUsa: guest.confirmedUsa,
+        italyKids: guest.italyKids,
+        italyBus: guest.italyBus,
+        italyPlusOne: guest.italyPlusOne,
+        usaKids: guest.usaKids,
+        usaPlusOne: guest.usaPlusOne,
+        dietaryRestrictions: guest.dietaryRestrictions,
+        plusOneDietaryRestrictions: guest.plusOneDietaryRestrictions,
+      };
+    });
     return {
       props: {
         user: req.session.user,

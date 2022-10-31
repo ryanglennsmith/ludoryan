@@ -20,7 +20,7 @@ model GuestTemplate {
   isInvitedToUSA    Boolean
   guest             ConfirmedGuest[]
   log               LogDb[]
-  // createdAt         DateTime          @default(now())
+  createdAt         DateTime          @default(now())
 }
 
 model ConfirmedGuest {
@@ -40,8 +40,8 @@ model ConfirmedGuest {
   plusOneDietaryRestrictions  String?
   template                    GuestTemplate     @relation(fields: [templateId], references: [id])
   templateId                  String            @unique
-  // createdAt                   DateTime          @default(now())
-  // updatedAt                   DateTime          @updatedAt
+  createdAt                   DateTime          @default(now())
+  updatedAt                   DateTime          @updatedAt @default(now())
 }
 
 model Admin { 
