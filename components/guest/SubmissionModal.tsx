@@ -26,7 +26,7 @@ import {
   FaBaby,
 } from "react-icons/fa";
 import guestInputContent from "../../resource/guestInputContent";
-import saveConfirmedGuest from "../../services/submitRsvp/submitRsvp";
+import saveConfirmedGuest from "../../services/submitData/submitRsvp";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 
 type Props = {

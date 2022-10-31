@@ -10,6 +10,7 @@ import IConfirmedGuest from "../types/IConfirmedGuest";
 import { ironOptions } from "../lib/ironConfig";
 import { withIronSessionSsr } from "iron-session/next";
 import { server } from "../lib/serverConfig";
+import getSessionLanguage from "../services/language/getSessionLanguage";
 type Props = {
   user: GuestTemplate;
   sessionUser: any;
@@ -54,13 +55,6 @@ const GuestPage: NextPage<Props> = ({
   });
   const [language, setLanguage] = useState(0);
   useEffect(() => {
-    const getSessionLanguage = (): number => {
-      if (sessionStorage.getItem("language") !== undefined) {
-        return Number(sessionStorage.getItem("language"));
-      } else {
-        return 0;
-      }
-    };
     setLanguage(getSessionLanguage());
   }, []);
 

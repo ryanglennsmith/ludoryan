@@ -8,6 +8,7 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 import Footer from "../components/nav/Footer";
+import getSessionLanguage from "../services/language/getSessionLanguage";
 
 const Home: NextPage = () => {
   const formBackground = useColorModeValue("gray.100", "gray.700");
@@ -17,13 +18,6 @@ const Home: NextPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [language, setLanguage] = useState(0);
   useEffect(() => {
-    const getSessionLanguage = (): number => {
-      if (sessionStorage.getItem("language") !== undefined) {
-        return Number(sessionStorage.getItem("language"));
-      } else {
-        return 0;
-      }
-    };
     setLanguage(getSessionLanguage());
   }, []);
   return (

@@ -18,6 +18,7 @@ import { CgExternal } from "react-icons/cg";
 import { withIronSessionSsr } from "iron-session/next";
 import { ironOptions } from "../lib/ironConfig";
 import mainContent from "../resource/mainContent";
+import getSessionLanguage from "../services/language/getSessionLanguage";
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     const user = req.session.user;
@@ -33,13 +34,6 @@ const Home: NextPage = ({ user }: any) => {
   const { toggleColorMode } = useColorMode();
   const [language, setLanguage] = useState(0);
   useEffect(() => {
-    const getSessionLanguage = (): number => {
-      if (sessionStorage.getItem("language") !== undefined) {
-        return Number(sessionStorage.getItem("language"));
-      } else {
-        return 0;
-      }
-    };
     setLanguage(getSessionLanguage());
   }, []);
   const formBackground = useColorModeValue("gray.100", "gray.700");

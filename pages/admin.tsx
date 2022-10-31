@@ -17,6 +17,8 @@ import { withIronSessionSsr } from "iron-session/next";
 import { CSVLink } from "react-csv";
 import { getAllConfirmedGuests } from "../services/dbTxn/getAllConfirmedGuests";
 import ConfirmedGuestResponseTable from "../components/admin/ConfirmedGuestResponseTable";
+import { saveUser, getUser } from "../services/submitData/submitGuest";
+import getSessionLanguage from "../services/language/getSessionLanguage";
 type Props = {
   guestList: InvitedGuest[];
   user: any;
@@ -55,6 +57,7 @@ export const getServerSideProps = withIronSessionSsr(
     const unsortedConfirmedList = await getAllConfirmedGuests();
     await closeTxn();
     const confirmedGuestList = unsortedConfirmedList;
+    console.table(confirmedGuestList);
     return {
       props: {
         user: req.session.user,
@@ -109,83 +112,23 @@ const Admin: NextPage<Props> = ({
   };
 
   useEffect(() => {
-    const saveUser = async () => {
-      if (
-        invitedGuest.name.length < 1 ||
-        invitedGuest.email.length < 1 ||
-        invitedGuest.password === undefined
-      ) {
-        alert("incomplete data");
-      } else {
-        const response = await fetch("/api/admin/create", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user: {
-              email: invitedGuest.email,
-              password: invitedGuest.password,
-              name: invitedGuest.name,
-              plusOneName:
-                invitedGuest.plusOne !== undefined
-                  ? invitedGuest.plusOne
-                  : null,
-              isInvitedToItaly: invitedGuest.italy,
-              isInvitedToUSA: invitedGuest.usa,
-              editingMode: isEditingMode,
-            },
-          }),
-        }).then((response) => response.json());
-        setServerResponse({
-          name: response.createdUser.name,
-          email: response.createdUser.email,
-          plusOne: response.createdUser.plusOneName || null,
-          italy: response.createdUser.isInvitedToItaly,
-          usa: response.createdUser.isInvitedToUSA,
-          id: response.createdUser.id,
-        });
-      }
-    };
-    const getUser = async () => {
-      if (editGuestField.length < 1) {
-        alert("incomplete data");
-      } else {
-        const response = await fetch("/api/admin/user", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: editGuestField,
-          }),
-        }).then((response) => response.json());
-        resetState();
-        setIsEditingMode(true);
-        setIsEnterGuestInfo(true);
-        setInvitedGuest({
-          ...invitedGuest,
-          name: response.createdUser.name,
-          email: response.createdUser.email,
-          plusOne: response.createdUser.plusOneName || null,
-          italy: response.createdUser.isInvitedToItaly,
-          usa: response.createdUser.isInvitedToUSA,
-        });
-      }
-    };
     if (isClickedSave) {
-      saveUser();
+      saveUser(invitedGuest, isEditingMode, setServerResponse);
       setIsClickedSave(false);
     }
     if (isClickedEdit) {
-      getUser();
+      getUser(
+        editGuestField,
+        resetState,
+        setIsEditingMode,
+        setIsEnterGuestInfo,
+        setInvitedGuest,
+        invitedGuest
+      );
       setIsClickedEdit(false);
     }
   }, [isClickedSave, isClickedEdit]);
   useEffect(() => {
-    const getSessionLanguage = (): number => {
-      if (sessionStorage.getItem("language") !== undefined) {
-        return Number(sessionStorage.getItem("language"));
-      } else {
-        return 0;
-      }
-    };
     setLanguage(getSessionLanguage());
   }, []);
   useEffect(() => {
