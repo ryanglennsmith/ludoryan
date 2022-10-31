@@ -15,6 +15,7 @@ interface IConfirmedGuest {
   usaPlusOne?: boolean;
   dietaryRestrictions?: string;
   plusOneDietaryRestrictions?: string;
+  additionalInformation?: string;
 }
 
 export default IConfirmedGuest;

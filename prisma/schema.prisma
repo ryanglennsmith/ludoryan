@@ -38,6 +38,7 @@ model ConfirmedGuest {
   usaPlusOne                  Boolean?
   dietaryRestrictions         String?
   plusOneDietaryRestrictions  String?
+  additionalInformation       String?
   template                    GuestTemplate     @relation(fields: [templateId], references: [id])
   templateId                  String            @unique
   createdAt                   DateTime          @default(now())

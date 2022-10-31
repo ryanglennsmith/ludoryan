@@ -26,6 +26,7 @@ const saveConfirmedGuest = async (
         italyPlusOne: confirmedGuest.italyPlusOne || null,
         usaKids: confirmedGuest.usaKids || null,
         usaPlusOne: confirmedGuest.usaPlusOne || null,
+        additionalInformation: confirmedGuest.additionalInformation || null,
         invitedToItaly: confirmedGuest.invitedToItaly,
         invitedToUsa: confirmedGuest.invitedToUSA,
       },

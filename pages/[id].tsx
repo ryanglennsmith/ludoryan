@@ -57,7 +57,6 @@ const GuestPage: NextPage<Props> = ({
   useEffect(() => {
     setLanguage(getSessionLanguage());
   }, []);
-  console.table(confirmedGuest);
 
   return (
     <Box position="relative" minH="100vh">

@@ -20,6 +20,7 @@ export async function upsertConfirmedGuest(guest: IConfirmedGuest) {
         usaPlusOne: guest.usaPlusOne || null,
         plusOneDietaryRestrictions: guest.plusOneDietaryRestrictions || null,
         dietaryRestrictions: guest.dietaryRestrictions || null,
+        additionalInformation: guest.additionalInformation || null,
       },
       create: {
         templateId: guest.id,
@@ -36,6 +37,7 @@ export async function upsertConfirmedGuest(guest: IConfirmedGuest) {
         usaPlusOne: guest.usaPlusOne || null,
         plusOneDietaryRestrictions: guest.plusOneDietaryRestrictions || null,
         dietaryRestrictions: guest.dietaryRestrictions || null,
+        additionalInformation: guest.additionalInformation || null,
       },
     });
     return prismaTxn!;

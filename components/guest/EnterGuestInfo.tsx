@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from "react";
 import {
   Button,
@@ -47,7 +48,11 @@ const EnterGuestInfo = ({
             : guestInputContent.headlineEnglish}
         </Heading>
       </FormLabel>
-
+      <Heading size="xs" p={2}>
+        {language === 1
+          ? guestInputContent.firstNameItalian
+          : guestInputContent.firstNameEnglish}
+      </Heading>
       <GuestInfoInputComponent
         placeHolder={
           confirmedGuest.firstName
@@ -60,6 +65,11 @@ const EnterGuestInfo = ({
         setConfirmedGuest={setConfirmedGuest}
         confirmedGuest={confirmedGuest}
       />
+      <Heading size="xs" p={2}>
+        {language === 1
+          ? guestInputContent.lastNameItalian
+          : guestInputContent.lastNameEnglish}
+      </Heading>
       <GuestInfoInputComponent
         placeHolder={
           language === 1
@@ -77,6 +87,11 @@ const EnterGuestInfo = ({
               ? guestInputContent.plusOneItalian
               : guestInputContent.plusOneEnglish}
           </Heading>
+          <Heading size="xs" p={2}>
+            {language === 1
+              ? guestInputContent.firstNameItalian
+              : guestInputContent.firstNameEnglish}
+          </Heading>
           <GuestInfoInputComponent
             placeHolder={
               confirmedGuest.plusOneFirstName
@@ -89,6 +104,11 @@ const EnterGuestInfo = ({
             setConfirmedGuest={setConfirmedGuest}
             confirmedGuest={confirmedGuest}
           />
+          <Heading size="xs" p={2}>
+            {language === 1
+              ? guestInputContent.lastNameItalian
+              : guestInputContent.lastNameEnglish}
+          </Heading>
           <GuestInfoInputComponent
             placeHolder={
               language === 1
@@ -102,7 +122,7 @@ const EnterGuestInfo = ({
         </>
       )}
 
-      <Heading size="md" mb={3} textAlign="center">
+      <Heading size="md" mb={3} textAlign="center" p={3}>
         rsvp
       </Heading>
       <InputGroup alignItems="center" justifyContent="center">
@@ -154,6 +174,26 @@ const EnterGuestInfo = ({
           setConfirmedGuest={setConfirmedGuest}
         ></DietComponent>
       )}
+      {/* TODO MAKE ITALIAN */}
+      <Heading size="xs" p={3}>
+        anything else you'd like to add?
+      </Heading>
+      <GuestInfoInputComponent
+        placeHolder="anything else?"
+        valueToSet={"additionalInformation"}
+        setConfirmedGuest={setConfirmedGuest}
+        confirmedGuest={confirmedGuest}
+        isError={
+          confirmedGuest.additionalInformation !== undefined &&
+          confirmedGuest.additionalInformation!.length > 500
+        }
+      />
+      {confirmedGuest.additionalInformation !== undefined &&
+        confirmedGuest.additionalInformation!.length > 500 && (
+          <Text color="crimson" p={4}>
+            too many characters
+          </Text>
+        )}
       <SubmissionModal confirmedGuest={confirmedGuest} language={language} />
     </Flex>
   );

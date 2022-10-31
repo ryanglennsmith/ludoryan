@@ -7,6 +7,7 @@ type Props = {
   confirmedGuest: IConfirmedGuest;
   placeHolder: string;
   setConfirmedGuest: Function;
+  isError?: boolean;
 };
 
 const GuestInfoInputComponent = ({
@@ -14,11 +15,14 @@ const GuestInfoInputComponent = ({
   placeHolder,
   setConfirmedGuest,
   confirmedGuest,
+  isError,
 }: Props) => {
   return (
     <>
       <InputGroup size="md">
         <Input
+          isInvalid={isError}
+          errorBorderColor="crimson"
           placeholder={placeHolder}
           variant="filled"
           m={2}

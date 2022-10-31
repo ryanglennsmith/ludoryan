@@ -10,10 +10,6 @@ export default async function handler(
 ) {
   const id: any = req.query.id;
   const response = await getConfirmedGuest(id);
-  // if (response === null) {
-  //   await closeTxn();
-  //   return res.status(200).json({ user: undefined });
-  // }
   await closeTxn();
   return res.status(200).json(response);
 }
