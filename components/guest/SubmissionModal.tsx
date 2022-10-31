@@ -26,7 +26,9 @@ import {
   FaBaby,
 } from "react-icons/fa";
 import guestInputContent from "../../resource/guestInputContent";
+import saveConfirmedGuest from "../../services/submitRsvp/submitRsvp";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
+
 type Props = {
   confirmedGuest: IConfirmedGuest;
   language: number;
@@ -38,44 +40,12 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
   const [isSaveSuccessful, setIsSaveSuccessful] = useState(false);
   const [isSaveError, setIsSaveError] = useState(false);
   useEffect(() => {
-    const saveConfirmedGuest = async () => {
-      const response = await fetch("/api/confirmedguest/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          confirmedGuest: {
-            dietaryRestrictions: confirmedGuest.dietaryRestrictions || null,
-            plusOneDietaryRestrictions:
-              confirmedGuest.plusOneDietaryRestrictions || null,
-            firstName: confirmedGuest.firstName,
-            lastName: confirmedGuest.lastName || null,
-            plusOneFirstName: confirmedGuest.plusOneFirstName || null,
-            plusOneLastName: confirmedGuest.plusOneLastName || null,
-            id: confirmedGuest.id,
-            confirmedItaly: confirmedGuest.confirmedItaly || null,
-            confirmedUsa: confirmedGuest.confirmedUsa || null,
-            italyKids: confirmedGuest.italyKids || null,
-            italyBus: confirmedGuest.italyBus || null,
-            italyPlusOne: confirmedGuest.italyPlusOne || null,
-            usaKids: confirmedGuest.usaKids || null,
-            usaPlusOne: confirmedGuest.usaPlusOne || null,
-            invitedToItaly: confirmedGuest.invitedToItaly,
-            invitedToUsa: confirmedGuest.invitedToUSA,
-          },
-        }),
-      }).then((response) => {
-        if (response.status === 200) {
-          setIsSaveSuccessful(true);
-        } else {
-          setIsSaveError(true);
-        }
-      });
-    };
     if (isClickedSave) {
-      saveConfirmedGuest();
+      saveConfirmedGuest(confirmedGuest, setIsSaveSuccessful, setIsSaveError);
       setIsClickedSave(false);
     }
   }, [isClickedSave, confirmedGuest]);
+
   return (
     <>
       <Button onClick={onOpen}>

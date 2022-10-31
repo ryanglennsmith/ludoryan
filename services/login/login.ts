@@ -1,5 +1,5 @@
 import { NextRouter } from "next/router";
-import sendLog from "../logging/loginLog";
+import sendLog from "../logging/logger";
 
 const isValidEntry = (text: string): boolean => text.length > 0;
 const login = async (
