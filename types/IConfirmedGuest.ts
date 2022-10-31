@@ -1,6 +1,4 @@
 interface IConfirmedGuest {
-  dietaryRestrictions?: string;
-  plusOneDietaryRestrictions?: string;
   firstName: string;
   lastName?: string;
   plusOneFirstName?: string;
@@ -15,6 +13,8 @@ interface IConfirmedGuest {
   italyPlusOne?: boolean;
   usaKids?: number;
   usaPlusOne?: boolean;
+  dietaryRestrictions?: string;
+  plusOneDietaryRestrictions?: string;
 }
 
 export default IConfirmedGuest;
