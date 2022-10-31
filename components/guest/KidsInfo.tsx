@@ -1,6 +1,6 @@
 import { Stack, Button, Icon, Input, Text } from "@chakra-ui/react";
-import { FaChild, FaWineBottle } from "react-icons/fa";
-import React from "react";
+import { FaCheck, FaChild, FaWineBottle, FaTimes } from "react-icons/fa";
+import { useEffect } from "react";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 import guestInputContent from "../../resource/guestInputContent";
 
@@ -11,6 +11,7 @@ type Props = {
   confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
   language: number;
+  highlight: string;
 };
 const KidsInfo = ({
   openKids,
@@ -19,6 +20,7 @@ const KidsInfo = ({
   confirmedGuest,
   setConfirmedGuest,
   language,
+  highlight,
 }: Props) => {
   type LocationObjectKey = keyof typeof confirmedGuest.italyKids;
   const confirmedLocationKids = (location + "Kids") as LocationObjectKey;
@@ -26,13 +28,23 @@ const KidsInfo = ({
   return (
     <>
       <Stack spacing={5} direction="column">
-        <Text>
-          {language === 1
-            ? guestInputContent.withKidsItalian
-            : guestInputContent.withKidsEnglish}
-        </Text>
-        <Button onClick={() => setOpenKids(true)}>
-          <Icon as={FaChild} />
+        {openKids && (
+          <Text>
+            {language === 1
+              ? guestInputContent.withKidsItalian
+              : guestInputContent.withKidsEnglish}
+          </Text>
+        )}
+        {!openKids && (
+          <Text>
+            {language === 1
+              ? guestInputContent.withoutKidsItalian
+              : guestInputContent.withoutKidsEnglish}
+          </Text>
+        )}
+        <Button onClick={() => setOpenKids(!openKids)}>
+          {openKids && <Icon color="crimson" as={FaTimes} />}
+          {!openKids && <Icon as={FaChild} />}
         </Button>
         {openKids && (
           <>
@@ -54,22 +66,6 @@ const KidsInfo = ({
             />
           </>
         )}
-        <Text>
-          {language === 1
-            ? guestInputContent.withoutKidsItalian
-            : guestInputContent.withoutKidsEnglish}
-        </Text>
-        <Button
-          onClick={() => {
-            setConfirmedGuest({
-              ...confirmedGuest,
-
-              [confirmedLocationKids]: 0,
-            });
-          }}
-        >
-          <Icon as={FaWineBottle} />
-        </Button>
       </Stack>
     </>
   );

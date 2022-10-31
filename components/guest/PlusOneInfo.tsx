@@ -1,5 +1,5 @@
-import { Stack, Icon, Button } from "@chakra-ui/react";
-import { FaHeart, FaHeartBroken } from "react-icons/fa";
+import { Stack, Icon, Button, Text } from "@chakra-ui/react";
+import { FaCheck, FaTimes, FaHeart } from "react-icons/fa";
 import React from "react";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 
@@ -8,42 +8,46 @@ type Props = {
   confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
   setPlusOneGo: Function;
+  plusOneGo: boolean;
+  language: number;
+  highlight: string;
 };
 const PlusOneInfo = ({
   location,
   confirmedGuest,
   setConfirmedGuest,
   setPlusOneGo,
+  plusOneGo,
+  language,
+  highlight,
 }: Props) => {
   type ObjectKey = keyof typeof confirmedGuest;
   const confirmedLocation = (location + "PlusOne") as ObjectKey;
   return (
     <>
-      <Stack spacing={5} direction="column">
-        <Button
-          onClick={() => {
-            setPlusOneGo(true);
-            setConfirmedGuest({
-              ...confirmedGuest,
-              [confirmedLocation]: true,
-            });
-          }}
-        >
-          <Icon as={FaHeart} />
-        </Button>
-
-        <Button
-          onClick={() => {
-            setPlusOneGo(false);
-            setConfirmedGuest({
-              ...confirmedGuest,
-              [confirmedLocation]: false,
-            });
-          }}
-        >
-          <Icon as={FaHeartBroken} />
-        </Button>
-      </Stack>
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={() => {
+          setPlusOneGo(!plusOneGo);
+          setConfirmedGuest({
+            ...confirmedGuest,
+            [confirmedLocation]: !plusOneGo,
+          });
+        }}
+      >
+        {!plusOneGo && (
+          <Text as="span" color={highlight}>
+            <Icon as={FaHeart} />
+          </Text>
+        )}{" "}
+        {plusOneGo && (
+          <Text as="span" color="crimson">
+            {" "}
+            <Icon as={FaTimes} />
+          </Text>
+        )}{" "}
+      </Button>
     </>
   );
 };

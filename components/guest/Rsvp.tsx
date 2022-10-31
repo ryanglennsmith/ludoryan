@@ -1,4 +1,4 @@
-import { Icon, Button, Text, useColorModeValue } from "@chakra-ui/react";
+import { Icon, Button, Text, useColorModeValue, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import KidsInfo from "./KidsInfo";
 import { FaPizzaSlice, FaGuitar } from "react-icons/fa";
@@ -35,6 +35,7 @@ const RsvpComponent = ({
 
       <>
         <Button
+          colorScheme={confirmedGuest[confirmedLocation] ? "teal" : undefined}
           onClick={() =>
             setConfirmedGuest({
               ...confirmedGuest,
@@ -45,11 +46,17 @@ const RsvpComponent = ({
             })
           }
         >
-          {language === 1
-            ? guestInputContent.yesItalian
-            : guestInputContent.yesEnglish}
+          <Text
+            as="span"
+            // color={confirmedGuest[confirmedLocation] ? highlight : undefined}
+          >
+            {language === 1
+              ? guestInputContent.yesItalian
+              : guestInputContent.yesEnglish}
+          </Text>
         </Button>
         <Button
+          colorScheme={!confirmedGuest[confirmedLocation] ? "teal" : undefined}
           onClick={() => {
             setConfirmedGuest({
               ...confirmedGuest,
@@ -58,7 +65,12 @@ const RsvpComponent = ({
             });
           }}
         >
-          no
+          <Text
+            as="span"
+            // color={!confirmedGuest[confirmedLocation] ? "crimson" : undefined}
+          >
+            no
+          </Text>
         </Button>
       </>
 
@@ -83,37 +95,47 @@ const RsvpComponent = ({
         </Text>
         {confirmedGuest[confirmedLocation] && (
           <>
-            {confirmedGuest.plusOneFirstName && (
-              <>
-                <Text>
-                  ...
-                  {plusOneGo && (
-                    <Text as="span" color={highlight}>
-                      {language === 1
-                        ? guestInputContent.withItalian
-                        : guestInputContent.withEnglish}
-                    </Text>
-                  )}
-                  {!plusOneGo && (
-                    <Text as="span" color="crimson">
-                      {language === 1
-                        ? guestInputContent.withoutItalian
-                        : guestInputContent.withoutEnglish}
-                    </Text>
-                  )}{" "}
-                  {language === 1
-                    ? guestInputContent.myPartnerItalian
-                    : guestInputContent.myPartnerEnglish}
-                </Text>
-                <PlusOneInfo
-                  location={location}
-                  confirmedGuest={confirmedGuest}
-                  setConfirmedGuest={setConfirmedGuest}
-                  setPlusOneGo={setPlusOneGo}
-                />
-              </>
-            )}
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              {confirmedGuest.plusOneFirstName && (
+                <>
+                  <Text>
+                    ...
+                    {plusOneGo && (
+                      <Text as="span" color={highlight}>
+                        {language === 1
+                          ? guestInputContent.withItalian
+                          : guestInputContent.withEnglish}
+                      </Text>
+                    )}
+                    {!plusOneGo && (
+                      <Text as="span" color="crimson">
+                        {language === 1
+                          ? guestInputContent.withoutItalian
+                          : guestInputContent.withoutEnglish}
+                      </Text>
+                    )}{" "}
+                    {language === 1
+                      ? guestInputContent.myPartnerItalian
+                      : guestInputContent.myPartnerEnglish}
+                  </Text>
+                  <PlusOneInfo
+                    location={location}
+                    confirmedGuest={confirmedGuest}
+                    setConfirmedGuest={setConfirmedGuest}
+                    setPlusOneGo={setPlusOneGo}
+                    language={language}
+                    plusOneGo={plusOneGo}
+                    highlight={highlight}
+                  />
+                </>
+              )}
+            </Stack>
             <KidsInfo
+              highlight={highlight}
               language={language}
               openKids={openKids}
               setOpenKids={setOpenKids}

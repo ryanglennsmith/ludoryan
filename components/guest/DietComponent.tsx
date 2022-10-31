@@ -117,12 +117,16 @@ const DietComponent = ({
           : `${guestInputContent.hasDietaryRequirementsEnglish}?`}
       </Heading>
       <Stack spacing={5} direction="row" mb={3}>
-        <Button onClick={() => setOpenDiet(true)}>
+        <Button
+          colorScheme={openDiet ? "teal" : undefined}
+          onClick={() => setOpenDiet(true)}
+        >
           {language === 1
             ? guestInputContent.yesItalian
             : guestInputContent.yesEnglish}
         </Button>
         <Button
+          colorScheme={!openDiet ? "teal" : undefined}
           onClick={() => {
             setOpenDiet(false);
             setIsPescatarianBtn(false);
@@ -137,195 +141,21 @@ const DietComponent = ({
           no
         </Button>
       </Stack>
-
-      <Stack spacing={5} mb={3} direction={{ base: "column", md: "row" }}>
-        {!openDiet && (
-          <Button disabled={true} size="lg">
-            <Icon as={FaFish} />
-          </Button>
-        )}
-        {!isPescatarianBtn && openDiet && (
-          <Button
-            size="lg"
-            onClick={() => {
-              setIsPescatarianBtn(!isPescatarianBtn);
-              setIsVeganBtn(false);
-              setIsVegetarianBtn(false);
-            }}
-          >
-            <Text>
-              {language === 1
-                ? guestInputContent.pescatarianItalian
-                : guestInputContent.pescatarianEnglish}
-              <br />
-              <Icon as={FaFish} />
-            </Text>
-          </Button>
-        )}
-        {isPescatarianBtn && openDiet && (
-          <Button
-            size="lg"
-            colorScheme="teal"
-            onClick={() => setIsPescatarianBtn(!isPescatarianBtn)}
-          >
-            <Text>
-              {language === 1
-                ? guestInputContent.pescatarianItalian
-                : guestInputContent.pescatarianEnglish}
-              <br />
-              <Icon as={FaFish} />
-            </Text>
-          </Button>
-        )}
-        {!openDiet && (
-          <Button size="lg" disabled={true}>
-            <Icon as={FaCarrot} />
-          </Button>
-        )}
-        {!isVeganBtn && openDiet && (
-          <Button
-            size="lg"
-            onClick={() => {
-              setIsVeganBtn(!isVeganBtn);
-              setIsPescatarianBtn(false);
-              setIsVegetarianBtn(false);
-            }}
-          >
-            <Text>
-              {language === 1
-                ? guestInputContent.veganItalian
-                : guestInputContent.veganEnglish}
-              <br />
-              <Icon as={FaCarrot} />
-            </Text>
-          </Button>
-        )}
-        {isVeganBtn && openDiet && (
-          <Button
-            size="lg"
-            colorScheme="teal"
-            onClick={() => setIsVeganBtn(!isVeganBtn)}
-          >
-            <Text>
-              {language === 1
-                ? guestInputContent.veganItalian
-                : guestInputContent.veganEnglish}
-              <br />
-              <Icon as={FaCarrot} />
-            </Text>
-          </Button>
-        )}
-        {!openDiet && (
-          <Button size="lg" disabled={true}>
-            <Icon as={TbCheese} />
-          </Button>
-        )}
-        {!isVegetarianBtn && openDiet && (
-          <Button
-            size="lg"
-            onClick={() => {
-              setIsVegetarianBtn(!isVegetarianBtn);
-              setIsVeganBtn(false);
-              setIsPescatarianBtn(false);
-            }}
-          >
-            <Text>
-              {language === 1
-                ? guestInputContent.vegetarianItalian
-                : guestInputContent.vegetarianEnglish}
-              <br />
-              <Icon as={TbCheese} />
-            </Text>
-          </Button>
-        )}
-        {isVegetarianBtn && openDiet && (
-          <Button
-            size="lg"
-            colorScheme="teal"
-            onClick={() => setIsVegetarianBtn(!isVegetarianBtn)}
-          >
-            <Text>
-              {language === 1
-                ? guestInputContent.vegetarianItalian
-                : guestInputContent.vegetarianEnglish}
-              <br />
-              <Icon as={TbCheese} />
-            </Text>
-          </Button>
-        )}
-      </Stack>
-      <InputGroup
-        size="md"
-        mb={3}
-        flexDirection={{ base: "column", md: "row" }}
-      >
-        <Heading size="sm" m={3}>
-          {language === 1
-            ? guestInputContent.specialRequirementsItalian
-            : guestInputContent.specialRequirementsEnglish}
-          :
-        </Heading>
-        <Input
-          disabled={openDiet ? false : true}
-          placeholder={`${confirmedGuest.firstName}: ${
-            language === 1
-              ? guestInputContent.specialRequirementsItalian
-              : guestInputContent.specialRequirementsEnglish
-          }`}
-          value={confirmedGuest.dietaryRestrictions || ""}
-          variant="filled"
-          m={2}
-          mb={3}
-          onChange={(e) =>
-            setConfirmedGuest({
-              ...confirmedGuest,
-              dietaryRestrictions: e.target.value,
-            })
-          }
-        ></Input>
-      </InputGroup>
-      {confirmedGuest.plusOneFirstName && (
+      {openDiet && (
         <>
-          <Heading size="md" mb={3} textAlign="center">
-            {confirmedGuest.plusOneFirstName}{" "}
-            {language === 1
-              ? `${guestInputContent.hasDietaryRequirementsItalian}?`
-              : `${guestInputContent.hasDietaryRequirementsEnglish}?`}
-          </Heading>
-          <Stack spacing={5} direction="row" mb={3}>
-            <Button onClick={() => setOpenPlusOneDiet(true)}>
-              {language === 1
-                ? guestInputContent.yesItalian
-                : guestInputContent.yesEnglish}
-            </Button>
-            <Button
-              onClick={() => {
-                setIsPlusOnePescatarianBtn(false);
-                setIsPlusOneVeganBtn(false);
-                setIsPlusOneVegetarianBtn(false);
-                setOpenPlusOneDiet(false);
-                setConfirmedGuest({
-                  ...confirmedGuest,
-                  plusOneDietaryRestrictions: undefined,
-                });
-              }}
-            >
-              no
-            </Button>
-          </Stack>
           <Stack spacing={5} mb={3} direction={{ base: "column", md: "row" }}>
-            {!openPlusOneDiet && (
+            {!openDiet && (
               <Button disabled={true} size="lg">
                 <Icon as={FaFish} />
               </Button>
             )}
-            {!isPlusOnePescatarianBtn && openPlusOneDiet && (
+            {!isPescatarianBtn && openDiet && (
               <Button
                 size="lg"
                 onClick={() => {
-                  setIsPlusOneVeganBtn(false);
-                  setIsPlusOneVegetarianBtn(false);
-                  setIsPlusOnePescatarianBtn(!isPlusOnePescatarianBtn);
+                  setIsPescatarianBtn(!isPescatarianBtn);
+                  setIsVeganBtn(false);
+                  setIsVegetarianBtn(false);
                 }}
               >
                 <Text>
@@ -337,13 +167,11 @@ const DietComponent = ({
                 </Text>
               </Button>
             )}
-            {isPlusOnePescatarianBtn && openPlusOneDiet && (
+            {isPescatarianBtn && openDiet && (
               <Button
                 size="lg"
                 colorScheme="teal"
-                onClick={() =>
-                  setIsPlusOnePescatarianBtn(!isPlusOnePescatarianBtn)
-                }
+                onClick={() => setIsPescatarianBtn(!isPescatarianBtn)}
               >
                 <Text>
                   {language === 1
@@ -354,18 +182,18 @@ const DietComponent = ({
                 </Text>
               </Button>
             )}
-            {!openPlusOneDiet && (
+            {!openDiet && (
               <Button size="lg" disabled={true}>
                 <Icon as={FaCarrot} />
               </Button>
             )}
-            {!isPlusOneVeganBtn && openPlusOneDiet && (
+            {!isVeganBtn && openDiet && (
               <Button
                 size="lg"
                 onClick={() => {
-                  setIsPlusOnePescatarianBtn(false);
-                  setIsPlusOneVegetarianBtn(false);
-                  setIsPlusOneVeganBtn(!isPlusOneVeganBtn);
+                  setIsVeganBtn(!isVeganBtn);
+                  setIsPescatarianBtn(false);
+                  setIsVegetarianBtn(false);
                 }}
               >
                 <Text>
@@ -377,11 +205,11 @@ const DietComponent = ({
                 </Text>
               </Button>
             )}
-            {isPlusOneVeganBtn && openPlusOneDiet && (
+            {isVeganBtn && openDiet && (
               <Button
                 size="lg"
                 colorScheme="teal"
-                onClick={() => setIsPlusOneVeganBtn(!isPlusOneVeganBtn)}
+                onClick={() => setIsVeganBtn(!isVeganBtn)}
               >
                 <Text>
                   {language === 1
@@ -392,18 +220,18 @@ const DietComponent = ({
                 </Text>
               </Button>
             )}
-            {!openPlusOneDiet && (
+            {!openDiet && (
               <Button size="lg" disabled={true}>
                 <Icon as={TbCheese} />
               </Button>
             )}
-            {!isPlusOneVegetarianBtn && openPlusOneDiet && (
+            {!isVegetarianBtn && openDiet && (
               <Button
                 size="lg"
                 onClick={() => {
-                  setIsPlusOnePescatarianBtn(false);
-                  setIsPlusOneVeganBtn(false);
-                  setIsPlusOneVegetarianBtn(!isPlusOneVegetarianBtn);
+                  setIsVegetarianBtn(!isVegetarianBtn);
+                  setIsVeganBtn(false);
+                  setIsPescatarianBtn(false);
                 }}
               >
                 <Text>
@@ -415,13 +243,11 @@ const DietComponent = ({
                 </Text>
               </Button>
             )}
-            {isPlusOneVegetarianBtn && openPlusOneDiet && (
+            {isVegetarianBtn && openDiet && (
               <Button
                 size="lg"
                 colorScheme="teal"
-                onClick={() =>
-                  setIsPlusOneVegetarianBtn(!isPlusOneVegetarianBtn)
-                }
+                onClick={() => setIsVegetarianBtn(!isVegetarianBtn)}
               >
                 <Text>
                   {language === 1
@@ -445,24 +271,218 @@ const DietComponent = ({
               :
             </Heading>
             <Input
-              placeholder={`${confirmedGuest.plusOneFirstName}: ${
+              disabled={openDiet ? false : true}
+              placeholder={`${confirmedGuest.firstName}: ${
                 language === 1
                   ? guestInputContent.specialRequirementsItalian
                   : guestInputContent.specialRequirementsEnglish
               }`}
-              value={confirmedGuest.plusOneDietaryRestrictions || ""}
+              value={confirmedGuest.dietaryRestrictions || ""}
               variant="filled"
-              disabled={openPlusOneDiet ? false : true}
               m={2}
               mb={3}
               onChange={(e) =>
                 setConfirmedGuest({
                   ...confirmedGuest,
-                  plusOneDietaryRestrictions: e.target.value,
+                  dietaryRestrictions: e.target.value,
                 })
               }
             ></Input>
           </InputGroup>
+        </>
+      )}
+
+      {confirmedGuest.plusOneFirstName && (
+        <>
+          <Heading size="md" mb={3} textAlign="center">
+            {confirmedGuest.plusOneFirstName}{" "}
+            {language === 1
+              ? `${guestInputContent.hasDietaryRequirementsItalian}?`
+              : `${guestInputContent.hasDietaryRequirementsEnglish}?`}
+          </Heading>
+          <Stack spacing={5} direction="row" mb={3}>
+            <Button
+              colorScheme={openPlusOneDiet ? "teal" : undefined}
+              onClick={() => setOpenPlusOneDiet(true)}
+            >
+              {language === 1
+                ? guestInputContent.yesItalian
+                : guestInputContent.yesEnglish}
+            </Button>
+            <Button
+              colorScheme={!openPlusOneDiet ? "teal" : undefined}
+              onClick={() => {
+                setIsPlusOnePescatarianBtn(false);
+                setIsPlusOneVeganBtn(false);
+                setIsPlusOneVegetarianBtn(false);
+                setOpenPlusOneDiet(false);
+                setConfirmedGuest({
+                  ...confirmedGuest,
+                  plusOneDietaryRestrictions: undefined,
+                });
+              }}
+            >
+              no
+            </Button>
+          </Stack>
+          {openPlusOneDiet && (
+            <>
+              <Stack
+                spacing={5}
+                mb={3}
+                direction={{ base: "column", md: "row" }}
+              >
+                {!openPlusOneDiet && (
+                  <Button disabled={true} size="lg">
+                    <Icon as={FaFish} />
+                  </Button>
+                )}
+                {!isPlusOnePescatarianBtn && openPlusOneDiet && (
+                  <Button
+                    size="lg"
+                    onClick={() => {
+                      setIsPlusOneVeganBtn(false);
+                      setIsPlusOneVegetarianBtn(false);
+                      setIsPlusOnePescatarianBtn(!isPlusOnePescatarianBtn);
+                    }}
+                  >
+                    <Text>
+                      {language === 1
+                        ? guestInputContent.pescatarianItalian
+                        : guestInputContent.pescatarianEnglish}
+                      <br />
+                      <Icon as={FaFish} />
+                    </Text>
+                  </Button>
+                )}
+                {isPlusOnePescatarianBtn && openPlusOneDiet && (
+                  <Button
+                    size="lg"
+                    colorScheme="teal"
+                    onClick={() =>
+                      setIsPlusOnePescatarianBtn(!isPlusOnePescatarianBtn)
+                    }
+                  >
+                    <Text>
+                      {language === 1
+                        ? guestInputContent.pescatarianItalian
+                        : guestInputContent.pescatarianEnglish}
+                      <br />
+                      <Icon as={FaFish} />
+                    </Text>
+                  </Button>
+                )}
+                {!openPlusOneDiet && (
+                  <Button size="lg" disabled={true}>
+                    <Icon as={FaCarrot} />
+                  </Button>
+                )}
+                {!isPlusOneVeganBtn && openPlusOneDiet && (
+                  <Button
+                    size="lg"
+                    onClick={() => {
+                      setIsPlusOnePescatarianBtn(false);
+                      setIsPlusOneVegetarianBtn(false);
+                      setIsPlusOneVeganBtn(!isPlusOneVeganBtn);
+                    }}
+                  >
+                    <Text>
+                      {language === 1
+                        ? guestInputContent.veganItalian
+                        : guestInputContent.veganEnglish}
+                      <br />
+                      <Icon as={FaCarrot} />
+                    </Text>
+                  </Button>
+                )}
+                {isPlusOneVeganBtn && openPlusOneDiet && (
+                  <Button
+                    size="lg"
+                    colorScheme="teal"
+                    onClick={() => setIsPlusOneVeganBtn(!isPlusOneVeganBtn)}
+                  >
+                    <Text>
+                      {language === 1
+                        ? guestInputContent.veganItalian
+                        : guestInputContent.veganEnglish}
+                      <br />
+                      <Icon as={FaCarrot} />
+                    </Text>
+                  </Button>
+                )}
+                {!openPlusOneDiet && (
+                  <Button size="lg" disabled={true}>
+                    <Icon as={TbCheese} />
+                  </Button>
+                )}
+                {!isPlusOneVegetarianBtn && openPlusOneDiet && (
+                  <Button
+                    size="lg"
+                    onClick={() => {
+                      setIsPlusOnePescatarianBtn(false);
+                      setIsPlusOneVeganBtn(false);
+                      setIsPlusOneVegetarianBtn(!isPlusOneVegetarianBtn);
+                    }}
+                  >
+                    <Text>
+                      {language === 1
+                        ? guestInputContent.vegetarianItalian
+                        : guestInputContent.vegetarianEnglish}
+                      <br />
+                      <Icon as={TbCheese} />
+                    </Text>
+                  </Button>
+                )}
+                {isPlusOneVegetarianBtn && openPlusOneDiet && (
+                  <Button
+                    size="lg"
+                    colorScheme="teal"
+                    onClick={() =>
+                      setIsPlusOneVegetarianBtn(!isPlusOneVegetarianBtn)
+                    }
+                  >
+                    <Text>
+                      {language === 1
+                        ? guestInputContent.vegetarianItalian
+                        : guestInputContent.vegetarianEnglish}
+                      <br />
+                      <Icon as={TbCheese} />
+                    </Text>
+                  </Button>
+                )}
+              </Stack>
+              <InputGroup
+                size="md"
+                mb={3}
+                flexDirection={{ base: "column", md: "row" }}
+              >
+                <Heading size="sm" m={3}>
+                  {language === 1
+                    ? guestInputContent.specialRequirementsItalian
+                    : guestInputContent.specialRequirementsEnglish}
+                  :
+                </Heading>
+                <Input
+                  placeholder={`${confirmedGuest.plusOneFirstName}: ${
+                    language === 1
+                      ? guestInputContent.specialRequirementsItalian
+                      : guestInputContent.specialRequirementsEnglish
+                  }`}
+                  value={confirmedGuest.plusOneDietaryRestrictions || ""}
+                  variant="filled"
+                  disabled={openPlusOneDiet ? false : true}
+                  m={2}
+                  mb={3}
+                  onChange={(e) =>
+                    setConfirmedGuest({
+                      ...confirmedGuest,
+                      plusOneDietaryRestrictions: e.target.value,
+                    })
+                  }
+                ></Input>
+              </InputGroup>
+            </>
+          )}
         </>
       )}
     </>

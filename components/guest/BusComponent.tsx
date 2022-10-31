@@ -21,9 +21,10 @@ const BusComponent = ({
           ? guestInputContent.transportTitleItalian
           : guestInputContent.transportTitleEnglish}
       </Heading>
-      <Stack mb={3} spacing={5} direction="column">
+      <Stack mb={3} spacing={5} direction="row">
         <>
           <Button
+            colorScheme={confirmedGuest.italyBus ? "teal" : undefined}
             size="md"
             onClick={() => {
               setConfirmedGuest({
@@ -35,6 +36,7 @@ const BusComponent = ({
             <Icon as={FaBus} />
           </Button>
           <Button
+            colorScheme={!confirmedGuest.italyBus ? "teal" : undefined}
             size="md"
             onClick={() => {
               setConfirmedGuest({
@@ -45,22 +47,22 @@ const BusComponent = ({
           >
             <Icon as={FaCar} />
           </Button>
-          {confirmedGuest.italyBus && (
-            <Text>
-              {language === 1
-                ? guestInputContent.rideTheBusItalian
-                : guestInputContent.rideTheBusEnglish}
-            </Text>
-          )}
-          {!confirmedGuest.italyBus && (
-            <Text>
-              {language === 1
-                ? guestInputContent.notRideTheBusItalian
-                : guestInputContent.notRideTheBusEnglish}
-            </Text>
-          )}
         </>
       </Stack>
+      {confirmedGuest.italyBus && (
+        <Text>
+          {language === 1
+            ? guestInputContent.rideTheBusItalian
+            : guestInputContent.rideTheBusEnglish}
+        </Text>
+      )}
+      {!confirmedGuest.italyBus && (
+        <Text>
+          {language === 1
+            ? guestInputContent.notRideTheBusItalian
+            : guestInputContent.notRideTheBusEnglish}
+        </Text>
+      )}
     </>
   );
 };
