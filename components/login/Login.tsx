@@ -1,5 +1,7 @@
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import login from "../../services/login/login";
+import { useEffect, useState } from "react";
 
 type Props = {
   message: string;
@@ -9,35 +11,20 @@ type Props = {
   setUser: Function;
   setPw: Function;
 };
-const isValidEntry = (text: string): boolean => text.length > 0;
 
 const Login = ({ message, setMessage, user, pw, setUser, setPw }: Props) => {
-  const router = useRouter();
-  const login = async () => {
-    if (isValidEntry(user) && isValidEntry(pw)) {
-      const response = await fetch("/api/login/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: user, password: pw }),
-      }).then((response) => response.json());
-      if (response.isLoggedIn) {
-        setMessage(response.id);
-        if (response.id === "0") {
-          router.push("/admin");
-        } else {
-          router.push(`/${response.id}`);
-        }
-      } else {
-        setMessage("error logging in");
-      }
-    } else {
-      setMessage("enter a username and password to log in");
+  const [doLogin, setDoLogin] = useState(false);
+  useEffect(() => {
+    if (doLogin) {
+      login(setMessage, user, pw, router);
+      setDoLogin(false);
     }
-  };
+  }, [doLogin]);
+  const router = useRouter();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    login();
+    setDoLogin(true);
   };
 
   return (
