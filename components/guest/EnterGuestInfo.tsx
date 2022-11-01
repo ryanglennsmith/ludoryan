@@ -155,6 +155,7 @@ const EnterGuestInfo = ({
           </Stack>
         </Stack>
       </InputGroup>
+      {/* bus container */}
       {user.isInvitedToItaly && confirmedGuest.confirmedItaly && (
         <BusComponent
           language={language}
@@ -162,6 +163,7 @@ const EnterGuestInfo = ({
           confirmedGuest={confirmedGuest}
         />
       )}
+      {/* dietary restrictions container */}
       {(confirmedGuest.confirmedItaly || confirmedGuest.confirmedUsa) && (
         <DietComponent
           language={language}
@@ -178,6 +180,7 @@ const EnterGuestInfo = ({
       <Heading size="xs" p={3}>
         anything else you'd like to add?
       </Heading>
+      {/* additional information container */}
       <GuestInfoInputComponent
         placeHolder="anything else?"
         valueToSet={"additionalInformation"}

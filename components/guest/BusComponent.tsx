@@ -15,7 +15,7 @@ const BusComponent = ({
   language,
 }: Props) => {
   return (
-    <>
+    <Stack spacing={3} mb={3} justifyContent="center" alignItems="center">
       <Heading size="md" mb={3}>
         {language === 1
           ? guestInputContent.transportTitleItalian
@@ -63,7 +63,7 @@ const BusComponent = ({
             : guestInputContent.notRideTheBusEnglish}
         </Text>
       )}
-    </>
+    </Stack>
   );
 };
 
