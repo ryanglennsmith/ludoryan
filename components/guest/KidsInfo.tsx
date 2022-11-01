@@ -43,7 +43,7 @@ const KidsInfo = ({
           </Text>
         )}
         <Button onClick={() => setOpenKids(!openKids)}>
-          {openKids && <Icon color="crimson" as={FaTimes} />}
+          {openKids && <Icon as={FaTimes} />}
           {!openKids && <Icon as={FaChild} />}
         </Button>
         {openKids && (

@@ -16,14 +16,13 @@ import {
 import router from "next/router";
 import { useState, useEffect } from "react";
 import {
-  FaGrinTongueWink,
   FaGrimace,
   FaPizzaSlice,
   FaBus,
   FaCar,
-  FaHeartBroken,
-  FaHeart,
   FaBaby,
+  FaTimes,
+  FaCheck,
 } from "react-icons/fa";
 import guestInputContent from "../../resource/guestInputContent";
 import saveConfirmedGuest from "../../services/submitData/submitRsvp";
@@ -66,7 +65,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
           <ModalBody>
             {isSaveSuccessful && (
               <>
-                submission saved <Icon as={FaGrinTongueWink} />
+                submission saved <Icon as={FaCheck} />
                 <ModalFooter>
                   <Button
                     variant="ghost"
@@ -90,7 +89,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
             {isSaveError && (
               <>
                 submission not saved -- something went wrong{" "}
-                <Icon as={FaGrimace} />
+                <Icon as={FaTimes} />
                 <ModalFooter>
                   <Button
                     variant="ghost"
@@ -116,7 +115,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
                   {confirmedGuest.invitedToItaly &&
                     confirmedGuest.confirmedItaly && (
                       <ListItem>
-                        <ListIcon as={FaGrinTongueWink} />
+                        <ListIcon as={FaCheck} />
                         {language === 1
                           ? guestInputContent.confirmYesItalyItalian
                           : guestInputContent.confirmYesItalyEnglish}{" "}
@@ -125,7 +124,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
                   {confirmedGuest.invitedToItaly &&
                     !confirmedGuest.confirmedItaly && (
                       <ListItem>
-                        <ListIcon as={FaGrimace} />
+                        <ListIcon as={FaTimes} />
                         {language === 1
                           ? guestInputContent.confirmNoItalyItalian
                           : guestInputContent.confirmNoItalyEnglish}{" "}
@@ -135,7 +134,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
                     confirmedGuest.italyPlusOne && (
                       <List spacing={3} ml={10}>
                         <ListItem>
-                          <ListIcon as={FaHeart} />
+                          <ListIcon as={FaCheck} />
                           {language === 1
                             ? `${guestInputContent.withItalian} ${guestInputContent.myPartnerItalian} `
                             : `${guestInputContent.withEnglish} ${guestInputContent.myPartnerEnglish} `}
@@ -147,7 +146,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
                     !confirmedGuest.italyPlusOne && (
                       <List spacing={3} ml={10}>
                         <ListItem>
-                          <ListIcon as={FaHeartBroken} />
+                          <ListIcon as={FaTimes} />
                           {language === 1
                             ? `${guestInputContent.withoutItalian} ${guestInputContent.myPartnerItalian} `
                             : `${guestInputContent.withoutEnglish} ${guestInputContent.myPartnerEnglish} `}{" "}
@@ -194,7 +193,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
 
                   {confirmedGuest.invitedToUSA && confirmedGuest.confirmedUsa && (
                     <ListItem>
-                      <ListIcon as={FaGrinTongueWink} />
+                      <ListIcon as={FaCheck} />
                       {language === 1
                         ? guestInputContent.confirmYesUsaItalian
                         : guestInputContent.confirmYesUsaEnglish}{" "}
@@ -211,7 +210,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
                   {confirmedGuest.confirmedUsa && confirmedGuest.usaPlusOne && (
                     <List spacing={3} ml={10}>
                       <ListItem>
-                        <ListIcon as={FaHeart} />
+                        <ListIcon as={FaCheck} />
                         {language === 1
                           ? `${guestInputContent.withItalian} ${guestInputContent.myPartnerItalian} `
                           : `${guestInputContent.withEnglish} ${guestInputContent.myPartnerEnglish} `}{" "}
@@ -222,7 +221,7 @@ const SubmissionModal = ({ confirmedGuest, language }: Props) => {
                   {confirmedGuest.confirmedUsa && !confirmedGuest.usaPlusOne && (
                     <List spacing={3} ml={10}>
                       <ListItem>
-                        <ListIcon as={FaHeartBroken} />
+                        <ListIcon as={FaTimes} />
                         {language === 1
                           ? `${guestInputContent.withoutItalian} ${guestInputContent.myPartnerItalian} `
                           : `${guestInputContent.withoutEnglish} ${guestInputContent.myPartnerEnglish} `}{" "}

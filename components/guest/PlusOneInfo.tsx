@@ -37,12 +37,12 @@ const PlusOneInfo = ({
         }}
       >
         {!plusOneGo && (
-          <Text as="span" color={highlight}>
+          <Text as="span">
             <Icon as={FaHeart} />
           </Text>
         )}{" "}
         {plusOneGo && (
-          <Text as="span" color="crimson">
+          <Text as="span">
             {" "}
             <Icon as={FaTimes} />
           </Text>
