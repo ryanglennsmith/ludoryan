@@ -76,7 +76,7 @@ const SavedDetailsComponent = ({
                 </>
               )}
           </ul>
-          <ul>
+          {/* <ul>
             {(savedConfirmation?.confirmedItaly ||
               savedConfirmation?.confirmedUsa) && (
               <>
@@ -93,7 +93,7 @@ const SavedDetailsComponent = ({
                 {savedConfirmation.plusOneDietaryRestrictions || "none"}
               </>
             )}
-          </ul>
+          </ul> */}
           <ul>
             {(savedConfirmation?.confirmedItaly ||
               savedConfirmation?.confirmedUsa) &&
