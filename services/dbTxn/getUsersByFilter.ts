@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { prismaTxnFactory } from "./prismaTxnFactory";
 
-const prisma = new PrismaClient();
+const prisma = prismaTxnFactory;
 
 type filter = {
   isItalyFiltered?: boolean;

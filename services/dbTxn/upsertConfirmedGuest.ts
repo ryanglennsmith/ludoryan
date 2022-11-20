@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
+import { prismaTxnFactory } from "./prismaTxnFactory";
 
-const prisma = new PrismaClient();
+const prisma = prismaTxnFactory;
 export async function upsertConfirmedGuest(guest: IConfirmedGuest) {
   try {
     const prismaTxn = await prisma.confirmedGuest.upsert({

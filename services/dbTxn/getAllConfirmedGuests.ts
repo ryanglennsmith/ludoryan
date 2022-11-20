@@ -1,5 +1,7 @@
-import { PrismaClient, ConfirmedGuest } from "@prisma/client";
-const prisma = new PrismaClient();
+import { ConfirmedGuest } from "@prisma/client";
+import { prismaTxnFactory } from "./prismaTxnFactory";
+
+const prisma = prismaTxnFactory;
 export const getAllConfirmedGuests = async (): Promise<ConfirmedGuest[]> => {
   const prismaTxn = await prisma.confirmedGuest.findMany();
   return prismaTxn;

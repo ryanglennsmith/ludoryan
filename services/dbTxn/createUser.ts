@@ -1,6 +1,7 @@
-import { GuestTemplate, PrismaClient, Prisma } from "@prisma/client";
+import { GuestTemplate, Prisma } from "@prisma/client";
+import { prismaTxnFactory } from "./prismaTxnFactory";
 
-const prisma = new PrismaClient();
+const prisma = prismaTxnFactory;
 export async function createUser(user: GuestTemplate) {
   try {
     const prismaTxn = await prisma.guestTemplate.create({
