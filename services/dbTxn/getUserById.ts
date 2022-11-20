@@ -1,6 +1,7 @@
-import { GuestTemplate, PrismaClient } from "@prisma/client";
+import { GuestTemplate } from "@prisma/client";
+import { prismaTxnFactory } from "./prismaTxnFactory";
 
-const prisma = new PrismaClient();
+const prisma = prismaTxnFactory;
 
 export async function getUserById(id: string): Promise<GuestTemplate> {
   const prismaTxn = await prisma.guestTemplate.findUnique({

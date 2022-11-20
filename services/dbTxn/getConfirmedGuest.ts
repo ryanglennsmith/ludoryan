@@ -1,5 +1,7 @@
-import { PrismaClient, ConfirmedGuest } from "@prisma/client";
-const prisma = new PrismaClient();
+import { ConfirmedGuest } from "@prisma/client";
+import { prismaTxnFactory } from "./prismaTxnFactory";
+
+const prisma = prismaTxnFactory;
 export const getConfirmedGuest = async (
   guestId: string
 ): Promise<ConfirmedGuest> => {

@@ -1,7 +1,7 @@
-import { PrismaClient, LogDb } from "@prisma/client";
 import ILogger from "../../types/ILogger";
+import { prismaTxnFactory } from "./prismaTxnFactory";
 
-const prisma = new PrismaClient();
+const prisma = prismaTxnFactory;
 export async function createLog(log: ILogger) {
   const prismaTxn = await prisma.logDb.create({
     data: {
