@@ -126,7 +126,7 @@ const EnterGuestInfo = ({
         rsvp
       </Heading>
       <InputGroup alignItems="center" justifyContent="center">
-        <Stack spacing={5} direction="row" mb={3}>
+        <Stack spacing={5} direction={{ base: "column", md: "row" }} mb={3}>
           <Stack spacing={5} direction="column">
             {confirmedGuest.invitedToItaly && (
               <>
@@ -164,7 +164,7 @@ const EnterGuestInfo = ({
         />
       )}
       {/* dietary restrictions container */}
-      {(confirmedGuest.confirmedItaly || confirmedGuest.confirmedUsa) && (
+      {/* {(confirmedGuest.confirmedItaly || confirmedGuest.confirmedUsa) && (
         <DietComponent
           language={language}
           user={user}
@@ -175,11 +175,11 @@ const EnterGuestInfo = ({
           confirmedGuest={confirmedGuest}
           setConfirmedGuest={setConfirmedGuest}
         ></DietComponent>
-      )}
-      {/* TODO MAKE ITALIAN */}
-      <Heading size="xs" p={3}>
-        anything else you'd like to add?
+      )} */}
+      <Heading size="sm" p={3}>
+        {language === 0 ? guestInputContent.anythingElseEnglish : guestInputContent.anythingElseItalian}
       </Heading>
+      <p>{language === 0 ? guestInputContent.anythingElseForExampleEnglish : guestInputContent.anythingElseForExampleItalian}</p>
       {/* additional information container */}
       <GuestInfoInputComponent
         placeHolder="anything else?"

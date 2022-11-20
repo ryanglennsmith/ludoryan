@@ -28,7 +28,19 @@ const KidsInfo = ({
   return (
     <>
       <Stack spacing={5} direction="column">
-        {openKids && (
+              <p>{language === 0 ? guestInputContent.withKidsEnglish : guestInputContent.withKidsItalian}</p><Input
+              width="min"
+              placeholder="0"
+              type="number"
+              onChange={(e) => {
+                setConfirmedGuest({
+                  ...confirmedGuest,
+                  [confirmedLocationKids]: Number(e.target.value),
+                });
+              }}
+            /> 
+
+        {/* {openKids && (
           <Text>
             {language === 1
               ? guestInputContent.withKidsItalian
@@ -65,7 +77,7 @@ const KidsInfo = ({
               }}
             />
           </>
-        )}
+        )} */}
       </Stack>
     </>
   );

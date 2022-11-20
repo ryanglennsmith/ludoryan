@@ -57,6 +57,14 @@ interface IGuestInputContent {
   confirmNoUsaItalian: string;
   goBackEnglish: string;
   goBackItalian: string;
+  anythingElseEnglish: string;
+  anythingElseItalian: string;
+  anythingElseForExampleEnglish: string;
+  anythingElseForExampleItalian: string;
+  showSavedDetailsEnglish: string;
+  showSavedDetailsItalian: string;
+  hideSavedDetailsEnglish: string;
+  hideSavedDetailsItalian: string;
 }
 const guestInputContent: IGuestInputContent = {
   headlineEnglish: "enter or update your details",
@@ -75,8 +83,8 @@ const guestInputContent: IGuestInputContent = {
   willAttendItalian: "verrò",
   willNotAttendEnglish: "will not attend",
   willNotAttendItalian: "non verrò",
-  withKidsEnglish: "with children who need kid's menu",
-  withKidsItalian: "con bambini che hanno bisogno di menu bambino",
+  withKidsEnglish: "with children",
+  withKidsItalian: "con bambini",
   withEnglish: "with",
   withItalian: "con",
   withoutEnglish: "without",
@@ -120,6 +128,16 @@ const guestInputContent: IGuestInputContent = {
   confirmNoUsaItalian: "no, spiacente, niente america per me",
   goBackEnglish: "go back",
   goBackItalian: "indietro",
+  anythingElseEnglish: "anything else you'd like to add",
+  anythingElseItalian: "vuoi dirci altro?",
+  anythingElseForExampleEnglish:
+    "for example: allergies or other dietary restrictions",
+  anythingElseForExampleItalian:
+    "per esempio: allergie o altre esigenze alimentari",
+  showSavedDetailsEnglish: "show saved details",
+  showSavedDetailsItalian: "mostra informazioni inserite",
+  hideSavedDetailsEnglish: "hide saved details",
+  hideSavedDetailsItalian: "nascondi informazioni inserite",
 };
 
 export default guestInputContent;
