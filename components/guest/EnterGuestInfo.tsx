@@ -176,11 +176,10 @@ const EnterGuestInfo = ({
           setConfirmedGuest={setConfirmedGuest}
         ></DietComponent>
       )} */}
-      {/* TODO MAKE ITALIAN */}
       <Heading size="sm" p={3}>
-        anything else you'd like to add?
+        {language === 0 ? guestInputContent.anythingElseEnglish : guestInputContent.anythingElseItalian}
       </Heading>
-      <p>for example: allergies or other dietary restrictions</p>
+      <p>{language === 0 ? guestInputContent.anythingElseForExampleEnglish : guestInputContent.anythingElseForExampleItalian}</p>
       {/* additional information container */}
       <GuestInfoInputComponent
         placeHolder="anything else?"

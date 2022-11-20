@@ -1,14 +1,17 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import guestInputContent from "../../resource/guestInputContent";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 type Props = {
   confirmedGuest: IConfirmedGuest;
   savedConfirmation: any;
+  language: number;
 };
 const SavedDetailsComponent = ({
   confirmedGuest,
   savedConfirmation,
+  language
 }: Props) => {
   const [showSavedDetails, setShowSavedDetails] = useState(false);
   return (
@@ -18,8 +21,8 @@ const SavedDetailsComponent = ({
         m={3}
         onClick={() => setShowSavedDetails(!showSavedDetails)}
       >
-        {showSavedDetails && <Text as="span">hide saved details</Text>}
-        {!showSavedDetails && <Text as="span">show saved details</Text>}
+        {showSavedDetails && <Text as="span">{language ===0 ? guestInputContent.hideSavedDetailsEnglish : guestInputContent.hideSavedDetailsItalian}</Text>}
+        {!showSavedDetails && <Text as="span">{language===0 ? guestInputContent.showSavedDetailsEnglish : guestInputContent.showSavedDetailsItalian}</Text>}
       </Button>
       {showSavedDetails && (
         <Flex alignItems="left" direction="column" mb={5}>

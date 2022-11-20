@@ -28,7 +28,7 @@ const KidsInfo = ({
   return (
     <>
       <Stack spacing={5} direction="column">
-              <p>with children: </p><Input
+              <p>{language === 0 ? guestInputContent.withKidsEnglish : guestInputContent.withKidsItalian}</p><Input
               width="min"
               placeholder="0"
               type="number"

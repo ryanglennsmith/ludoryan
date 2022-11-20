@@ -79,6 +79,7 @@ const GuestPage: NextPage<Props> = ({
           <SavedDetailsComponent
             savedConfirmation={savedConfirmation}
             confirmedGuest={confirmedGuest}
+            language={language}
           />
         )}
       </Flex>

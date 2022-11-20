@@ -30,12 +30,12 @@ const mainContent: IMainContent = {
     "Because the venue is located outside of Milan, we will arrange for transportation to and from the site from the city.",
   italyPartyUrl: "https://www.caremma.com/",
   usaPartyText:
-    "We will have our summer celebration in Memphis, in July, venue and date TBD.",
+    "We will have our summer celebration in Memphis, on June 10, venue TBD.",
   headline: "welcome",
   headlineItalian: "benvenuto",
   homeImageAltText: "ludoryan in wales",
   homeImage: "/IMG_20200829_165326.jpg",
-  checkBack: "Check back here for updates.",
+  checkBack: "We will update this page with more details as soon as possible.",
   homepageMainTextp1Italian:
     "Dopo quasi tre anni e un trasloco intercontinentale in piena pandemia, è ora di festeggiare il nostro matrimonio con amici, parenti, e benefattori su entrambe le sponde dell'Atlantico.",
   homepageMainTextp2Italian:
@@ -45,8 +45,9 @@ const mainContent: IMainContent = {
   italyPartyTextp2Italian:
     "Siccome la cascina si trova fuori Milano, organizzeremo un servizio navetta andata e ritorno dal centro di Milano.",
   usaPartyTextItalian:
-    "Faremo una festa estiva a Memphis a luglio, luogo e data da definirsi.",
-  checkBackItalian: "Controlla questa pagina per ulteriori informazioni.",
+    "Faremo una festa estiva a Memphis il 10 giugno, luogo da definirsi.",
+  checkBackItalian:
+    "Aggiorneremo questa pagina con ulteriori informazioni appena possibile.",
   myDetails: "my details",
   myDetailsItalian: "i miei dati",
 };
