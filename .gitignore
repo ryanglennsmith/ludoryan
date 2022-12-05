@@ -37,3 +37,4 @@ next-env.d.ts
 
 .env
 /utils_ignore/
+/.csv/
