@@ -7,7 +7,7 @@ export async function createLog(log: ILogger) {
     data: {
       eventMessage: log.event,
       successMessage: log.successMessage || null,
-      errorMessage: log.errorMessage || null,
+      errorMessage: JSON.stringify(log.errorMessage) || null,
       templateId: log.userId || null,
     },
   });
