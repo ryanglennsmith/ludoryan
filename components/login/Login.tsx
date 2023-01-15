@@ -36,7 +36,8 @@ const Login = ({ message, setMessage, user, pw, setUser, setPw }: Props) => {
           mb={3}
           type="text"
           onChange={(e) => {
-            setUser(e.target.value !== null ? e.target.value.toLocaleLowerCase() : undefined);
+            setUser(e.target.value !== null ? e.target.value.trim().toLocaleLowerCase() : undefined);
+            console.log(user)
           }}
         ></Input>
         <Input
