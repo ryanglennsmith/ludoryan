@@ -18,6 +18,8 @@ interface IMainContent {
   checkBackItalian: string;
   myDetails: string;
   myDetailsItalian: string;
+  newBusInfoEnglish: string;
+  newBusInfoItalian: string;
 }
 const mainContent: IMainContent = {
   homepageMainTextp1:
@@ -50,6 +52,10 @@ const mainContent: IMainContent = {
     "Aggiorneremo questa pagina con ulteriori informazioni appena possibile.",
   myDetails: "my details",
   myDetailsItalian: "i miei dati",
+  newBusInfoEnglish:
+    "UPDATE: The bus will depart at 4:00 pm from Piazzale Lodi and will return to the same location at the end of the event.",
+  newBusInfoItalian:
+    "AGGIORNAMENTO: Il bus partirà alle 16:00 da Piazzale Lodi e tornerà allo stesso luogo alla fine dell'evento.",
 };
 
 export default mainContent;

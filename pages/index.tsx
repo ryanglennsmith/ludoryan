@@ -77,6 +77,9 @@ const Home: NextPage = ({ user }: any) => {
                 </Link>
                 . {mainContent.italyPartyTextp2Italian}
               </Text>
+              <Text as="b" p={5} textAlign="left">
+                {mainContent.newBusInfoItalian}
+                </Text>
               <Text p={5} textAlign="left">
                 {mainContent.usaPartyTextItalian}
               </Text>
@@ -107,6 +110,9 @@ const Home: NextPage = ({ user }: any) => {
                   <Icon as={CgExternal} />
                 </Link>
                 . {mainContent.italyPartyTextp2}
+              </Text>
+              <Text as="b" p={5} textAlign="left">
+                {mainContent.newBusInfoEnglish}
               </Text>
               <Text p={5} textAlign="left">
                 {mainContent.usaPartyText}
