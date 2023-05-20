@@ -104,6 +104,13 @@ const Home: NextPage = ({ user }: any) => {
                 {mainContent.homepageMainTextp2}
               </Text>
               <Text p={5} textAlign="left">
+                {mainContent.usaPartyText}
+              </Text>
+              <Text p={5} textAlign="left">
+                {mainContent.usaUpdatep1} {" "}<Link href={mainContent.usaUpdateUrl}>Soul & Spirits Brewery Taproom<Icon as={CgExternal}/></Link>{", "}{mainContent.usaUpdatep2}
+              </Text>
+{/* 
+              <Text p={5} textAlign="left">
                 {mainContent.italyPartyTextp1}{" "}
                 <Link href={mainContent.italyPartyUrl} target="_blank">
                   Cascina Caremma
@@ -113,13 +120,10 @@ const Home: NextPage = ({ user }: any) => {
               </Text>
               <Text as="b" p={5} textAlign="left">
                 {mainContent.newBusInfoEnglish}
-              </Text>
-              <Text p={5} textAlign="left">
-                {mainContent.usaPartyText}
-              </Text>
-              <Text p={5} textAlign="left">
+              </Text> */}
+              {/* <Text p={5} textAlign="left">
                 {mainContent.checkBack}
-              </Text>
+              </Text> */}
             </>
           )}
 

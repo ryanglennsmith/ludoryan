@@ -20,6 +20,9 @@ interface IMainContent {
   myDetailsItalian: string;
   newBusInfoEnglish: string;
   newBusInfoItalian: string;
+  usaUpdatep1: string;
+  usaUpdatep2: string;
+  usaUpdateUrl: string;
 }
 const mainContent: IMainContent = {
   homepageMainTextp1:
@@ -31,8 +34,7 @@ const mainContent: IMainContent = {
   italyPartyTextp2:
     "Because the venue is located outside of Milan, we will arrange for transportation to and from the site from the city.",
   italyPartyUrl: "https://www.caremma.com/",
-  usaPartyText:
-    "We will have our summer celebration in Memphis, on June 10, venue TBD.",
+  usaPartyText: "We will have our summer celebration in Memphis, on June 10.",
   headline: "welcome",
   headlineItalian: "benvenuto",
   homeImageAltText: "ludoryan in wales",
@@ -56,6 +58,10 @@ const mainContent: IMainContent = {
     "UPDATE: The bus will depart at 4:00 pm from Piazzale Lodi and will return to the same location at the end of the event.",
   newBusInfoItalian:
     "AGGIORNAMENTO: Il bus partirà alle 16:00 da Piazzale Lodi e tornerà allo stesso luogo alla fine dell'evento.",
+  usaUpdatep1: "Our venue in Memphis will be downtown at the",
+  usaUpdatep2:
+    "849 N Main St, between 1pm - 5pm. Feel free to dress comfortably, and we will celebrate in Memphis style with beers and barbecue.",
+  usaUpdateUrl: "https://www.soulandspiritsbrew.com/",
 };
 
 export default mainContent;
