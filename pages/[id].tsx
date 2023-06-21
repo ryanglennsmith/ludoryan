@@ -13,6 +13,8 @@ import { server } from "../lib/serverConfig";
 import getSessionLanguage from "../services/language/getSessionLanguage";
 import SavedDetailsComponent from "../components/guest/SavedDetailsComponent";
 import {IGuestInputContent} from "../resource/guestInputContent";
+import { getGuestInputContent } from "../services/dbTxn/getGuestInputContent";
+import { GuestInputContent } from '@prisma/client'
 type Props = {
   user: GuestTemplate;
   sessionUser: any;
@@ -38,10 +40,13 @@ export const getServerSideProps = withIronSessionSsr(
       `${server}/api/confirmedguest/${context.query.id}`
     );
     const savedConfirmation = await serverSideGuestConfirmationData.json();
-    const inputResponse = await fetch(`${server}/api/content/guest`);
-    const inputContentJson = await inputResponse.json();
-    const guestInputContent: IGuestInputContent = {};
-    inputContentJson.forEach((item: { id: number; title: keyof typeof guestInputContent; content: string }) => (guestInputContent[item.title] = item.content))
+    const dbContent = await getGuestInputContent();
+    const guestInputContent: IGuestInputContent = {}
+    dbContent.forEach((item: GuestInputContent)=>{
+      const key = item.title as keyof typeof guestInputContent
+      guestInputContent[key] = item.content
+    })
+  
     return { props: { user, sessionUser, savedConfirmation, guestInputContent } };
   },
   ironOptions

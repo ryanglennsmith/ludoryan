@@ -17,16 +17,19 @@ import {
 import { CgExternal } from "react-icons/cg";
 import { withIronSessionSsr } from "iron-session/next";
 import { ironOptions } from "../lib/ironConfig";
-import { server } from "../lib/serverConfig";
 import { IMainContent } from "../resource/mainContent";
 import getSessionLanguage from "../services/language/getSessionLanguage";
+import { getMainContent } from "../services/dbTxn/getMainContent";
+import { MainContent } from "@prisma/client";
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     const user = req.session.user;
-    const response = await fetch(`${server}/api/content/main`);
-    const contentJson = await response.json();
+    const dbContent = await getMainContent();
     const mainContent: IMainContent = {}
-        contentJson.forEach((item: {id: number, title: keyof typeof mainContent, content: string}) => mainContent[item.title] = item.content);
+    dbContent.forEach((item: MainContent) => {
+      const key = item.title as keyof typeof mainContent
+      mainContent[key] = item.content})
+        
     if (user) {
       return { props: { user, mainContent } };
     } else {
