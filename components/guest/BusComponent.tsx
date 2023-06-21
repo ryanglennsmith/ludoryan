@@ -2,17 +2,19 @@ import { Heading, Stack, Button, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 import { FaBus, FaCar } from "react-icons/fa";
-import guestInputContent from "../../resource/guestInputContent";
+import { IGuestInputContent } from "../../resource/guestInputContent";
 type Props = {
   setConfirmedGuest: Function;
   confirmedGuest: IConfirmedGuest;
   language: number;
+  guestInputContent: IGuestInputContent;
 };
 
 const BusComponent = ({
   setConfirmedGuest,
   confirmedGuest,
   language,
+  guestInputContent
 }: Props) => {
   return (
     <Stack spacing={3} mb={3} justifyContent="center" alignItems="center">

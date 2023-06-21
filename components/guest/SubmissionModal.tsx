@@ -24,16 +24,17 @@ import {
   FaTimes,
   FaCheck,
 } from "react-icons/fa";
-import guestInputContent from "../../resource/guestInputContent";
+import { IGuestInputContent } from "../../resource/guestInputContent";
 import saveConfirmedGuest from "../../services/submitData/submitRsvp";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 
 type Props = {
   confirmedGuest: IConfirmedGuest;
   language: number;
+  guestInputContent: IGuestInputContent;
 };
 
-const SubmissionModal = ({ confirmedGuest, language }: Props) => {
+const SubmissionModal = ({ confirmedGuest, language, guestInputContent }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isClickedSave, setIsClickedSave] = useState(false);
   const [isSaveSuccessful, setIsSaveSuccessful] = useState(false);
