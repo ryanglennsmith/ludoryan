@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { GuestTemplate } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import guestInputContent from "../../resource/guestInputContent";
+import {IGuestInputContent} from "../../resource/guestInputContent";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 import { TbCheese } from "react-icons/tb";
 import { FaCar, FaCarrot, FaFish } from "react-icons/fa";
@@ -23,6 +23,7 @@ type Props = {
   confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
   language: number;
+  guestInputContent: IGuestInputContent;
 };
 
 const DietComponent = ({
@@ -34,6 +35,7 @@ const DietComponent = ({
   confirmedGuest,
   setConfirmedGuest,
   language,
+  guestInputContent
 }: Props) => {
   const [isVeganBtn, setIsVeganBtn] = useState(false);
   const [isPlusOneVeganBtn, setIsPlusOneVeganBtn] = useState(false);

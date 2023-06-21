@@ -12,10 +12,14 @@ import { withIronSessionSsr } from "iron-session/next";
 import { server } from "../lib/serverConfig";
 import getSessionLanguage from "../services/language/getSessionLanguage";
 import SavedDetailsComponent from "../components/guest/SavedDetailsComponent";
+import {IGuestInputContent} from "../resource/guestInputContent";
+import { getGuestInputContent } from "../services/dbTxn/getGuestInputContent";
+import { GuestInputContent } from '@prisma/client'
 type Props = {
   user: GuestTemplate;
   sessionUser: any;
   savedConfirmation?: IConfirmedGuest;
+  guestInputContent: IGuestInputContent;
 };
 
 export const getServerSideProps = withIronSessionSsr(
@@ -36,7 +40,14 @@ export const getServerSideProps = withIronSessionSsr(
       `${server}/api/confirmedguest/${context.query.id}`
     );
     const savedConfirmation = await serverSideGuestConfirmationData.json();
-    return { props: { user, sessionUser, savedConfirmation } };
+    const dbContent = await getGuestInputContent();
+    const guestInputContent: IGuestInputContent = {}
+    dbContent.forEach((item: GuestInputContent)=>{
+      const key = item.title as keyof typeof guestInputContent
+      guestInputContent[key] = item.content
+    })
+  
+    return { props: { user, sessionUser, savedConfirmation, guestInputContent } };
   },
   ironOptions
 );
@@ -44,6 +55,7 @@ const GuestPage: NextPage<Props> = ({
   user,
   sessionUser,
   savedConfirmation,
+  guestInputContent
 }: Props) => {
   const router = useRouter();
   const [hasConfirmed, setHasConfirmed] = useState(savedConfirmation !== null);
@@ -73,6 +85,7 @@ const GuestPage: NextPage<Props> = ({
           user={user}
           confirmedGuest={confirmedGuest}
           setConfirmedGuest={setConfirmedGuest}
+          guestInputContent={guestInputContent}
         />
         {!hasConfirmed && <Text mb={5}>no saved data</Text>}
         {hasConfirmed && (
@@ -80,6 +93,7 @@ const GuestPage: NextPage<Props> = ({
             savedConfirmation={savedConfirmation}
             confirmedGuest={confirmedGuest}
             language={language}
+            guestInputContent={guestInputContent}
           />
         )}
       </Flex>

@@ -1,4 +1,4 @@
-import type { NextPage, GetServerSideProps } from "next";
+import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import Footer from "../components/nav/Footer";
@@ -17,20 +17,28 @@ import {
 import { CgExternal } from "react-icons/cg";
 import { withIronSessionSsr } from "iron-session/next";
 import { ironOptions } from "../lib/ironConfig";
-import mainContent from "../resource/mainContent";
+import { IMainContent } from "../resource/mainContent";
 import getSessionLanguage from "../services/language/getSessionLanguage";
+import { getMainContent } from "../services/dbTxn/getMainContent";
+import { MainContent } from "@prisma/client";
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     const user = req.session.user;
+    const dbContent = await getMainContent();
+    const mainContent: IMainContent = {}
+    dbContent.forEach((item: MainContent) => {
+      const key = item.title as keyof typeof mainContent
+      mainContent[key] = item.content})
+        
     if (user) {
-      return { props: { user } };
+      return { props: { user, mainContent } };
     } else {
-      return { props: { user: { isLoggedIn: false } } };
+      return { props: { user: { isLoggedIn: false }, mainContent } };
     }
   },
   ironOptions
 );
-const Home: NextPage = ({ user }: any) => {
+const Home: NextPage = ({ user, mainContent }: any) => {
   const { toggleColorMode } = useColorMode();
   const [language, setLanguage] = useState(0);
   useEffect(() => {
@@ -109,7 +117,7 @@ const Home: NextPage = ({ user }: any) => {
               <Text p={5} textAlign="left">
                 {mainContent.usaUpdatep1} {" "}<Link href={mainContent.usaUpdateUrl}>Soul & Spirits Brewery Taproom<Icon as={CgExternal}/></Link>{", "}{mainContent.usaUpdatep2}
               </Text>
-{/* 
+{/*           section removed after italy party/before usa
               <Text p={5} textAlign="left">
                 {mainContent.italyPartyTextp1}{" "}
                 <Link href={mainContent.italyPartyUrl} target="_blank">

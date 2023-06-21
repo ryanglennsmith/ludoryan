@@ -5,7 +5,7 @@ import IConfirmedGuest from "../../types/IConfirmedGuest";
 type Props = {
   valueToSet: string;
   confirmedGuest: IConfirmedGuest;
-  placeHolder: string;
+  placeHolder?: string;
   setConfirmedGuest: Function;
   isError?: boolean;
 };

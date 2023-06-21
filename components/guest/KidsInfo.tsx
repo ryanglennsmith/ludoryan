@@ -2,7 +2,7 @@ import { Stack, Button, Icon, Input, Text } from "@chakra-ui/react";
 import { FaCheck, FaChild, FaWineBottle, FaTimes } from "react-icons/fa";
 import { useEffect } from "react";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
-import guestInputContent from "../../resource/guestInputContent";
+import { IGuestInputContent } from "../../resource/guestInputContent";
 
 type Props = {
   openKids: boolean;
@@ -12,6 +12,7 @@ type Props = {
   setConfirmedGuest: Function;
   language: number;
   highlight: string;
+  guestInputContent: IGuestInputContent;
 };
 const KidsInfo = ({
   openKids,
@@ -21,6 +22,7 @@ const KidsInfo = ({
   setConfirmedGuest,
   language,
   highlight,
+  guestInputContent,
 }: Props) => {
   type LocationObjectKey = keyof typeof confirmedGuest.italyKids;
   const confirmedLocationKids = (location + "Kids") as LocationObjectKey;

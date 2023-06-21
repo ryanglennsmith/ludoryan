@@ -11,53 +11,65 @@ datasource db {
 }
 
 model GuestTemplate {
-  id                String            @id @default(uuid())
-  password          String
-  name              String
-  email             String            @unique
-  plusOneName       String?
-  isInvitedToItaly  Boolean
-  isInvitedToUSA    Boolean
-  guest             ConfirmedGuest[]
-  log               LogDb[]
-  createdAt         DateTime          @default(now())
+  id               String           @id @default(uuid())
+  password         String
+  name             String
+  email            String           @unique
+  plusOneName      String?
+  isInvitedToItaly Boolean
+  isInvitedToUSA   Boolean
+  guest            ConfirmedGuest[]
+  log              LogDb[]
+  createdAt        DateTime         @default(now())
 }
 
 model ConfirmedGuest {
-  firstName                   String
-  lastName                    String?
-  plusOneFirstName            String?
-  plusOneLastName             String?
-  id                          String            @id @default(uuid())
-  confirmedItaly              Boolean?
-  confirmedUsa                Boolean?
-  italyKids                   Int?
-  italyBus                    Boolean?
-  italyPlusOne                Boolean?
-  usaKids                     Int?
-  usaPlusOne                  Boolean?
-  dietaryRestrictions         String?
-  plusOneDietaryRestrictions  String?
-  additionalInformation       String?
-  template                    GuestTemplate     @relation(fields: [templateId], references: [id])
-  templateId                  String            @unique
-  createdAt                   DateTime          @default(now())
-  updatedAt                   DateTime          @updatedAt @default(now())
+  firstName                  String
+  lastName                   String?
+  plusOneFirstName           String?
+  plusOneLastName            String?
+  id                         String        @id @default(uuid())
+  confirmedItaly             Boolean?
+  confirmedUsa               Boolean?
+  italyKids                  Int?
+  italyBus                   Boolean?
+  italyPlusOne               Boolean?
+  usaKids                    Int?
+  usaPlusOne                 Boolean?
+  dietaryRestrictions        String?
+  plusOneDietaryRestrictions String?
+  additionalInformation      String?
+  template                   GuestTemplate @relation(fields: [templateId], references: [id])
+  templateId                 String        @unique
+  createdAt                  DateTime      @default(now())
+  updatedAt                  DateTime      @default(now()) @updatedAt
 }
 
-model Admin { 
-  id                String            @id @default(uuid())
-  name              String        
-  email             String            @unique
-  password          String
+model Admin {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
 }
 
 model LogDb {
-  id                String              @id @default(uuid())
-  eventMessage      String
-  occurredAt        DateTime            @default(now())
-  successMessage    String?
-  errorMessage      String?
-  template          GuestTemplate?      @relation(fields: [templateId], references: [id])
-  templateId        String?
+  id             String         @id @default(uuid())
+  eventMessage   String
+  occurredAt     DateTime       @default(now())
+  successMessage String?
+  errorMessage   String?
+  template       GuestTemplate? @relation(fields: [templateId], references: [id])
+  templateId     String?
+}
+
+model MainContent {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+}
+
+model GuestInputContent {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
 }

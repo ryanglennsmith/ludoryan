@@ -19,13 +19,14 @@ import DietComponent from "./DietComponent";
 import SubmissionModal from "./SubmissionModal";
 import BusComponent from "./BusComponent";
 import GuestInfoInputComponent from "./GuestInfoInputComponent";
-import guestInputContent from "../../resource/guestInputContent";
+import { IGuestInputContent } from "../../resource/guestInputContent";
 
 type Props = {
   user: GuestTemplate;
   confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
   language: number;
+  guestInputContent: IGuestInputContent
 };
 
 const EnterGuestInfo = ({
@@ -33,6 +34,7 @@ const EnterGuestInfo = ({
   confirmedGuest,
   setConfirmedGuest,
   language,
+  guestInputContent
 }: Props) => {
   const [openKids, setOpenKids] = useState(false);
   const [openDiet, setOpenDiet] = useState(false);
@@ -137,6 +139,7 @@ const EnterGuestInfo = ({
                   location="italy"
                   confirmedGuest={confirmedGuest}
                   setConfirmedGuest={setConfirmedGuest}
+                  guestInputContent={guestInputContent}
                 />
               </>
             )}
@@ -150,6 +153,7 @@ const EnterGuestInfo = ({
                 location="usa"
                 confirmedGuest={confirmedGuest}
                 setConfirmedGuest={setConfirmedGuest}
+                guestInputContent={guestInputContent}
               />
             )}
           </Stack>
@@ -161,6 +165,7 @@ const EnterGuestInfo = ({
           language={language}
           setConfirmedGuest={setConfirmedGuest}
           confirmedGuest={confirmedGuest}
+          guestInputContent={guestInputContent}
         />
       )}
       {/* dietary restrictions container */}
@@ -197,7 +202,7 @@ const EnterGuestInfo = ({
             too many characters
           </Text>
         )}
-      <SubmissionModal confirmedGuest={confirmedGuest} language={language} />
+      <SubmissionModal guestInputContent={guestInputContent} confirmedGuest={confirmedGuest} language={language} />
     </Flex>
   );
 };

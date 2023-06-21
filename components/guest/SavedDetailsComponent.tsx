@@ -1,17 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import guestInputContent from "../../resource/guestInputContent";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
+import { IGuestInputContent } from "../../resource/guestInputContent";
 type Props = {
   confirmedGuest: IConfirmedGuest;
   savedConfirmation: any;
   language: number;
+  guestInputContent: IGuestInputContent
 };
 const SavedDetailsComponent = ({
   confirmedGuest,
   savedConfirmation,
-  language
+  language,
+  guestInputContent
 }: Props) => {
   const [showSavedDetails, setShowSavedDetails] = useState(false);
   return (

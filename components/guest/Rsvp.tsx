@@ -4,7 +4,7 @@ import KidsInfo from "./KidsInfo";
 import { FaPizzaSlice, FaGuitar } from "react-icons/fa";
 import IConfirmedGuest from "../../types/IConfirmedGuest";
 import PlusOneInfo from "./PlusOneInfo";
-import guestInputContent from "../../resource/guestInputContent";
+import { IGuestInputContent } from "../../resource/guestInputContent";
 type Props = {
   openKids: boolean;
   setOpenKids: Function;
@@ -12,6 +12,7 @@ type Props = {
   confirmedGuest: IConfirmedGuest;
   setConfirmedGuest: Function;
   language: number;
+  guestInputContent: IGuestInputContent;
 };
 const RsvpComponent = ({
   openKids,
@@ -20,6 +21,7 @@ const RsvpComponent = ({
   confirmedGuest,
   setConfirmedGuest,
   language,
+  guestInputContent
 }: Props) => {
   const highlight = useColorModeValue("orange", "lime");
   const [plusOneGo, setPlusOneGo] = useState(true);
@@ -142,6 +144,7 @@ const RsvpComponent = ({
               location={location}
               confirmedGuest={confirmedGuest}
               setConfirmedGuest={setConfirmedGuest}
+              guestInputContent={guestInputContent}
             ></KidsInfo>
           </>
         )}
