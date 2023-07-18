@@ -1,34 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# ludoryan app
 
-First, run the development server:
+The purpose of this app/website was to gather RSVPs for a couple of parties around the world to celebrate a during-lockdown marriage that took place without a ceremony. It seemed like a more robustly-featured option than a Google form and cheaper (as in free) than an RSVP service.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+The app was built in NextJS with TypeScript, has a Postgres db for persistent storage (with Prisma ORM for entity/transaction handling), and is deployed on Vercel. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## build process
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+I wrote scripts to create usernames from our guestlist and to create random passwords. The application secures auth routes with [iron-session](https://www.npmjs.com/package/iron-session "npm package") middleware. There is an admin side of the app to handle creating and editing guest information and for displaying data about our guestlist. On the guest side of things, the user can enter their RSVP with additional fields for special needs, whether they're bringing children, and in the case of the Italy trip, whether they need transportation to the venue. If they need to, they can also update their entry.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## application flow
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+#### home page
+* user sees the welcome page with information about the events
+* can log in
+  * footer contains toggles for language (English/Italian), dark/light mode, and login/logout
 
-## Learn More
+#### log in
+* user login as an invited guest or admin
 
-To learn more about Next.js, take a look at the following resources:
+#### guest
+* the guest can complete their information
+  * add surname
+  * add information for partner/+1
+  * yes/no response to invitation
+  * add that they're bringing children
+    * if invited to the Italy party, can opt in or out to taking the arranged transportation to the venue
+  * additional information, like allergies/dietary restrictions
+  * on submission
+    * modal pops up to review entries
+    * go back or submit
+  * with a saved RSVP
+    * show saved details will do just that
+    * the user can re-enter anything they need to
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### admin
+* page to manage guest list
+  * enter guest with name/email/generated password
+    * can add a plus one
+    * checkboxes to select events to invite to
+    * save
+  * edit guest
+    * enter email into lookup field
+    * if record exists, returns to enter guest screen
+  * invitees
+    * filterable and sortable table with all invited guests
+      * link to edit the guest
+      * link to impersonate the guest for testing
+    * confirmed
+      * table to display all guests who have submitted RSVP
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### logging
+The application also includes logging for errors, successful, and unsuccessful transactions
