@@ -27,6 +27,7 @@ export default function Footer({ isLoggedIn, language, setLanguage }: Props) {
 
   const { toggleColorMode } = useColorMode();
   const Icon = useColorModeValue(MoonIcon, SunIcon);
+  const year = new Date().getFullYear();
   return (
     <Box
       bg={useColorModeValue("gray.50", "gray.900")}
@@ -51,7 +52,7 @@ export default function Footer({ isLoggedIn, language, setLanguage }: Props) {
           <NextLink href="/admin" passHref>
             <Link>
               <Text>
-                <Icon as={FcCopyright} /> 2022 Ludo & Ryan
+                <Icon as={FcCopyright} /> {year} Ludo & Ryan
               </Text>
             </Link>
           </NextLink>
