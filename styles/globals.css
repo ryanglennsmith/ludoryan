@@ -24,3 +24,16 @@ a {
     background: black;
   }
 }
+@media screen and (min-width: 768px) {
+  
+    .masonry-container {
+      column-count: 4;
+    }
+    .masonry-item {
+      display: inline-block;
+      /* margin: 0 0 1em; */
+      width: 100%;
+    }
+  }
+  
+

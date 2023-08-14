@@ -2,7 +2,6 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { GuestTemplate } from "@prisma/client";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import EnterGuestInfo from "../components/guest/EnterGuestInfo";
 import Footer from "../components/nav/Footer";
 import { useEffect, useState } from "react";
@@ -12,14 +11,17 @@ import { withIronSessionSsr } from "iron-session/next";
 import { server } from "../lib/serverConfig";
 import getSessionLanguage from "../services/language/getSessionLanguage";
 import SavedDetailsComponent from "../components/guest/SavedDetailsComponent";
-import {IGuestInputContent} from "../resource/guestInputContent";
+import { IGuestInputContent } from "../resource/guestInputContent";
 import { getGuestInputContent } from "../services/dbTxn/getGuestInputContent";
-import { GuestInputContent } from '@prisma/client'
+import { GuestInputContent } from "@prisma/client";
+import { useRouter } from "next/router";
+
 type Props = {
   user: GuestTemplate;
   sessionUser: any;
   savedConfirmation?: IConfirmedGuest;
   guestInputContent: IGuestInputContent;
+  images: string[];
 };
 
 export const getServerSideProps = withIronSessionSsr(
@@ -32,6 +34,11 @@ export const getServerSideProps = withIronSessionSsr(
     ) {
       return { notFound: true };
     }
+    const date = new Date();
+    const legacyDate = new Date(2023, 6, 10);
+    if (date.getDate() > legacyDate.getDate()) {
+      return { redirect: { destination: "/gallery", permanent: true } };
+    }
     const serverSideGuestTemplateData = await fetch(
       `${server}/api/${context.query.id}`
     );
@@ -41,13 +48,20 @@ export const getServerSideProps = withIronSessionSsr(
     );
     const savedConfirmation = await serverSideGuestConfirmationData.json();
     const dbContent = await getGuestInputContent();
-    const guestInputContent: IGuestInputContent = {}
-    dbContent.forEach((item: GuestInputContent)=>{
-      const key = item.title as keyof typeof guestInputContent
-      guestInputContent[key] = item.content
-    })
-  
-    return { props: { user, sessionUser, savedConfirmation, guestInputContent } };
+    const guestInputContent: IGuestInputContent = {};
+    dbContent.forEach((item: GuestInputContent) => {
+      const key = item.title as keyof typeof guestInputContent;
+      guestInputContent[key] = item.content;
+    });
+
+    return {
+      props: {
+        user,
+        sessionUser,
+        savedConfirmation,
+        guestInputContent,
+      },
+    };
   },
   ironOptions
 );
@@ -55,9 +69,8 @@ const GuestPage: NextPage<Props> = ({
   user,
   sessionUser,
   savedConfirmation,
-  guestInputContent
+  guestInputContent,
 }: Props) => {
-  const router = useRouter();
   const [hasConfirmed, setHasConfirmed] = useState(savedConfirmation !== null);
   const [confirmedGuest, setConfirmedGuest] = useState<IConfirmedGuest>({
     invitedToItaly: user.isInvitedToItaly,
@@ -70,7 +83,10 @@ const GuestPage: NextPage<Props> = ({
   useEffect(() => {
     setLanguage(getSessionLanguage());
   }, []);
-
+  const date = new Date();
+  const legacyDate = new Date(2023, 6, 10);
+  const router = useRouter();
+  router.push("/gallery");
   return (
     <Box position="relative" minH="100vh">
       <Flex
@@ -80,22 +96,25 @@ const GuestPage: NextPage<Props> = ({
         px={3}
         pb={{ base: "6rem", md: "4.5rem" }}
       >
-        <EnterGuestInfo
-          language={language}
-          user={user}
-          confirmedGuest={confirmedGuest}
-          setConfirmedGuest={setConfirmedGuest}
-          guestInputContent={guestInputContent}
-        />
-        {!hasConfirmed && <Text mb={5}>no saved data</Text>}
-        {hasConfirmed && (
-          <SavedDetailsComponent
-            savedConfirmation={savedConfirmation}
-            confirmedGuest={confirmedGuest}
+        <>
+          {/* save this stuff for legacy purposes */}
+          <EnterGuestInfo
             language={language}
+            user={user}
+            confirmedGuest={confirmedGuest}
+            setConfirmedGuest={setConfirmedGuest}
             guestInputContent={guestInputContent}
           />
-        )}
+          {!hasConfirmed && <Text mb={5}>no saved data</Text>}
+          {hasConfirmed && (
+            <SavedDetailsComponent
+              savedConfirmation={savedConfirmation}
+              confirmedGuest={confirmedGuest}
+              language={language}
+              guestInputContent={guestInputContent}
+            />
+          )}
+        </>
       </Flex>
       <Footer
         isLoggedIn={sessionUser.isLoggedIn}

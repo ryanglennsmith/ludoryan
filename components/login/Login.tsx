@@ -2,7 +2,8 @@ import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import login from "../../services/login/login";
 import { useEffect, useState } from "react";
-
+import { withIronSessionSsr } from "iron-session/next";
+import { ironOptions } from "../../lib/ironConfig";
 type Props = {
   message: string;
   setMessage: Function;
@@ -10,9 +11,30 @@ type Props = {
   pw: string;
   setUser: Function;
   setPw: Function;
+  sessionUser: any;
 };
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps({ req, ...context }) {
+    const sessionUser: any = req.session.user;
+    if (sessionUser?.isLoggedIn === true) {
+      return {
+        redirect: { destination: `/${sessionUser.id}`, permanent: false },
+      };
+    }
+    return { props: { sessionUser } };
+  },
 
-const Login = ({ message, setMessage, user, pw, setUser, setPw }: Props) => {
+  ironOptions
+);
+const Login = ({
+  message,
+  setMessage,
+  user,
+  pw,
+  setUser,
+  setPw,
+  sessionUser,
+}: Props) => {
   const [doLogin, setDoLogin] = useState(false);
   useEffect(() => {
     if (doLogin) {
@@ -27,6 +49,8 @@ const Login = ({ message, setMessage, user, pw, setUser, setPw }: Props) => {
     setDoLogin(true);
   };
 
+  // router.push(`/${sessionUser.id}`);
+
   return (
     <form onSubmit={handleSubmit}>
       <FormControl>
@@ -36,8 +60,12 @@ const Login = ({ message, setMessage, user, pw, setUser, setPw }: Props) => {
           mb={3}
           type="text"
           onChange={(e) => {
-            setUser(e.target.value !== null ? e.target.value.trim().toLocaleLowerCase() : undefined);
-            console.log(user)
+            setUser(
+              e.target.value !== null
+                ? e.target.value.trim().toLocaleLowerCase()
+                : undefined
+            );
+            console.log(user);
           }}
         ></Input>
         <Input

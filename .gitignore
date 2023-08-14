@@ -38,3 +38,5 @@ next-env.d.ts
 .env
 /utils_ignore/
 /.csv/
+/public/.images/
+/services/.dev_images/
