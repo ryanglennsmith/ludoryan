@@ -1,10 +1,10 @@
 import { withIronSessionSsr } from "iron-session/next";
 import { ironOptions } from "../../lib/ironConfig";
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Link } from "@chakra-ui/react";
 import Footer from "../../components/nav/Footer";
 import { useEffect, useState } from "react";
 import getSessionLanguage from "../../services/language/getSessionLanguage";
-import { useRouter } from "next/router";
+import { NextPage } from "next";
 
 type Props = {
   sessionUser: any;
@@ -23,12 +23,11 @@ export const getServerSideProps = withIronSessionSsr(
   },
   ironOptions
 );
-const Gallery = ({ sessionUser }: Props) => {
+const Gallery: NextPage<Props> = ({ sessionUser }: Props) => {
   const [language, setLanguage] = useState(0);
   useEffect(() => {
     setLanguage(getSessionLanguage());
   }, []);
-  const router = useRouter();
   return (
     <Box position="relative" minH="100vh">
       <Flex
@@ -37,15 +36,16 @@ const Gallery = ({ sessionUser }: Props) => {
         direction="column"
         px={3}
         pb={{ base: "6rem", md: "4.5rem" }}
+        mt={2}
       >
         <Heading>choose a gallery</Heading>
         <Flex direction="row" p={4}>
-          <Button m={4} onClick={() => router.push("gallery/milano")}>
+          <Link m={4} href="gallery/milano">
             milano
-          </Button>
-          <Button m={4} onClick={() => router.push("gallery/memphis")}>
+          </Link>
+          <Link m={4} href="gallery/memphis">
             memphis
-          </Button>
+          </Link>
         </Flex>
       </Flex>
       <Footer

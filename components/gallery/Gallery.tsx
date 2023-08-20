@@ -10,6 +10,7 @@ import {
   chakra,
   useColorModeValue,
   Heading,
+  Link,
 } from "@chakra-ui/react";
 import ExpandedImage from "./ExpandedImage";
 
@@ -25,8 +26,12 @@ const Gallery: NextPage<Props> = ({ images, location }: Props) => {
       direction="column"
       px={3}
       pb={{ base: "6rem", md: "4.5rem" }}
+      mt={2}
     >
       <Heading mt={2}>{location}</Heading>
+      <Link href="/gallery" mt={2}>
+        go back
+      </Link>
       <chakra.div
         className="masonry-container"
         gridTemplateColumns={{

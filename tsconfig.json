@@ -15,7 +15,8 @@
     "jsx": "preserve",
     "incremental": true,
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "typeRoots": ["./dependency_types", "./node_modules/@types/"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

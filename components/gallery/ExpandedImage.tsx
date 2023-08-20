@@ -16,11 +16,13 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { FaAngleRight, FaAngleLeft, FaDownload } from "react-icons/fa";
+import { NextPage } from "next";
+import ImageZoom from "react-image-zooom";
 type Props = {
   images: string[];
   locale: string;
 };
-const ExpandedImage = ({ images, locale }: Props) => {
+const ExpandedImage: NextPage<Props> = ({ images, locale }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentImage, setCurrentImage] = useState(images[0]);
   const handleClick = (i: number): void => {
@@ -74,7 +76,7 @@ const ExpandedImage = ({ images, locale }: Props) => {
           onClick={() => handleClick(index)}
         >
           <Image
-            src={`/.images/${image}`}
+            src={`/.images/${locale}/${image}`}
             alt={image}
             display="block"
             w="100%"
@@ -104,13 +106,23 @@ const ExpandedImage = ({ images, locale }: Props) => {
                 onClick={() => {
                   cycleImage("left");
                 }}
+                zIndex={100}
               >
                 <Icon as={FaAngleLeft} />
               </Button>
-              <Image
-                src={`/.images/${currentImage}`}
-                alt={currentImage + "alt"}
-              />
+              {locale === "memphis" && (
+                <ImageZoom
+                  src={`/.images/${locale}/${currentImage}`}
+                  alt={currentImage + "alt"}
+                  zoom={400}
+                />
+              )}
+              {locale === "milano" && (
+                <Image
+                  src={`/.images/${locale}/${currentImage}`}
+                  alt={currentImage + "alt"}
+                />
+              )}
               <Button
                 isActive={false}
                 pos="absolute"
@@ -121,6 +133,7 @@ const ExpandedImage = ({ images, locale }: Props) => {
                 onClick={() => {
                   cycleImage("right");
                 }}
+                zIndex={100}
               >
                 <Icon as={FaAngleRight} />
               </Button>

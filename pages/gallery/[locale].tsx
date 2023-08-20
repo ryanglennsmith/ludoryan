@@ -1,11 +1,12 @@
 import { withIronSessionSsr } from "iron-session/next";
-import { getImagesFromFs } from "../../services/.dev_images/getImagesfromFs";
+import { getImagesFromFs } from "../../services/images/GetImagesFromFs";
 import { ironOptions } from "../../lib/ironConfig";
 import { Box } from "@chakra-ui/react";
 import Footer from "../../components/nav/Footer";
 import { useEffect, useState } from "react";
 import getSessionLanguage from "../../services/language/getSessionLanguage";
 import Gallery from "../../components/gallery/Gallery";
+import { NextPage } from "next";
 
 type Props = {
   sessionUser: any;
@@ -22,14 +23,18 @@ export const getServerSideProps = withIronSessionSsr(
       return { redirect: { destination: "/", permanent: false } };
     }
     // TODO: change to get images from db -> cloudflare
-    const images = getImagesFromFs();
-    const locale = context.params?.locale;
+    const locale = context.query.locale || "";
+    const images = getImagesFromFs(locale.toString());
     return { props: { sessionUser, images, locale } };
   },
   ironOptions
 );
 
-const LocaleGallery = ({ sessionUser, images, locale }: Props) => {
+const LocaleGallery: NextPage<Props> = ({
+  sessionUser,
+  images,
+  locale,
+}: Props) => {
   const [language, setLanguage] = useState(0);
   useEffect(() => {
     setLanguage(getSessionLanguage());
