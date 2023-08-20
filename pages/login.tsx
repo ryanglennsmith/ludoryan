@@ -33,6 +33,7 @@ const Home: NextPage = () => {
               pw={pw}
               setUser={setUser}
               setPw={setPw}
+              sessionUser={user}
             />
           </FormControl>
         </Flex>
